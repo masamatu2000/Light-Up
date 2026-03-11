@@ -144,12 +144,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttackObject.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="theMain.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackObject.h" />
+    <ClInclude Include="AttackType.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossMove.h" />
+    <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyMove.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Gimmick.h" />
+    <ClInclude Include="GimmickType.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Stage.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

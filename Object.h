@@ -1,0 +1,50 @@
+#pragma once
+#include "GameObject.h"
+
+struct  Vector2D
+{
+    float x;
+    float y;
+    Vector2D()
+        :x(0), y(0)
+    {
+    }
+    Vector2D(float _x, float _y)
+        :x(_x), y(_y)
+    {
+    }
+};
+struct CircleColid
+{
+    Vector2D CenterPosition;
+    float Radius;
+    CircleColid()
+        :CenterPosition(0.0f,0.0f),Radius(0.0f)
+    {
+    }
+    CircleColid(Vector2D Cpos,float Rad)
+        :CenterPosition(Cpos),Radius(Rad)
+    {
+    }
+};
+struct BoxColid
+{
+    float Width;
+    float Height;
+    BoxColid()
+        :Width(0.0f),Height(0.0f)
+    {
+    }
+    BoxColid(float W, float H)
+        :Width(W), Height(H)
+    {
+    }
+};
+class Object : GameObject
+{
+public:
+	Object();
+	~Object();
+protected:
+    Vector2D position;
+};
