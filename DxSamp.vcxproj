@@ -149,7 +149,6 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -176,6 +175,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Math2D.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ObjectManager.h" />

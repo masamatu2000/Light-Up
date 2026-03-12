@@ -2,7 +2,6 @@
 #include "globals.h"
 #include "input.h"
 
-//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 namespace
 {
 	const int BGCOLOR[3] = {0, 0, 0}; // îwåiêF{ 255, 250, 205 }; // îwåiêF
