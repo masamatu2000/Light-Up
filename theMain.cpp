@@ -1,12 +1,16 @@
 #include "DxLib.h"
 #include "globals.h"
 #include "input.h"
+#include"ObjectManager.h"
+#include"SceneManager.h"
 
 namespace
 {
 	const int BGCOLOR[3] = {0, 0, 0}; // 背景色{ 255, 250, 205 }; // 背景色
 	int crrTime;
 	int prevTime;
+	
+	Scene* scene;
 }
 
 
@@ -39,13 +43,35 @@ void MyGame()
 	DrawFormatString(100, 150, GetColor(0, 0, 0), "%010d", timer);
 }
 
+void Initialize()
+{
+	scene = new Scene();
+}
 
+void Update()
+{
+	ObjectManager::Update();
+	scene->Update();
+}
+
+void Draw()
+{
+	ObjectManager::Draw();
+	scene->Draw();
+}
+
+void Relese()
+{
+
+}
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
 	DxInit();
 	crrTime = GetNowCount();
 	prevTime = GetNowCount();
+
+	Initialize();
 
 	while (true)
 	{
@@ -58,7 +84,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		gDeltaTime = deltaTime; // グローバル変数に保存
 
 		//ここにやりたい処理を書く
-
+		Update();
+		Draw();
 
 		ScreenFlip();
 		WaitTimer(16);
@@ -72,5 +99,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	DxLib_End();
+	Relese();
 	return 0;
 }
