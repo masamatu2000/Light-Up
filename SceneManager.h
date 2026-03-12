@@ -11,5 +11,5 @@ public:
 	~Scene();
 	virtual void Update() {}
 	virtual void Draw() {}
-
+	SceneName sceneName;
 };
