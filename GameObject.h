@@ -33,12 +33,12 @@ public:
 	/// <summary>
 	/// 毎フレームの更新処理のために呼ばれます
 	/// </summary>
-	virtual void Update();
+	virtual void Update() {}
 
 	/// <summary>
 	/// 毎フレームの描画処理のために呼ばれます
 	/// </summary>
-	virtual void Draw();
+	virtual void Draw() {}
 
 	/// <summary>
 	/// 自分のインスタンスを削除する時に呼び出してください
@@ -90,5 +90,5 @@ private:
 	bool dontDestroy;
 	int drawOrder;
 	//画像保存用関数（未定）
-	int hImage;
+	int hImage = -1;
 };
