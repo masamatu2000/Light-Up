@@ -6,7 +6,6 @@
 
 #include<string>
 #include"ObjectManager.h"
-#include"SceneManager.h"
 #include"globals.h"
 #include"Math2D.h"
 #include"Input.h"

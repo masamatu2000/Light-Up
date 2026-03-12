@@ -9,8 +9,6 @@ namespace
 	const int BGCOLOR[3] = {0, 0, 0}; // ”wŒiF{ 255, 250, 205 }; // ”wŒiF
 	int crrTime;
 	int prevTime;
-	
-	Scene* scene;
 }
 
 
@@ -45,22 +43,21 @@ void MyGame()
 
 void Initialize()
 {
-	scene = new Scene();
 }
 
 void Update()
 {
 	ObjectManager::Update();
-	scene->Update();
+	SceneManager::Update();
 }
 
 void Draw()
 {
 	ObjectManager::Draw();
-	scene->Draw();
+	SceneManager::Draw();
 }
 
-void Relese()
+void Release()
 {
 
 }
@@ -99,6 +96,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	DxLib_End();
-	Relese();
+	Release();
 	return 0;
 }

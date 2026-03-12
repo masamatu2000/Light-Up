@@ -1,9 +1,9 @@
 #pragma once
-#include "SceneManager.h"
+#include "SceneBase.h"
 
-class PlayScene : Scene
+class PlayScene : public SceneBase
 {
-private:
+public:
 	PlayScene();
 	~PlayScene();
 	void Update() override;
