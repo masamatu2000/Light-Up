@@ -147,6 +147,7 @@
     <ClCompile Include="AttackObject.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CsvReader.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="AttackType.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossMove.h" />
+    <ClInclude Include="CsvReader.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyMove.h" />
