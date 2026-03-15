@@ -9,6 +9,7 @@
 #include"globals.h"
 #include"Math2D.h"
 #include"Input.h"
+#include "DxLib.h"
 
 /// <summary>
 /// これを継承したクラスのインスタンスは、ObjectManagerで管理され、

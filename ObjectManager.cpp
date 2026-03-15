@@ -6,13 +6,14 @@
 
 #include "ObjectManager.h"
 #include "GameObject.h"
-#include"assert.h"
+#include <assert.h>
 
-namespace {
+namespace 
+{
 	std::list<GameObject*>* objects;
 	bool needSortDraw;
 	GameObject* running;
-}
+};
 
 void ObjectManager::Initialize()
 {

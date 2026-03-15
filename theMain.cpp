@@ -43,6 +43,8 @@ void MyGame()
 
 void Initialize()
 {
+	ObjectManager::Initialize();
+	SceneManager::Initialize();
 }
 
 void Update()
