@@ -8,11 +8,7 @@
 #include<list>
 #include"GameObject.h"
 
-enum SCENE_NAME
-{
-	TITLE_SCENE,
-	PLAY_SCENE
-};
+
 class SceneBase
 {
 public:

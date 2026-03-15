@@ -2,6 +2,8 @@
 #include "SceneFactory.h"
 #include <DxLib.h>
 
+
+
 namespace
 {
 	int* m_currentName; // Œ»İ‚ÌƒV[ƒ“‚Ì–¼Ì

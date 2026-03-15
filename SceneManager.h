@@ -4,9 +4,17 @@
 /// ÀÛ‚ÌƒV[ƒ“‚Ìì¬•”•ª‚ÍASceneFactory‚É‘‚¢‚Ä‚­‚¾‚³‚¢
 /// </summary>
 /// <author>H.suginuma</author>
-#include"SceneBase.h"
+ 
+//#include"SceneBase.h"
 
-//class SceneFactory;
+class SceneFactory;
+class SceneBase;
+
+enum SCENE_NAME
+{
+	TITLE_SCENE,
+	PLAY_SCENE
+};
 
 namespace SceneManager
 {
