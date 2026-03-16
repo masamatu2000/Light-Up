@@ -18,18 +18,24 @@ void Player::Update()
 	//âEÇ…êiÇﬁ
 	if (CheckHitKey(KEY_INPUT_D))
 	{
-		position.x += 2.0f;
+		position.x += 5.0f;
 	}
 	//ç∂Ç…êiÇﬁ
 	if (CheckHitKey(KEY_INPUT_A))
 	{
-		position.x -= 2.0f;
+		position.x -= 5.0f;
 	}
 }
 
 void Player::Draw()
 {
-	DrawBox(600, 600, 800, 800, GetColor(255, 0, 0), TRUE);
+
+	float x = position.x;
+	float y = position.y;
+
+	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
+
+
 }
 
 void Player::Attack()
