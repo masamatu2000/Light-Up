@@ -19,5 +19,14 @@ private:
 	void MainAttack();
 	void SubAttack();
 	void SupportSkill();
+	void fall();
+
+
+	float accel;//‰Á‘¬“x
+
+	float decal;//Œ¸‘¬“x
+
+	bool CanJump;
+
 
 };
