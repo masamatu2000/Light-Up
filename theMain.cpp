@@ -16,6 +16,7 @@ namespace
 	int prevTime;
 	//最終的に何倍のサイズにするか
 	//---画像を維持するために整数以外入れるな)---
+	//縦に１０マスくらいだとZOOMは6（１１．２５マスくらい）
 	const int SCREEN_ZOOM = 4;
 }
 
