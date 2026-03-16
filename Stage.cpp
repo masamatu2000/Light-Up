@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include"CsvReader.h"
+#include "Player.h"
 #include<assert.h>
 namespace {
 	const char IMAGE_SCALE = 16;
@@ -19,6 +20,8 @@ Stage::Stage()
 	}
 	delete csv;
 	assert(hImage > 0);
+
+	new Player(16,16);
 }
 
 Stage::~Stage()
