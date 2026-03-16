@@ -90,6 +90,7 @@ private:
 	bool destroy;
 	bool dontDestroy;
 	int drawOrder;
+protected:
 	//‰æ‘œ•Û‘¶—pŠÖ”i–¢’èj
 	int hImage = -1;
 };
