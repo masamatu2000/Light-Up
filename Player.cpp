@@ -29,7 +29,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	DrawBox(300, 400, 500, 600, GetColor(255, 0, 0), TRUE);
+	DrawBox(600, 600, 800, 800, GetColor(255, 0, 0), TRUE);
 
 
 }

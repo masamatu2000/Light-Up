@@ -1,6 +1,9 @@
 #include "Stage.h"
 #include"CsvReader.h"
 #include<assert.h>
+namespace {
+	const char IMAGE_SCALE = 16;
+}
 Stage::Stage()
 {
 	hImage= LoadGraph("data/Image/stage/è∞ÉCÉÅÅ[ÉW.2.png");
@@ -32,10 +35,10 @@ void Stage::Draw()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
-				DrawRectGraph(16* x - scrollX, y * 16, 0, 16, 16, 16, hImage, true);
+				DrawRectGraph(IMAGE_SCALE* x - scrollX, y * IMAGE_SCALE, 0,IMAGE_SCALE, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 			}
 			else if (map[y][x] == 2) {
-				DrawRectGraph(16* x - scrollX, y * 16, 16, 16, 16, 16, hImage, true);
+				DrawRectGraph(IMAGE_SCALE*x - scrollX, y * IMAGE_SCALE,IMAGE_SCALE, IMAGE_SCALE,IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 			}
 		}
 	}
