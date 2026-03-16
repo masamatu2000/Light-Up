@@ -30,8 +30,6 @@ void Player::Update()
 void Player::Draw()
 {
 	DrawBox(600, 600, 800, 800, GetColor(255, 0, 0), TRUE);
-
-
 }
 
 void Player::Attack()

@@ -9,6 +9,9 @@ namespace
 	const int BGCOLOR[3] = {0, 0, 0}; // 背景色{ 255, 250, 205 }; // 背景色
 	int crrTime;
 	int prevTime;
+	//最終的に何倍のサイズにするか
+	//---画像を維持するために整数以外入れるな)---
+	const int SCREEN_ZOOM = 4;
 }
 
 
@@ -72,9 +75,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	Initialize();
 
+	//SCREEN_ZOOMに拡大するために仮想のスクリーンを作る
+	int vWidth = WIN_WIDTH / SCREEN_ZOOM;
+	int vHeight = WIN_HEIGHT / SCREEN_ZOOM;
+	int virtualScreen = MakeScreen(vWidth, vHeight, FALSE);
+
 	while (true)
 	{
+		//仮想画面に描画
+		SetDrawScreen(virtualScreen);
 		ClearDrawScreen();
+
 		Input::KeyStateUpdate(); // キー入力の状態を更新
 
 		crrTime = GetNowCount(); // 現在の時間を取得
@@ -85,6 +96,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//ここにやりたい処理を書く
 		Update();
 		Draw();
+
+		//本番用の画面に
+		SetDrawScreen(DX_SCREEN_BACK);
+		//ドット維持用
+		SetDrawMode(DX_DRAWMODE_NEAREST);
+		//FHDサイズに画像として拡大
+		DrawExtendGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, virtualScreen, FALSE);
 
 		ScreenFlip();
 		WaitTimer(16);
