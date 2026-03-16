@@ -90,13 +90,16 @@ bool Stage::IsInWall(int x, int y)
 {
 	int map_y = y / IMAGE_SCALE;
 	int map_x = x / IMAGE_SCALE;
-	if (y < 0 || y>map.size() * IMAGE_SCALE) {
+	if (y < 0 || y > map.size() * IMAGE_SCALE)
+	{
 		return false;
 	}
-	if (x < 0 || x>map[map_y].size() * IMAGE_SCALE) {
+	if (x < 0 || x> map[map_y].size() * IMAGE_SCALE)
+	{
 		return false;
 	}
-	if (map[map_y][map_x] == 1 || map[map_y][map_x] == 2) {
+	if (map[map_y][map_x] == 1) 
+	{
 		return true;
 	}
 	return false;

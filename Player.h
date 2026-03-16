@@ -4,7 +4,7 @@ struct Curse
 {
 	unsigned int CurseLevel;
 };
-class Player : Character
+class Player : public Character
 {
 public:
 	Player();

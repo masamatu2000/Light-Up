@@ -46,21 +46,25 @@ void Player::Update()
 	fall();
 
 	//’n–Ê‚Æ‚Ì“–‚½‚è”»’è
-	int d1 = s->HitFloor(position.x + 0, position.y + 16);
-	int d2 = s->HitFloor(position.x + 16-1, position.y + 16);
-
-	int d = max(d1, d2);
-
-	if (d > 0)
+	if (s != nullptr)
 	{
-		position.y -= (d - 1);
-		Velocity.y = 0;
-		CanJump = true;
+		int d1 = s->HitFloor(position.x + 0, position.y + 16);
+		int d2 = s->HitFloor(position.x + 16 - 1, position.y + 16);
+
+		int d = max(d1, d2);
+
+		if (d > 0)
+		{
+			position.y -= (d - 1);
+			Velocity.y = 0;
+			CanJump = true;
+		}
+		else
+		{
+			CanJump = false;
+		}
 	}
-	else
-	{
-		CanJump = false;
-	}
+	
 
 
 }

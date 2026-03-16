@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 #include <vector>
-class Stage : Object
+class Stage : public Object
 {
 public:
 	Stage();
