@@ -10,5 +10,5 @@ private:
 	void Update() override;
 	void Draw() override;
 private:
-	std::vector<std::vector<int>> map;
+	std::vector<std::vector<int>> map;//CSV•Û‘¶—p
 };

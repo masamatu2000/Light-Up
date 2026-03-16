@@ -27,7 +27,7 @@ struct BoxColid
     {
     }
 };
-class Object : GameObject
+class Object :public GameObject
 {
 public:
 	Object();
