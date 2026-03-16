@@ -32,6 +32,9 @@ class Object : GameObject
 public:
 	Object();
 	~Object();
+
+    static int scrollX;
+    static int scrollY;
 protected:
     Vector2D position;
 };
