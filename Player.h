@@ -8,6 +8,7 @@ class Player : Character
 {
 public:
 	Player();
+	Player(int x, int y);
 	~Player();
 private:
 	void Update() override;
@@ -18,4 +19,5 @@ private:
 	void MainAttack();
 	void SubAttack();
 	void SupportSkill();
+
 };
