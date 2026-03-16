@@ -33,8 +33,8 @@ public:
 	Object();
 	~Object();
 
-    static int scrollX;
-    static int scrollY;
+    int scrollX;
+    int scrollY;
 protected:
     Vector2D position;
 };
