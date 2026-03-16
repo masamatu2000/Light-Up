@@ -3,6 +3,11 @@
 #include "input.h"
 #include"ObjectManager.h"
 #include"SceneManager.h"
+/// <summary>
+/// main関数
+/// スクリーン（ウィンドウ）の管理
+/// </summary>
+/// <author>H.suginuma</author>
 
 namespace
 {
