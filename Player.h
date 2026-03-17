@@ -20,13 +20,10 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
+	void Interact();
 
-
-	float accel;//加速度
-
-	float decal;//減速度
-
-	bool CanJump;
+	bool CanJump;//ジャンプできる状態かどうか
+	bool canInteract; //インタラクトできるかどうか
 
 
 };
