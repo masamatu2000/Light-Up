@@ -29,6 +29,7 @@ private:
 
 	float decal;//減速度
 
+
 	bool CanJump;
 
 	bool canInteract; //インタラクトできるかどうか

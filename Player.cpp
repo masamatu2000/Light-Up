@@ -8,7 +8,9 @@
 namespace
 {
 	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 1.0f;//重力 （定数）
+	const float GRAVITY = 9.8f;//重力 （定数）
+	const int IMAGE_SCALE = 16;
+	const float JUMP_HEIGHT = 3.0f*IMAGE_SCALE;
 }
 Player::Player()
 {
@@ -19,8 +21,8 @@ Player::Player(int x, int y)
 {
 	position = Vector2D(x, y);
 	Velocity.y = 0.0f;
-	accel = 1.0f;//加速率
-	decal = 0.5f;//減衰率
+	accel = 2.0f;//加速率
+	decal = 1.5f;//減衰率
 	maxSpeed = 15.0f;
 	currentSpeed = 0.0f;
 
@@ -88,12 +90,24 @@ void Player::Update()
 		int d1 = s->HitWallRight(position.x + 0, position.y + 15);
 		int d2 = s->HitWallRight(position.x + 16, position.y + 15);
 
+		int d = max(d1, d2);
+		if (d > 0)
+		{
+			currentSpeed = 0;
+		}
+
 		position.x -= max(d1, d2);
 	}
 	else if(currentSpeed<0)
 	{
 		int d1 = s->HitWallLeft(position.x + 0, position.y + 15);
 		int d2 = s->HitWallLeft(position.x + 16, position.y + 15);
+
+		int d = max(d1, d2);
+		if (d > 0)
+		{
+			currentSpeed = 0;
+		}
 
 		position.x += max(d1, d2);
 	}
@@ -149,10 +163,12 @@ void Player::Attack()
 
 void Player::jamp()
 {
+
 	if (CanJump){
 		//初期速度の設定
 		float dt = GetDeltaTime();
-		Velocity.y = accel * dt-1;//dtは正の値でジャンプさせるには負の値にする必要あり
+		float InitialVelocity = -std::sqrt(2.0f * GRAVITY * JUMP_HEIGHT);
+		Velocity.y = InitialVelocity;//dtは正の値でジャンプさせるには負の値にする必要あり
 	}
 
 }
@@ -177,7 +193,7 @@ void Player::fall()
 	Velocity.y += GRAVITY * dt;
 
 	//positionを加速度分上昇させる、位置を変える処理
-	position.y += Velocity.y;
+	position.y += Velocity.y*dt;
 }
 
 void Player::Interact()
