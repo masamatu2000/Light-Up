@@ -7,9 +7,30 @@ namespace {
 }
 Stage::Stage()
 {
-	hImage= LoadGraph("data/Image/stage/TileImage.png");
-	CsvReader* csv = new CsvReader("data/Image/stage/stage1-1.csv");
-	int lines = csv->GetLines();//行数を取得
+	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
+
+	//マップの名前の読み込み
+	CsvReader* csvName = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
+	int lines = csvName->GetLines();//行数を取得
+	mapName.resize(lines);//mapの行数を設定
+	for (int i = 0; i < lines; i++) {//1行ずつ読む
+		//改行を消すため一時保存
+		std::string name = csvName->GetString(i, 0);
+		//改行がある場合
+		if (!name.empty() && name.back() == '\r')
+		{
+			name.pop_back();
+		}
+
+		mapName[i] = name;
+	}
+	delete csvName;
+
+	//char filename[20];
+	//sprintf_s<20>(filename, "data/stage%02d.csv", dh->stageNumber);
+
+	CsvReader* csv = new CsvReader("data/Image/stage/stageCSV/stage0-1.csv");
+	lines = csv->GetLines();//行数を取得
 	map.resize(lines);//mapの行数を設定
 	for (int y = 0; y < lines; y++) {//1行ずつ読む
 		int colos = csv->GetColumns(y);//その行の桁数を取得
@@ -50,6 +71,10 @@ void Stage::Draw()
 			}
 		}
 	}
+	//マップの名前入ってるかの確認用
+	//for (int i = 0; i < mapName.size(); i++) {
+	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
+	//}
 }
 int Stage::HitWallRight(int x, int y)
 {
