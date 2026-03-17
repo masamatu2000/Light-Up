@@ -39,5 +39,6 @@ private:
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用
 	std::vector<std::vector<int>> map; //現在のマップを保存
 	int currentNum; //マップの現在の番号を保存
-	int nextNum; //次の番号を保存
+	int nextNum; //次のマップ番号
+	bool isNext; //進むのかどうか
 };

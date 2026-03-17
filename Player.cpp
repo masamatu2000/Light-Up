@@ -157,7 +157,7 @@ void Player::Update()
 	canPrevious = s->CanChangeStage(position, "previous");
 	canNext = s->CanChangeStage(position, "next");
 
-	if (CheckHitKey(KEY_INPUT_E))
+	if(Input::IsKeyDown(KEY_INPUT_E))
 	{
 		if (canNext) 
 		{

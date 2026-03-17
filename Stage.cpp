@@ -105,7 +105,17 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
-				if (map[y][x] == 2) {
+				int findNum;
+				if (isNext)
+				{
+					findNum = 4;
+				}
+				else if (!isNext)
+				{
+					findNum = 3;
+				}
+				//入り口と同じ場所に
+				if (map[y][x] == findNum) {
 					Player* p = FindGameObject<Player>();
 					p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
 					break;
@@ -245,6 +255,7 @@ void Stage::NextStage()
 	if (!mapName[currentNum + 1].empty())
 	{
 		SetStage(mapName[currentNum + 1]);
+		isNext = true; //次に進む
 	}
 }
 
@@ -253,5 +264,6 @@ void Stage::PreviousStage()
 	if (!mapName[currentNum - 1].empty())
 	{
 		SetStage(mapName[currentNum - 1]);
+		isNext = false; //前に戻る
 	}
 }
