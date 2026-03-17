@@ -138,14 +138,14 @@ void Player::Update()
 	}
 	if (s != nullptr) {
 		//天井との当たり判定
-		int d1 = s->HitCeiling(position.x + 0, position.y);//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y);
+		int d1 = s->HitCeiling(position.x + 0, position.y - 1);//yの方にも＋すると足元が天井判定されるのでなし
+		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y - 1);
 
 		int d = max(d1, d2);
 
 		//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
 		if (d > 0) {
-			position.y -= (d - 1);
+			position.y += (d - 1);
 			Velocity.y = 0;
 		}
 	}
