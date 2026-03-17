@@ -21,6 +21,8 @@ private:
 	void SupportSkill();
 	void fall();
 
+	float maxSpeed;//ç≈çÇë¨ìx
+	float currentSpeed;//åªç›ÇÃë¨ìx
 
 	float accel;//â¡ë¨ìx
 
