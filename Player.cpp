@@ -170,8 +170,8 @@ void Player::Update()
 	}
 
 	// スクロール処理
-	if (position.x >= 400) {
-		Stage::scrollX = position.x - 400;
+	if (position.x >= 100) {
+		Stage::scrollX = position.x - 100;
 	}
 
 	if (position.y - Stage::scrollY <= 100) {
@@ -180,8 +180,8 @@ void Player::Update()
 
 
 	//より自然？なスクロール
-	if (position.y - Stage::scrollY >= 500) {
-		Stage::scrollY = position.y - 500;
+	if (position.y - Stage::scrollY >= 150) {
+		Stage::scrollY = position.y - 150;
 		if (Stage::scrollY > Stage::mapBottom) {
 			Stage::scrollY = Stage::mapBottom;
 		}
@@ -196,7 +196,7 @@ void Player::Draw()
 	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",position.x,position.y);
 }
 
 void Player::Attack()
