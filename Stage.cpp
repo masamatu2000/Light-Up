@@ -163,11 +163,11 @@ bool Stage::IsInWall(int x, int y)
 
 bool Stage::CanInteract(Vector2D pos)
 {
+	Vector2D portalPos;
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			//ポータルの座標を獲得
 			if (map[y][x] == 3) {
-				Vector2D portalPos;
 				//座標をマスの中心に変更
 				portalPos.x = x * IMAGE_SCALE + IMAGE_SCALE / 2;
 				portalPos.y = y * IMAGE_SCALE + IMAGE_SCALE / 2;
@@ -177,7 +177,14 @@ bool Stage::CanInteract(Vector2D pos)
 	}
 	//プレイヤーのポジションを取得、中心に設定
 	Vector2D pPos = { pos.x + IMAGE_SCALE / 2 ,pos.y + IMAGE_SCALE / 2 };
-	/*Vector2D dist = */
+	//２つのベクトルの距離
+	float dist = Math2D::Length(Math2D::Sub(pPos, portalPos));
+	//どのくらい離れてたらインタラクトさせるか
+	float interactLength = IMAGE_SCALE;
+	if (dist < interactLength)
+	{
+		return true;
+	}
 	return false;
 }
 
