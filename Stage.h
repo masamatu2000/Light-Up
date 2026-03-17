@@ -15,6 +15,7 @@ public:
 	int HitFloor(int x, int y);
 	int HitCeiling(int x, int y);
 	bool IsInWall(int x, int y);
+	bool CanInteract(Vector2D pos);
 
 	void SetStage(std::string sName);
 private:

@@ -161,6 +161,26 @@ bool Stage::IsInWall(int x, int y)
 	return false;
 }
 
+bool Stage::CanInteract(Vector2D pos)
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			//ポータルの座標を獲得
+			if (map[y][x] == 3) {
+				Vector2D portalPos;
+				//座標をマスの中心に変更
+				portalPos.x = x * IMAGE_SCALE + IMAGE_SCALE / 2;
+				portalPos.y = y * IMAGE_SCALE + IMAGE_SCALE / 2;
+				break;
+			}
+		}
+	}
+	//プレイヤーのポジションを取得、中心に設定
+	Vector2D pPos = { pos.x + IMAGE_SCALE / 2 ,pos.y + IMAGE_SCALE / 2 };
+	/*Vector2D dist = */
+	return false;
+}
+
 void Stage::SetStage(std::string sName)
 {
 	for(int i = 0;i<mapName.size();i++)

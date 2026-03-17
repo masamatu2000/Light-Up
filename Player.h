@@ -30,5 +30,7 @@ private:
 
 	bool CanJump;
 
+	bool canInteract; //インタラクトできるかどうか
+
 
 };
