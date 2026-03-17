@@ -87,8 +87,8 @@ void Player::Update()
 	position.x += currentSpeed;
 
 	if (currentSpeed > 0){
-		int d1 = s->HitWallRight(position.x + IMAGE_SCALE, position.y + IMAGE_SCALE - 1);
-		int d2 = s->HitWallRight(position.x + IMAGE_SCALE, position.y);
+		int d1 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE - 1);
+		int d2 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y);
 
 		int d = max(d1, d2);
 		if (d > 0)
