@@ -22,16 +22,7 @@ private:
 	void fall();
 	void Interact();
 
-	float maxSpeed;//最高速度
-	float currentSpeed;//現在の速度
-
-	float accel;//加速度
-
-	float decal;//減速度
-
-
-	bool CanJump;
-
+	bool CanJump;//ジャンプできる状態かどうか
 	bool canInteract; //インタラクトできるかどうか
 
 

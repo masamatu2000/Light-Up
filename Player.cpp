@@ -11,21 +11,23 @@ namespace
 	const float GRAVITY = 9.8f * 60;//重力 （定数）
 	const int IMAGE_SCALE = 16;
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
+	const float accel = 2.0f;//加速率
+	const float decal = 1.5f;//減衰率
+	const float maxSpeed = 15.0f;//最高速度
 }
 Player::Player()
 {
-
+	CanJump = true;
+	canInteract = false;
 }
 
 Player::Player(int x, int y)
 {
 	position = Vector2D(x, y);
-	Velocity.y = 0.0f;
-	accel = 2.0f;//加速率
-	decal = 1.5f;//減衰率
-	maxSpeed = 15.0f;
-	currentSpeed = 0.0f;
-
+	Velocity = Vector2D(0.0f,0.0f);
+	
+	CanJump = true;
+	canInteract = false;
 }
 
 Player::~Player()
@@ -42,10 +44,10 @@ void Player::Update()
 
 		
 		//徐々に加速していく
-		currentSpeed += accel * dt;
-		if (currentSpeed > maxSpeed)
+		Velocity.x += accel * dt;
+		if (Velocity.x > maxSpeed)
 		{
-			currentSpeed = maxSpeed;
+			Velocity.x = maxSpeed;
 		}
 
 	}
@@ -56,49 +58,49 @@ void Player::Update()
 
 		
 		//徐々に加速していく(プラスの処理）
-		currentSpeed -= accel * dt;
-		if (currentSpeed < -maxSpeed)
+		Velocity.x -= accel * dt;
+		if (Velocity.x < -maxSpeed)
 		{
-			currentSpeed = -maxSpeed;
+			Velocity.x = -maxSpeed;
 		}
 	}
 	else
 	{
 		//徐々に減速させる
-		if (currentSpeed > 0)//現在のスピードが正のとき
+		if (Velocity.x > 0)//現在のスピードが正のとき
 		{
-			currentSpeed -= decal * dt;
-			if (currentSpeed < 0)//現在のスピードが正かつマイナスになった =0になった
+			Velocity.x -= decal * dt;
+			if (Velocity.x < 0)//現在のスピードが正かつマイナスになった =0になった
 			{
-				currentSpeed = 0;
+				Velocity.x = 0;
 			}
 		}
 
-		if (currentSpeed < 0)//現在のスピードがマイナスなとき
+		if (Velocity.x < 0)//現在のスピードがマイナスなとき
 		{
-			currentSpeed += decal * dt;
-			if (currentSpeed > 0)
+			Velocity.x += decal * dt;
+			if (Velocity.x > 0)
 			{
-				currentSpeed = 0;
+				Velocity.x = 0;
 			}
 		}
 	}
 	//位置を変える
-	position.x += currentSpeed;
+	position.x += Velocity.x;
 
-	if (currentSpeed > 0){
+	if (Velocity.x > 0){
 		int d1 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE - 1);
 		int d2 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y);
 
 		int d = max(d1, d2);
 		if (d > 0)
 		{
-			currentSpeed = 0;
+			Velocity.x = 0;
 		}
 
 		position.x -= max(d1, d2);
 	}
-	else if(currentSpeed<0)
+	else if(Velocity.x < 0)
 	{
 		int d1 = s->HitWallLeft(position.x + 0, position.y + IMAGE_SCALE - 1);
 		int d2 = s->HitWallLeft(position.x + 0, position.y);
@@ -106,7 +108,7 @@ void Player::Update()
 		int d = max(d1, d2);
 		if (d > 0)
 		{
-			currentSpeed = 0;
+			Velocity.x = 0;
 		}
 
 		position.x += max(d1, d2);
@@ -166,7 +168,6 @@ void Player::jamp()
 
 	if (CanJump){
 		//初期速度の設定
-		float dt = GetDeltaTime();
 		float InitialVelocity = -std::sqrt(2.0f * GRAVITY * JUMP_HEIGHT);
 		Velocity.y = InitialVelocity;//dtは正の値でジャンプさせるには負の値にする必要あり
 	}
@@ -193,7 +194,7 @@ void Player::fall()
 	Velocity.y += GRAVITY * dt;
 
 	//positionを加速度分上昇させる、位置を変える処理
-	position.y += Velocity.y*dt;
+	position.y += Velocity.y * dt;
 }
 
 void Player::Interact()
