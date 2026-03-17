@@ -1,5 +1,7 @@
 #include "PlayScene.h"
 #include"Stage.h"
+#include "EffectManager.h"
+
 PlayScene::PlayScene()
 {
 	new Stage();
@@ -15,6 +17,7 @@ void PlayScene::Update()
 	{
 		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
 	}
+	
 }
 
 void PlayScene::Draw()
