@@ -20,6 +20,7 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
+	void Interact();
 
 	float maxSpeed;//ç≈çÇë¨ìx
 	float currentSpeed;//åªç›ÇÃë¨ìx
