@@ -2,6 +2,9 @@
 #include "Stage.h"
 #include "globals.h"
 
+/// <summary>
+/// M.Shoji
+/// </summary>
 namespace
 {
 	//どのくらいの割合で重力を与えるか
@@ -175,4 +178,9 @@ void Player::fall()
 
 	//positionを加速度分上昇させる、位置を変える処理
 	position.y += Velocity.y;
+}
+
+void Player::Interact()
+{
+
 }
