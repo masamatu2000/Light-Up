@@ -29,6 +29,7 @@ public:
 	//スクロール用変数
 	static int scrollX;
 	static int scrollY;
+	static int mapBottom;
 
 private:
 	void Update() override;

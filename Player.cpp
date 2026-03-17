@@ -168,6 +168,24 @@ void Player::Update()
 			s->PreviousStage();
 		}
 	}
+
+	// スクロール処理
+	if (position.x >= 400) {
+		Stage::scrollX = position.x - 400;
+	}
+
+	if (position.y - Stage::scrollY <= 100) {
+		Stage::scrollY = position.y - 100;
+	}
+
+
+	//より自然？なスクロール
+	if (position.y - Stage::scrollY >= 500) {
+		Stage::scrollY = position.y - 500;
+		if (Stage::scrollY > Stage::mapBottom) {
+			Stage::scrollY = Stage::mapBottom;
+		}
+	}
 }
 
 void Player::Draw()
@@ -217,9 +235,4 @@ void Player::fall()
 
 	//positionを加速度分上昇させる、位置を変える処理
 	position.y += Velocity.y * dt;
-}
-
-void Player::Interact()
-{
-
 }
