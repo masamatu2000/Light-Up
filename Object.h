@@ -6,6 +6,7 @@
 /// </summary>
 /// <author>H.suginunma</author>
 
+
 struct CircleColid
 {
     Vector2D CenterPosition;
@@ -37,9 +38,6 @@ class Object :public GameObject
 public:
 	Object();
 	~Object();
-
-    int scrollX;
-    int scrollY;
 protected:
     Vector2D position;
 };

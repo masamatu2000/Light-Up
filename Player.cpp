@@ -18,7 +18,9 @@ namespace
 Player::Player()
 {
 	CanJump = true;
-	canInteract = false;
+
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::Player(int x, int y)
@@ -27,7 +29,8 @@ Player::Player(int x, int y)
 	Velocity = Vector2D(0.0f,0.0f);
 	
 	CanJump = true;
-	canInteract = false;
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::~Player()
@@ -138,25 +141,44 @@ void Player::Update()
 	}
 	if (s != nullptr) {
 		//天井との当たり判定
-		int d1 = s->HitCeiling(position.x + 0, position.y);//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y);
+		int d1 = s->HitCeiling(position.x + 0, position.y - 1);//yの方にも＋すると足元が天井判定されるのでなし
+		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y - 1);
 
 		int d = max(d1, d2);
 
 		//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
 		if (d > 0) {
-			position.y -= (d - 1);
+			position.y += (d - 1);
 			Velocity.y = 0;
+		}
+	}
+
+	//ステージのインタラクト
+	canPrevious = s->CanChangeStage(position, "previous");
+	canNext = s->CanChangeStage(position, "next");
+
+	if (CheckHitKey(KEY_INPUT_E))
+	{
+		if (canNext) 
+		{
+			s->NextStage();
+		}
+		else if(canPrevious)
+		{
+			s->PreviousStage();
 		}
 	}
 }
 
 void Player::Draw()
 {
-	float x = position.x;
-	float y = position.y;
+	float x = position.x - Stage::scrollX;
+	float y = position.y - Stage::scrollY;
 
 	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
+
+	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 }
 
 void Player::Attack()
