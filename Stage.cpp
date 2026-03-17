@@ -7,8 +7,8 @@ namespace {
 }
 Stage::Stage()
 {
-	hImage= LoadGraph("data/Image/stage/TileImage.png");
-	CsvReader* csv = new CsvReader("data/Image/stage/stage1-1.csv");
+	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
+	CsvReader* csv = new CsvReader("data/Image/stage/stageCSV/stage0-1.csv");
 	int lines = csv->GetLines();//s”‚ğæ“¾
 	map.resize(lines);//map‚Ìs”‚ğİ’è
 	for (int y = 0; y < lines; y++) {//1s‚¸‚Â“Ç‚Ş
