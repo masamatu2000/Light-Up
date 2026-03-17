@@ -2,7 +2,7 @@
 #include "Character.h"
 #include "attackType.h"
 
-class AttackObject : Character
+class AttackObject : public Character
 {
 public:
 	AttackObject();
