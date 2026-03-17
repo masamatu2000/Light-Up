@@ -1,3 +1,7 @@
+/// <summary>
+/// ステージに関するクラス
+/// </summary>
+/// <author>H.suginunma</author>
 #include "Stage.h"
 #include"CsvReader.h"
 #include "Player.h"
@@ -9,7 +13,6 @@ Stage::Stage()
 {
 	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
 	assert(hImage > 0);
-	currentNum = 0;
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
@@ -59,6 +62,8 @@ Stage::Stage()
 	}
 	
 	//マップを初期化（チュートリアルに）
+	currentNum = 0;
+	nextNum = currentNum;
 	if (!allMap.empty()) {
 		map = allMap[currentNum];
 	}
@@ -81,7 +86,11 @@ Stage::~Stage()
 
 void Stage::Update()
 {
-	
+	if (currentNum != nextNum)
+	{
+		map = allMap[nextNum];
+		currentNum = nextNum;
+	}
 }
 
 void Stage::Draw()
@@ -150,4 +159,16 @@ bool Stage::IsInWall(int x, int y)
 		return true;
 	}
 	return false;
+}
+
+void Stage::SetStage(std::string sName)
+{
+	for(int i = 0;i<mapName.size();i++)
+	{
+		if (sName == mapName[i])
+		{
+			nextNum = i;
+			break;
+		}
+	}
 }

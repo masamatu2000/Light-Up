@@ -1,6 +1,11 @@
 #pragma once
 #include "GameObject.h"
 
+/// <summary>
+/// オブジェクトの管理
+/// </summary>
+/// <author>H.suginunma</author>
+
 struct CircleColid
 {
     Vector2D CenterPosition;

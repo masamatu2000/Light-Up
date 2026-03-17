@@ -1,3 +1,7 @@
+/// <summary>
+/// ステージに関するクラス
+/// </summary>
+/// <author>H.suginunma</author>
 #pragma once
 #include "Object.h"
 #include <vector>
@@ -11,6 +15,8 @@ public:
 	int HitFloor(int x, int y);
 	int HitCeiling(int x, int y);
 	bool IsInWall(int x, int y);
+
+	void SetStage(std::string sName);
 private:
 	void Update() override;
 	void Draw() override;

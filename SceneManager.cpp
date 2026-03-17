@@ -2,7 +2,11 @@
 #include "SceneFactory.h"
 #include <DxLib.h>
 
-
+/// <summary>
+/// シーンの切り替えを管理するクラス
+/// 実際のシーンの作成部分は、SceneFactoryに書いてください
+/// </summary>
+/// <author>H.suginuma</author>
 
 namespace
 {

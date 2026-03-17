@@ -1,3 +1,8 @@
+/// <summary>
+/// SceneManagerから呼び出されてSceneを作成するクラス
+/// SceneManagerを触らなくていいように、作成部分をここに分離しておく
+/// 作るシーンは、enumで指定してもらうようにした
+/// </summary>
 #include "SceneFactory.h"
 #include <windows.h>
 #include <assert.h>
