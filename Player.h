@@ -10,6 +10,11 @@ public:
 	Player();
 	Player(int x, int y);
 	~Player();
+
+	void SetPosition(Vector2D pos)
+	{
+		position = pos;
+	}
 private:
 	void Update() override;
 	void Draw() override;

@@ -14,10 +14,6 @@ namespace
 	const int BGCOLOR[3] = {0, 0, 0}; // 背景色{ 255, 250, 205 }; // 背景色
 	int crrTime;
 	int prevTime;
-	//最終的に何倍のサイズにするか
-	//---画像を維持するために整数以外入れるな)---
-	//縦に１０マスくらいだとZOOMは6（１１．２５マスくらい）
-	const int SCREEN_ZOOM = 2;
 }
 
 

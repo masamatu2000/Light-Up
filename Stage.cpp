@@ -8,7 +8,6 @@
 #include<assert.h>
 namespace {
 	const char IMAGE_SCALE = 16;
-	const int SCREEN_ZOOM = 2;
 }
 
 int Stage::scrollX = 0;
@@ -72,6 +71,7 @@ Stage::Stage()
 	if (!allMap.empty()) {
 		map = allMap[currentNum];
 	}
+	//描画位置を下に移動
 	int mapBottom;
 	mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
 	Stage::scrollX = 0;
@@ -98,6 +98,22 @@ void Stage::Update()
 	{
 		map = allMap[nextNum];
 		currentNum = nextNum;
+		//描画位置を下に移動
+		int mapBottom;
+		mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
+		Stage::scrollX = 0;
+		Stage::scrollY = mapBottom;
+		//プレイヤーの位置を新しいマップの初期位置に移動
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				if (map[y][x] == 2) {
+					Player* p = FindGameObject<Player>();
+					p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
+					break;
+				}
+
+			}
+		}
 	}
 }
 
