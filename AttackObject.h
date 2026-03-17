@@ -1,17 +1,31 @@
 #pragma once
 #include "Character.h"
-#include "attackType.h"
 
+enum ATTACK_TYPE
+{
+	bullet,
+	slash
+};
+enum BULLET_NUMBER
+{
+	bullet01,
+	bullet02
+};
+enum SLASH_NUMBER
+{
+	slash01,
+	clash02
+};
 class AttackObject : public Character
 {
 public:
 	AttackObject();
 	~AttackObject();
-private:
+public:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
-private:
+protected:
 	ATTACK_TYPE attackType;
 	BULLET_NUMBER bulletNumber;
 	SLASH_NUMBER slashNumber;
