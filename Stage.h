@@ -25,6 +25,11 @@ public:
 	void NextStage();
 	//前のステージに移行させる関数
 	void PreviousStage();
+
+	//スクロール用変数
+	static int scrollX;
+	static int scrollY;
+
 private:
 	void Update() override;
 	void Draw() override;
