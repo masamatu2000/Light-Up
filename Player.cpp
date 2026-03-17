@@ -8,9 +8,9 @@
 namespace
 {
 	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 9.8f;//重力 （定数）
+	const float GRAVITY = 9.8f * 60;//重力 （定数）
 	const int IMAGE_SCALE = 16;
-	const float JUMP_HEIGHT = 3.0f*IMAGE_SCALE;
+	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
 }
 Player::Player()
 {
@@ -87,8 +87,8 @@ void Player::Update()
 	position.x += currentSpeed;
 
 	if (currentSpeed > 0){
-		int d1 = s->HitWallRight(position.x + 0, position.y + 15);
-		int d2 = s->HitWallRight(position.x + 16, position.y + 15);
+		int d1 = s->HitWallRight(position.x + IMAGE_SCALE, position.y + IMAGE_SCALE - 1);
+		int d2 = s->HitWallRight(position.x + IMAGE_SCALE, position.y);
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -100,8 +100,8 @@ void Player::Update()
 	}
 	else if(currentSpeed<0)
 	{
-		int d1 = s->HitWallLeft(position.x + 0, position.y + 15);
-		int d2 = s->HitWallLeft(position.x + 16, position.y + 15);
+		int d1 = s->HitWallLeft(position.x + 0, position.y + IMAGE_SCALE - 1);
+		int d2 = s->HitWallLeft(position.x + 0, position.y);
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -120,8 +120,8 @@ void Player::Update()
 
 	//地面との当たり判定
 	if (s != nullptr){
-		int d1 = s->HitFloor(position.x + 0, position.y + 16);
-		int d2 = s->HitFloor(position.x + 16 - 1, position.y + 16);
+		int d1 = s->HitFloor(position.x + 0, position.y + IMAGE_SCALE);
+		int d2 = s->HitFloor(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE);
 
 		int d = max(d1, d2);
 
@@ -133,18 +133,18 @@ void Player::Update()
 		else{
 			CanJump = false;
 		}
-		if (s != nullptr){
-			//天井との当たり判定
-			int d1 = s->HitCeiling(position.x + 0, position.y);//yの方にも＋すると足元が天井判定されるのでなし
-			int d2 = s->HitCeiling(position.x + 16 - 1, position.y);
+	}
+	if (s != nullptr) {
+		//天井との当たり判定
+		int d1 = s->HitCeiling(position.x + 0, position.y);//yの方にも＋すると足元が天井判定されるのでなし
+		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y);
 
-			int d = max(d1, d2);
+		int d = max(d1, d2);
 
-			//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
-			if (d > 0){
-				position.y -= (d - 1);
-				Velocity.y = 0;
-			}
+		//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
+		if (d > 0) {
+			position.y -= (d - 1);
+			Velocity.y = 0;
 		}
 	}
 }
