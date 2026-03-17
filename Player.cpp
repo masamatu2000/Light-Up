@@ -18,7 +18,9 @@ namespace
 Player::Player()
 {
 	CanJump = true;
-	canInteract = false;
+
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::Player(int x, int y)
@@ -27,7 +29,8 @@ Player::Player(int x, int y)
 	Velocity = Vector2D(0.0f,0.0f);
 	
 	CanJump = true;
-	canInteract = false;
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::~Player()
@@ -149,14 +152,32 @@ void Player::Update()
 			Velocity.y = 0;
 		}
 	}
+
+	//ステージのインタラクト
+	canPrevious = s->CanChangeStage(position, "previous");
+	canNext = s->CanChangeStage(position, "next");
+
+	if (CheckHitKey(KEY_INPUT_E))
+	{
+		if (canNext) 
+		{
+			s->NextStage();
+		}
+		else if(canPrevious)
+		{
+			s->PreviousStage();
+		}
+	}
 }
 
 void Player::Draw()
 {
-	float x = position.x;
-	float y = position.y;
+	float x = position.x - scrollX;
+	float y = position.y - scrollY;
 
 	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
+
+	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 }
 
 void Player::Attack()

@@ -23,7 +23,8 @@ private:
 	void Interact();
 
 	bool CanJump;//ジャンプできる状態かどうか
-	bool canInteract; //インタラクトできるかどうか
+	bool canPrevious; //前のステージに戻れるかどうか
+	bool canNext; //次のステージに進めるかどうか
 
 
 };
