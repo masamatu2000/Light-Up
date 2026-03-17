@@ -18,7 +18,9 @@ namespace
 Player::Player()
 {
 	CanJump = true;
-	canInteract = false;
+
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::Player(int x, int y)
@@ -27,7 +29,8 @@ Player::Player(int x, int y)
 	Velocity = Vector2D(0.0f,0.0f);
 	
 	CanJump = true;
-	canInteract = false;
+	canPrevious = false;
+	canNext = false;
 }
 
 Player::~Player()
@@ -149,14 +152,51 @@ void Player::Update()
 			Velocity.y = 0;
 		}
 	}
+
+	//ステージのインタラクト
+	canPrevious = s->CanChangeStage(position, "previous");
+	canNext = s->CanChangeStage(position, "next");
+
+	if (CheckHitKey(KEY_INPUT_E))
+	{
+		if (canNext) 
+		{
+			s->NextStage();
+		}
+		else if(canPrevious)
+		{
+			s->PreviousStage();
+		}
+	}
+
+	// スクロール処理
+	if (position.x >= 400) {
+		Stage::scrollX = position.x - 400;
+	}
+
+	if (position.y - Stage::scrollY <= 100) {
+		Stage::scrollY = position.y - 100;
+	}
+
+
+	//より自然？なスクロール
+	if (position.y - Stage::scrollY >= 500) {
+		Stage::scrollY = position.y - 500;
+		if (Stage::scrollY > Stage::mapBottom) {
+			Stage::scrollY = Stage::mapBottom;
+		}
+	}
 }
 
 void Player::Draw()
 {
-	float x = position.x;
-	float y = position.y;
+	float x = position.x - Stage::scrollX;
+	float y = position.y - Stage::scrollY;
 
 	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
+
+	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 }
 
 void Player::Attack()
@@ -195,9 +235,4 @@ void Player::fall()
 
 	//positionを加速度分上昇させる、位置を変える処理
 	position.y += Velocity.y * dt;
-}
-
-void Player::Interact()
-{
-
 }

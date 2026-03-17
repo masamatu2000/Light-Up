@@ -9,6 +9,11 @@
 namespace {
 	const char IMAGE_SCALE = 16;
 }
+
+int Stage::scrollX = 0;
+int Stage::scrollY = 0;
+int Stage::mapBottom = 0;
+
 Stage::Stage()
 {
 	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
@@ -67,7 +72,10 @@ Stage::Stage()
 	if (!allMap.empty()) {
 		map = allMap[currentNum];
 	}
-
+	//描画位置を下に移動
+	Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
+	Stage::scrollX = 0;
+	Stage::scrollY = Stage::mapBottom;
 	//↓プレイヤーを指定の座標に出現させる
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
@@ -90,6 +98,21 @@ void Stage::Update()
 	{
 		map = allMap[nextNum];
 		currentNum = nextNum;
+		//描画位置を下に移動
+		Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
+		Stage::scrollX = 0;
+		Stage::scrollY = Stage::mapBottom;
+		//プレイヤーの位置を新しいマップの初期位置に移動
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				if (map[y][x] == 2) {
+					Player* p = FindGameObject<Player>();
+					p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
+					break;
+				}
+
+			}
+		}
 	}
 }
 
@@ -98,7 +121,7 @@ void Stage::Draw()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
-				DrawRectGraph(IMAGE_SCALE* x - scrollX, y * IMAGE_SCALE, 0,0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 			}
 		}
 	}
@@ -161,13 +184,30 @@ bool Stage::IsInWall(int x, int y)
 	return false;
 }
 
-bool Stage::CanInteract(Vector2D pos)
+bool Stage::CanChangeStage(Vector2D pos, std::string direction)
+{
+	if (direction == "next")
+	{
+		//nextに行けるか調べる
+		//CSV上のnextポータルを表す3で検索
+		return CanInteract(pos, 3);
+	}
+	else if (direction == "previous")
+	{
+		//previousに行けるか調べる
+		//CSV上のpreviousポータルを表す4で検索
+		return CanInteract(pos, 4);
+	}
+	return false;
+}
+
+bool Stage::CanInteract(Vector2D pos, int findNum)
 {
 	Vector2D portalPos;
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			//ポータルの座標を獲得
-			if (map[y][x] == 3) {
+			if (map[y][x] == findNum) {
 				//座標をマスの中心に変更
 				portalPos.x = x * IMAGE_SCALE + IMAGE_SCALE / 2;
 				portalPos.y = y * IMAGE_SCALE + IMAGE_SCALE / 2;
@@ -197,5 +237,21 @@ void Stage::SetStage(std::string sName)
 			nextNum = i;
 			break;
 		}
+	}
+}
+
+void Stage::NextStage()
+{
+	if (!mapName[currentNum + 1].empty())
+	{
+		SetStage(mapName[currentNum + 1]);
+	}
+}
+
+void Stage::PreviousStage()
+{
+	if (!mapName[currentNum - 1].empty())
+	{
+		SetStage(mapName[currentNum - 1]);
 	}
 }

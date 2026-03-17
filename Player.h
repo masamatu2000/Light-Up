@@ -10,6 +10,11 @@ public:
 	Player();
 	Player(int x, int y);
 	~Player();
+
+	void SetPosition(Vector2D pos)
+	{
+		position = pos;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -20,10 +25,10 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
-	void Interact();
 
 	bool CanJump;//ジャンプできる状態かどうか
-	bool canInteract; //インタラクトできるかどうか
+	bool canPrevious; //前のステージに戻れるかどうか
+	bool canNext; //次のステージに進めるかどうか
 
 
 };
