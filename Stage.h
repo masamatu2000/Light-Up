@@ -15,8 +15,9 @@ public:
 	int HitFloor(int x, int y);
 	int HitCeiling(int x, int y);
 	bool IsInWall(int x, int y);
+	//プレイヤーのポジションを引数として与えることで距離を測り、インタラクトできるかを返す
 	bool CanInteract(Vector2D pos);
-
+	//ステージ名（stage0-1など）を引数に与えるとこでステージが変わる
 	void SetStage(std::string sName);
 private:
 	void Update() override;

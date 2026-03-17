@@ -181,7 +181,7 @@ bool Stage::CanInteract(Vector2D pos)
 	float dist = Math2D::Length(Math2D::Sub(pPos, portalPos));
 	//どのくらい離れてたらインタラクトさせるか
 	float interactLength = IMAGE_SCALE;
-	if (dist < interactLength)
+	if (dist <= interactLength)
 	{
 		return true;
 	}
