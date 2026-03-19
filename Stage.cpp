@@ -75,10 +75,8 @@ Stage::Stage()
 	if (!allMap.empty()) {
 		map = allMap[currentNum];
 	}
-	//描画位置を下に移動
-	Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
-	Stage::scrollX = 0;
-	Stage::scrollY = Stage::mapBottom;
+	//スクロール、上限値の設定
+	SetScroll();
 	//↓プレイヤーを指定の座標に出現させる
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
@@ -101,31 +99,10 @@ void Stage::Update()
 	{
 		map = allMap[nextNum];
 		currentNum = nextNum;
-		//描画位置を下に移動
-		Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
-		Stage::scrollX = 0;
-		Stage::scrollY = Stage::mapBottom;
+		//スクロール、上限値を設定
+		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
-		for (int y = 0; y < map.size(); y++) {
-			for (int x = 0; x < map[y].size(); x++) {
-				int findNum;
-				if (isNext)
-				{
-					findNum = 4;
-				}
-				else if (!isNext)
-				{
-					findNum = 3;
-				}
-				//入り口と同じ場所に
-				if (map[y][x] == findNum) {
-					Player* p = FindGameObject<Player>();
-					p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
-					break;
-				}
-
-			}
-		}
+		SetPlayerPosition();
 	}
 }
 
@@ -143,6 +120,7 @@ void Stage::Draw()
 	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
 	//}
 }
+
 int Stage::HitWallRight(int x, int y)
 {
 	if (IsInWall(x, y)) {
@@ -271,4 +249,39 @@ void Stage::PreviousStage()
 	}
 	SetStage(mapName[currentNum - 1]);
 	isNext = false; //前に戻る
+}
+
+void Stage::SetScroll()
+{
+	Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
+	Stage::mapTop = 0;
+	Stage::mapLeft = 0;
+	Stage::mapRight = map[0].size() * IMAGE_SCALE - (WIN_WIDTH / SCREEN_ZOOM);
+
+	Stage::scrollX = Stage::mapLeft;
+	Stage::scrollY = Stage::mapBottom;
+}
+
+void Stage::SetPlayerPosition()
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			int findNum;
+			if (isNext)
+			{
+				findNum = 4;
+			}
+			else if (!isNext)
+			{
+				findNum = 3;
+			}
+			//入り口と同じ場所に
+			if (map[y][x] == findNum) {
+				Player* p = FindGameObject<Player>();
+				p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
+				break;
+			}
+
+		}
+	}
 }
