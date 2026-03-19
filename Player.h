@@ -27,6 +27,8 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
+	void Interact();
+	void Scroll();
 
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか

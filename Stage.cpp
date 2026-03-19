@@ -277,7 +277,7 @@ void Stage::SetPlayerPosition()
 			{
 				findNum = 3;
 			}
-			//“ü‚èŒû‚Æ“¯‚¶êŠ‚É
+			//ŠK’i‚Æ“¯‚¶êŠ‚É
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
 				p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });

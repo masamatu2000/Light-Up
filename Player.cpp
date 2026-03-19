@@ -155,39 +155,9 @@ void Player::Update()
 		}
 	}
 
-	//ステージのインタラクト
-	canPrevious = s->CanChangeStage(position, "previous");
-	canNext = s->CanChangeStage(position, "next");
-
-	if(Input::IsKeyDown(KEY_INPUT_E))
-	{
-		if (canNext) 
-		{
-			s->NextStage();
-		}
-		else if(canPrevious)
-		{
-			s->PreviousStage();
-		}
-	}
-
-	// スクロール処理
-	if (position.x >= 100) {
-		Stage::scrollX = position.x - 100;
-	}
-
-	if (position.y - Stage::scrollY <= 100) {
-		Stage::scrollY = position.y - 100;
-	}
-
-
-	//より自然？なスクロール
-	if (position.y - Stage::scrollY >= 150) {
-		Stage::scrollY = position.y - 150;
-		if (Stage::scrollY > Stage::mapBottom) {
-			Stage::scrollY = Stage::mapBottom;
-		}
-	}
+	Interact();
+	
+	Scroll();
 
 	Attack();
 	ObjectProcess::HitObject();
@@ -254,5 +224,66 @@ void Player::fall()
 
 		//positionを加速度分上昇させる、位置を変える処理
 		position.y += Velocity.y * dt;
+	}
+}
+
+void Player::Interact()
+{
+	Stage* s = FindGameObject<Stage>();
+	//ステージのインタラクト
+	canPrevious = s->CanChangeStage(position, "previous");
+	canNext = s->CanChangeStage(position, "next");
+
+	if (Input::IsKeyDown(KEY_INPUT_E))
+	{
+		if (canNext)
+		{
+			s->NextStage();
+		}
+		else if (canPrevious)
+		{
+			s->PreviousStage();
+		}
+	}
+}
+
+void Player::Scroll()
+{
+	// スクロール処理
+	if (position.x >= 100) {
+		Stage::scrollX = position.x - 100;
+	}
+
+	if (position.y - Stage::scrollY <= 100) {
+		Stage::scrollY = position.y - 100;
+	}
+
+	//より自然？なスクロール
+	if (position.y - Stage::scrollY >= 150) {
+		Stage::scrollY = position.y - 150;
+	}
+
+	//スクロールの制限
+	//左端
+	if (Stage::scrollX < Stage::mapLeft)
+	{
+		Stage::scrollX = Stage::mapLeft;
+	}
+	//右端
+	if (Stage::scrollX > Stage::mapRight)
+	{
+		Stage::scrollX = Stage::mapRight;
+	}
+
+	//上端
+	if (Stage::scrollY < Stage::mapTop)
+	{
+		Stage::scrollY = Stage::mapTop;
+	}
+
+	//下端
+	if (Stage::scrollY > Stage::mapBottom)
+	{
+		Stage::scrollY = Stage::mapBottom;
 	}
 }
