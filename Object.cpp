@@ -16,6 +16,7 @@ void ObjectProcess::HitObject()
 {
 	Player* pl = FindGameObject<Player>();
 
+	//敵のベクトル
 	auto aliveEnemies = FindGameObjects<Enemy>();
 
 	//自分がやられていたらスルー
@@ -24,6 +25,7 @@ void ObjectProcess::HitObject()
 		return;
 	}
 
+	//敵と自機のヒットチェック
 	for (auto& enemy:aliveEnemies)
 	{
 		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
@@ -34,6 +36,7 @@ void ObjectProcess::HitObject()
 			//pl->DestroyMe();
 
 			enemy->DestroyMe();
+			break;
 		}
 	}
 }
