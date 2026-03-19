@@ -30,6 +30,9 @@ public:
 	static int scrollX;
 	static int scrollY;
 	static int mapBottom;
+	static int mapTop;
+	static int mapLeft;
+	static int mapRight;
 
 private:
 	void Update() override;

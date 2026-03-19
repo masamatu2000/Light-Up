@@ -13,6 +13,9 @@ namespace {
 int Stage::scrollX = 0;
 int Stage::scrollY = 0;
 int Stage::mapBottom = 0;
+int Stage::mapTop = 0;
+int Stage::mapLeft = 0;
+int Stage::mapRight = 0;
 
 Stage::Stage()
 {
@@ -252,18 +255,20 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextStage()
 {
-	if (!mapName[currentNum + 1].empty())
+	if (currentNum + 1 > mapName.size() - 1)
 	{
-		SetStage(mapName[currentNum + 1]);
-		isNext = true; //次に進む
+		return;
 	}
+	SetStage(mapName[currentNum + 1]);
+	isNext = true; //次に進む
 }
 
 void Stage::PreviousStage()
 {
-	if (!mapName[currentNum - 1].empty())
+	if (currentNum - 1 < 0)
 	{
-		SetStage(mapName[currentNum - 1]);
-		isNext = false; //前に戻る
+		return;
 	}
+	SetStage(mapName[currentNum - 1]);
+	isNext = false; //前に戻る
 }
