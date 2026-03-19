@@ -52,6 +52,8 @@ void SelectScene::Draw()
 		break;
 	}
 	}
+	DrawString(0, 30, "A,D‚Å‘I‘ð", 0xffffff);
+	DrawString(0, 60, "F‚ÅŒˆ’è", 0xffffff);
 }
 
 void SelectScene::UpdateStage()
