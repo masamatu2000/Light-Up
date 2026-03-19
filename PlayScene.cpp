@@ -21,40 +21,33 @@ PlayScene::PlayScene()
 
 PlayScene::~PlayScene()
 {
-	switch (state)
-	{
-	case START :
-	{
-		if (time < 1.0f) {
-			time += dt;
-			if (time >= 1.0f) {
-				//1ïbÇΩÇ¡ÇΩÇÁPLAYÇ…à⁄çs
-				state = State::PLAY;
-			}
-		}
-		break;
-	}
-	case PLAY :
-	{
-		break;
-	}
-	case CLEAR :
-	{
-		break;
-	}
-	case OVER :
-	{
-		break;
-	}
-	case END :
-	{
-		break;
-	}
-	}
 }
 
 void PlayScene::Update()
 {
+	switch (state)
+	{
+	case START:
+	{
+		UpdateStart();
+		break;
+	}
+	case PLAY:
+	{
+		UpdatePlay();
+		break;
+	}
+	case CLEAR:
+	{
+		UpdateClear();
+		break;
+	}
+	case OVER:
+	{
+		UpdateOver();
+		break;
+	}
+	}
 	if (Input::IsKeyDown(KEY_INPUT_N))
 	{
 		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
@@ -66,4 +59,28 @@ void PlayScene::Draw()
 {
 	DrawString(100, 100, "PlayScene", 0xffffff);
 	DrawString(100, 120, "Push [N]Key To Title", 0xffffff);
+}
+
+void PlayScene::UpdateStart()
+{
+	if (time < 1.0f) {
+		time += dt;
+		if (time >= 1.0f) {
+			//1ïbÇΩÇ¡ÇΩÇÁPLAYÇ…à⁄çs
+			state = State::PLAY;
+			time = 0;
+		}
+	}
+}
+
+void PlayScene::UpdatePlay()
+{
+}
+
+void PlayScene::UpdateClear()
+{
+}
+
+void PlayScene::UpdateOver()
+{
 }

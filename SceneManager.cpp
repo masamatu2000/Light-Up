@@ -26,7 +26,7 @@ void SceneManager::Initialize()
 
 	m_factory = new SceneFactory();
 	// Å‰‚É“®‚­ƒV[ƒ“‚ðASceneFactory‚Éì‚Á‚Ä‚à‚ç‚¤
-	m_currentScene = m_factory->Create(SCENE_NAME::TITLE_SCENE);
+	m_currentScene = m_factory->Create(SCENE_NAME::BOOT_SCENE);
 	m_exitRequest = false;
 }
 
