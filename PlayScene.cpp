@@ -1,6 +1,6 @@
 #include "PlayScene.h"
 #include"Stage.h"
-#include "EffectManager.h"
+//#include "EffectManager.h"
 
 PlayScene::PlayScene()
 {

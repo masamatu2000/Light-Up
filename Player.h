@@ -1,5 +1,7 @@
 #pragma once
 #include "Character.h"
+#include "PlayerType.h"
+
 struct Curse
 {
 	unsigned int CurseLevel;
@@ -29,6 +31,7 @@ private:
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
+	PlayerName playerType;
 
 
 };

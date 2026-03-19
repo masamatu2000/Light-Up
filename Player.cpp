@@ -21,6 +21,7 @@ Player::Player()
 
 	canPrevious = false;
 	canNext = false;
+	playerType = Name1;
 }
 
 Player::Player(int x, int y)
@@ -31,6 +32,7 @@ Player::Player(int x, int y)
 	CanJump = true;
 	canPrevious = false;
 	canNext = false;
+	playerType = Name1;
 }
 
 Player::~Player()
@@ -186,6 +188,8 @@ void Player::Update()
 			Stage::scrollY = Stage::mapBottom;
 		}
 	}
+
+	Attack();
 }
 
 void Player::Draw()
@@ -201,6 +205,10 @@ void Player::Draw()
 
 void Player::Attack()
 {
+	if (Input::IsKeyDown(KEY_INPUT_M))
+	{
+		MainAttack();
+	}
 }
 
 void Player::jamp()
@@ -217,6 +225,14 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
+	switch (playerType)
+	{
+	case(Name1):
+		PlayerAttack::Player1Attack(position);
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::SubAttack()
