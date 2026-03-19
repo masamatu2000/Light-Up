@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include"CsvReader.h"
 #include "Player.h"
+#include "Enemy.h"
 #include<assert.h>
 namespace {
 	const char IMAGE_SCALE = 16;
@@ -81,6 +82,10 @@ Stage::Stage()
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 2) {
 				new Player(x*IMAGE_SCALE, y*IMAGE_SCALE);
+				break;
+			}
+			if (map[y][x] == 10) {
+				new Enemy(x * IMAGE_SCALE, y * IMAGE_SCALE);
 				break;
 			}
 			

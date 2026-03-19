@@ -2,10 +2,11 @@
 #include "Character.h"
 #include "EnemyMove.h"
 
-class Enemy : Character
+class Enemy : public Character
 {
 public:
 	Enemy();
+	Enemy(int x, int y);
 	~Enemy();
 private:
 	void Update() override;
