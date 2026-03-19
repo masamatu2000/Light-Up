@@ -12,7 +12,9 @@ class SceneBase;
 
 enum SCENE_NAME
 {
+	BOOT_SCENE,
 	TITLE_SCENE,
+	SELECT_SCENE,
 	PLAY_SCENE
 };
 

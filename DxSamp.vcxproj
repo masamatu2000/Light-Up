@@ -146,9 +146,11 @@
   <ItemGroup>
     <ClCompile Include="AttackObject.cpp" />
     <ClCompile Include="AttackType.cpp" />
+    <ClCompile Include="BootScene.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CsvReader.cpp" />
+    <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Gimmick.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="theMain.cpp" />
@@ -169,9 +172,11 @@
   <ItemGroup>
     <ClInclude Include="AttackObject.h" />
     <ClInclude Include="AttackType.h" />
+    <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossMove.h" />
     <ClInclude Include="CsvReader.h" />
+    <ClInclude Include="DataHolder.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyMove.h" />
@@ -191,6 +196,7 @@
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SelectScene.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TitleScene.h" />
