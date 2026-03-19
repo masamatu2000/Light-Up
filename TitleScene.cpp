@@ -1,5 +1,10 @@
 #include "TitleScene.h"
 
+/// <summary>
+/// ƒ^ƒCƒgƒ‹‰æ–Ê
+/// </summary>
+/// <author>H.suginuma</author>
+
 TitleScene::TitleScene()
 {
 }
@@ -12,7 +17,7 @@ void TitleScene::Update()
 {
 	if (Input::IsKeyDown(KEY_INPUT_N))
 	{
-		SceneManager::ChangeScene(SCENE_NAME::PLAY_SCENE);
+		SceneManager::ChangeScene(SCENE_NAME::SELECT_SCENE);
 	}
 }
 

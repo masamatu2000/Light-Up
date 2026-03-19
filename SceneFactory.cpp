@@ -3,6 +3,7 @@
 /// SceneManagerを触らなくていいように、作成部分をここに分離しておく
 /// 作るシーンは、enumで指定してもらうようにした
 /// </summary>
+/// <author>H.suginuma</author>
 #include "SceneFactory.h"
 #include <windows.h>
 #include <assert.h>
