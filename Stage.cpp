@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include"CsvReader.h"
 #include "Player.h"
+#include "Enemy.h"
 #include<assert.h>
 namespace {
 	const char IMAGE_SCALE = 16;
@@ -103,6 +104,7 @@ void Stage::Update()
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
+		SetEnemy();
 	}
 }
 
@@ -279,6 +281,19 @@ void Stage::SetPlayerPosition()
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
 				p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
+				break;
+			}
+
+		}
+	}
+}
+
+void Stage::SetEnemy()
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			if (map[y][x] == 10) {
+				new Enemy(x * IMAGE_SCALE, y * IMAGE_SCALE);
 				break;
 			}
 

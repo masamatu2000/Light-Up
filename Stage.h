@@ -41,6 +41,7 @@ private:
 	void SetScroll();
 	//プレイヤーの位置を初期値に設定
 	void SetPlayerPosition();
+	void SetEnemy();
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用

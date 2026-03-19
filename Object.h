@@ -11,6 +11,7 @@ struct CircleColid
 {
     Vector2D CenterPosition;
     float Radius;
+
     CircleColid()
         :CenterPosition(0.0f,0.0f),Radius(0.0f)
     {
@@ -19,6 +20,7 @@ struct CircleColid
         :CenterPosition(Cpos),Radius(Rad)
     {
     }
+    float GetCollisionRadius() { return Radius; }
 };
 struct BoxColid
 {
@@ -38,6 +40,11 @@ class Object :public GameObject
 public:
 	Object();
 	~Object();
+    void Update()override;
+    Vector2D GetPosition() { return position; }
+    float GetCollisionRadius() { return circleColid.Radius; }
 protected:
     Vector2D position;
+    Vector2D radius;
+    CircleColid circleColid;
 };
