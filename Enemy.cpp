@@ -29,7 +29,11 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	DrawBox(400, 500, 500, 600, GetColor(0, 0, 255), TRUE);
+	float positionx = position.x - Stage::scrollX;
+	float positiony = position.y - Stage::scrollY;
+
+	DrawBox(positionx,positiony,positionx + 16,positiony + 16, GetColor(0, 0, 255), TRUE);
+	DrawFormatString(20, 20, GetColor(255, 255, 255),"%f %f",position.x,position.y,TRUE);//ïœêîÇèoóÕÇ∑ÇÈ
 }
 
 void Enemy::Attack()
