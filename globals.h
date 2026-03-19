@@ -13,5 +13,12 @@ extern float gDeltaTime; // ƒtƒŒ[ƒ€ŠÔ‚ÌŠÔ·
 
 inline float GetDeltaTime()
 {
-	return gDeltaTime;
+	if (gDeltaTime < 0.1f)
+	{
+		return gDeltaTime;
+	}
+	else
+	{
+		return 1 / 60;
+	}
 }
