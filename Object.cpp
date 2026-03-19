@@ -12,33 +12,28 @@ Object::~Object()
 {
 }
 
-void Object::Update()
+void ObjectProcess::HitObject()
 {
 	Player* pl = FindGameObject<Player>();
-	Enemy* en = FindGameObject<Enemy>();
-	Player* player = nullptr;
 
-	std::vector<Enemy*> aliveEnemies;
-
-	//敵を一回クリアしておく
-	aliveEnemies.clear();
+	auto aliveEnemies = FindGameObjects<Enemy>();
 
 	//自分がやられていたらスルー
-	if (player == nullptr||player->IsDontDestroy()== false)
+	if (pl == nullptr)
 	{
 		return;
 	}
 
 	for (auto& enemy:aliveEnemies)
 	{
-		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(),en->GetPosition()));
-		float collisiondist = pl->GetCollisionRadius() + en->GetCollisionRadius();
+		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
+		float collisiondist = pl->GetCollisionRadius() + enemy->GetCollisionRadius();
 
 		if (dist < collisiondist)
 		{
-			pl->DestroyMe();
+			//pl->DestroyMe();
 
-			en->DestroyMe();
+			enemy->DestroyMe();
 		}
 	}
 }

@@ -40,7 +40,6 @@ class Object :public GameObject
 public:
 	Object();
 	~Object();
-    void Update()override;
     Vector2D GetPosition() { return position; }
     float GetCollisionRadius() { return circleColid.Radius; }
 protected:
@@ -48,3 +47,8 @@ protected:
     Vector2D radius;
     CircleColid circleColid;
 };
+
+namespace ObjectProcess
+{
+    void HitObject();
+}

@@ -190,6 +190,7 @@ void Player::Update()
 	}
 
 	Attack();
+	ObjectProcess::HitObject();
 }
 
 void Player::Draw()
