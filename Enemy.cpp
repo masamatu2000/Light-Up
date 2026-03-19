@@ -13,7 +13,7 @@ Enemy::Enemy()
 Enemy::Enemy(int x, int y)
 {
 	position = Vector2D(x, y);
-
+	circleColid = CircleColid(Vector2D(8.0f, 8.0f), 8.0f);
 
 
 }
