@@ -247,8 +247,11 @@ void Player::fall()
 {
 	//マイナスの値になっても減速させる、Velocityの値がマイナス　＝　落下
 	float dt = GetDeltaTime();
-	Velocity.y += GRAVITY * dt;
+	if (dt < 1.1f)
+	{
+		Velocity.y += GRAVITY * dt;
 
-	//positionを加速度分上昇させる、位置を変える処理
-	position.y += Velocity.y * dt;
+		//positionを加速度分上昇させる、位置を変える処理
+		position.y += Velocity.y * dt;
+	}
 }
