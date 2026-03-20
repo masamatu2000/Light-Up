@@ -7,12 +7,12 @@ namespace {
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 3.0f;
 	const float BULLET02_LIFE = 5.0f;
-	const float SLASH01_SPEED = 25.0f;
+	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 10.0f;
-	const float SLASH01_LIFE = 0.5f;
-	const float SLASH02_SPEED = 50.0f;
+	const float SLASH01_LIFE = 0.1f;
+	const float SLASH02_SPEED = 200.0f;
 	const float SLASH02_RADIUS = 10.0f;
-	const float SLASH02_LIFE = 0.5f;
+	const float SLASH02_LIFE = 0.1f;
 }
 Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
