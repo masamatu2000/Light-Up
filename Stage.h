@@ -25,6 +25,8 @@ public:
 	void NextStage();
 	//前のステージに移行させる関数
 	void PreviousStage();
+	//通常ステージの全ボス撃破してるかどうか
+	bool IsBossComplete();
 
 	//スクロール用変数
 	static int scrollX;
@@ -49,4 +51,5 @@ private:
 	int currentNum; //マップの現在の番号を保存
 	int nextNum; //次のマップ番号
 	bool isNext; //進むのかどうか
+	std::vector<bool> isBossDefeated; //ボスを撃破したかどうか
 };
