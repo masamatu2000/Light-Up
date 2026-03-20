@@ -166,6 +166,7 @@
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StageGraphic.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
@@ -199,6 +200,7 @@
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StageGraphic.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

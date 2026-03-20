@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include<assert.h>
+//#include "StageGraphic.h"
 namespace {
 	const char IMAGE_SCALE = 16;
 }
@@ -110,13 +111,13 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	for (int y = 0; y < map.size(); y++) {
+	/*for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
 				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 			}
 		}
-	}
+	}*/
 	//マップの名前入ってるかの確認用
 	//for (int i = 0; i < mapName.size(); i++) {
 	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
