@@ -7,8 +7,11 @@
 #include "Player.h"
 #include "Enemy.h"
 #include<assert.h>
+#include"DataHolder.h"
+
 namespace {
 	const char IMAGE_SCALE = 16;
+	const int STAGE_MAX = 5;
 }
 
 int Stage::scrollX = 0;
@@ -105,6 +108,20 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
 		SetEnemy();
+
+		//デバッグ用
+		//ボスがいるマップに行ったらkillBossをtrueに
+		Player* p = FindGameObject<Player>();
+		p->SetKillBoss(false);
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				if (map[y][x] == 6) {
+					p->SetKillBoss(true);
+					break;
+				}
+
+			}
+		}
 	}
 }
 
@@ -117,10 +134,9 @@ void Stage::Draw()
 			}
 		}
 	}
-	//マップの名前入ってるかの確認用
-	//for (int i = 0; i < mapName.size(); i++) {
-	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
-	//}
+	
+	//現在のマップ確認用
+	DrawFormatString(0, 100, 0xffff00, "%s", mapName[currentNum].c_str());
 }
 
 int Stage::HitWallRight(int x, int y)
@@ -235,11 +251,26 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextStage()
 {
-	if (currentNum + 1 > mapName.size() - 1)
+	Player* p = FindGameObject<Player>();
+	DataHolder* dh = FindGameObject<DataHolder>();
+	if (p->GetKillBoss())
 	{
-		return;
+		std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
+		SetStage(name);
+		dh->stageNum += 1;
+		if (dh->stageNum > STAGE_MAX)
+		{
+			dh->stageNum = 1;
+		}
 	}
-	SetStage(mapName[currentNum + 1]);
+	else
+	{
+		if (currentNum + 1 > mapName.size() - 1)
+		{
+			return;
+		}
+		SetStage(mapName[currentNum + 1]);
+	}
 	isNext = true; //次に進む
 }
 

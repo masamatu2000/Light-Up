@@ -24,6 +24,7 @@ Player::Player()
 	playerType = Name1;
 
 	curse = 0;
+	killBoss = false;
 }
 
 Player::Player(int x, int y)
@@ -38,6 +39,7 @@ Player::Player(int x, int y)
 	playerType = Name1;
 
 	curse = 0;
+	killBoss = false;
 }
 
 Player::~Player()
