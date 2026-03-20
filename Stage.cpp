@@ -11,7 +11,7 @@
 
 namespace {
 	const char IMAGE_SCALE = 16;
-	const int STAGE_MAX = 5;
+	const int STAGE_MAX = 4;
 }
 
 int Stage::scrollX = 0;
@@ -91,6 +91,13 @@ Stage::Stage()
 			
 		}
 	}
+
+	//ボスを倒してないことに
+	isBossDefeated.resize(STAGE_MAX);
+	for (int i = 0; i < STAGE_MAX; i++)
+	{
+		isBossDefeated[i] = false;
+	}
 }
 
 Stage::~Stage()
@@ -111,15 +118,15 @@ void Stage::Update()
 
 		//デバッグ用
 		//ボスがいるマップに行ったらkillBossをtrueに
-		Player* p = FindGameObject<Player>();
-		p->SetKillBoss(false);
+		DataHolder* dh = FindGameObject<DataHolder>();
+		dh->stageNum;
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
 				if (map[y][x] == 6) {
-					p->SetKillBoss(true);
+					DataHolder* dh = FindGameObject<DataHolder>();
+					isBossDefeated[dh->stageNum - 1] = true;
 					break;
 				}
-
 			}
 		}
 	}
@@ -251,9 +258,13 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextStage()
 {
-	Player* p = FindGameObject<Player>();
 	DataHolder* dh = FindGameObject<DataHolder>();
-	if (p->GetKillBoss())
+	if (IsBossComplete())
+	{
+		SetStage("stage5-1");
+		dh->stageNum = 5;
+	}
+	else if (isBossDefeated[dh->stageNum-1])
 	{
 		std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
 		SetStage(name);
@@ -282,6 +293,18 @@ void Stage::PreviousStage()
 	}
 	SetStage(mapName[currentNum - 1]);
 	isNext = false; //前に戻る
+}
+
+bool Stage::IsBossComplete()
+{
+	for (int i = 0; i < STAGE_MAX; i++)
+	{
+		if (!isBossDefeated[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void Stage::SetScroll()
