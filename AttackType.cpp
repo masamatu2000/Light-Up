@@ -7,6 +7,12 @@ namespace {
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 3.0f;
 	const float BULLET02_LIFE = 5.0f;
+	const float SLASH01_SPEED = 50.0f;
+	const float SLASH01_RADIUS = 10.0f;
+	const float SLASH01_LIFE = 1.0f;
+	const float SLASH02_SPEED = 50.0f;
+	const float SLASH02_RADIUS = 10.0f;
+	const float SLASH02_LIFE = 1.0f;
 }
 Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
@@ -44,7 +50,7 @@ void Bullet::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += bullettype[bullet01].speed * dt;
+			position.x += bullettype[bullet02].speed * dt;
 		}
 		break;
 	}
@@ -55,4 +61,56 @@ void Bullet::Draw()
 	float posX = position.x-Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
 	DrawCircle(posX, posY, bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
+}
+
+Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
+{
+	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
+	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	slashtype.clear();
+	slashtype.push_back(s1);
+	slashtype.push_back(s2);
+	slashNum_ = slashNum;
+	position = pos;
+
+}
+
+Slash::~Slash()
+{
+}
+
+void Slash::Update()
+{
+	float dt = GetDeltaTime();
+	switch (slashNum_){
+		//斬撃によってモーション変化（これはもしかしたら複数ないかもだが）
+	case slash01:
+		if (slashtype[slash01].life > 0){
+			slashtype[slash01].life -= dt;//斬撃の表示されている時間を減らす
+			if (slashtype[slash01].life < 0){
+				DestroyMe();
+				break;
+			}
+			position.x += slashtype[slash01].speed * dt;//時間まで前に進む
+		}
+		break;
+	case slash02:
+		if (slashtype[slash02].life > 0) {
+			slashtype[slash02].life -= dt;
+			if (slashtype[slash02].life < 0) {
+				DestroyMe();
+				break;
+			}
+			position.x += slashtype[slash01].speed * dt;
+		}
+		break;
+	}
+}
+
+void Slash::Draw()
+{
+	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
+	float posY = position.y - Stage::scrollY;
+	DrawCircle(posX, posY, slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
+
 }

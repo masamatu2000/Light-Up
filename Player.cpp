@@ -187,6 +187,10 @@ void Player::Attack()
 	{
 		MainAttack();
 	}
+	if (Input::IsKeepKeyDown(KEY_INPUT_B))
+	{
+		SubAttack();
+	}
 }
 
 void Player::jamp()
@@ -203,10 +207,11 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
+	//èeÅiâìãóó£Åj
 	switch (playerType)
 	{
 	case(Name1):
-		PlayerAttack::Player1Attack(position);
+		PlayerAttack::Player1MainAttack(position);
 		break;
 	default:
 		break;
@@ -215,6 +220,15 @@ void Player::MainAttack()
 
 void Player::SubAttack()
 {
+	//ãﬂê⁄
+	switch (playerType)
+	{
+	case (Name1):
+		PlayerAttack::Player1SubAttack(position);
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::SupportSkill()
