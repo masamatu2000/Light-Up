@@ -17,6 +17,11 @@ public:
 	{
 		return killBoss;
 	}
+	//デバッグ用の仮の関数
+	void SetKillBoss(bool kill)
+	{
+		killBoss = kill;
+	}
 private:
 	void Update() override;
 	void Draw() override;
