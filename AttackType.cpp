@@ -18,9 +18,17 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE};
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE};
+	BulletType2 bt3 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE };
+	BulletType2 bt4 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE };
+	BulletType3 bt5 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE };
+	BulletType3 bt6 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE };
 	bullettype.clear();
 	bullettype.push_back(bt1);
 	bullettype.push_back(bt2);
+	bullettype2.push_back(bt3);
+	bullettype2.push_back(bt4);
+	bullettype3.push_back(bt5);
+	bullettype3.push_back(bt6);
 	bulletNum_ = bulletNum;
 	position = pos;
 }
@@ -67,9 +75,17 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
 {
 	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
 	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	SlashType2 s3 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
+	SlashType2 s4 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	SlashType3 s5 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
+	SlashType3 s6 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
 	slashtype.clear();
 	slashtype.push_back(s1);
 	slashtype.push_back(s2);
+	slashtype2.push_back(s3);
+	slashtype2.push_back(s4);
+	slashtype3.push_back(s5);
+	slashtype3.push_back(s6);
 	slashNum_ = slashNum;
 	position = pos;
 

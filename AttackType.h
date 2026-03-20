@@ -16,6 +16,18 @@ private:
 		float life;
 	};
 	std::vector<BulletType> bullettype;
+	struct BulletType2 {
+		float speed;
+		float size;
+		float life;
+	};
+	std::vector<BulletType2> bullettype2;
+	struct BulletType3 {
+		float speed;
+		float size;
+		float life;
+	};
+	std::vector<BulletType3> bullettype3;
 };
 class Slash :public AttackObject
 {
@@ -32,5 +44,17 @@ private:
 		float life;
 	};
 	std::vector<SlashType> slashtype;
-
+	struct SlashType2 {
+		float speed;
+		float size;
+		float life;
+	};
+	std::vector<SlashType2> slashtype2;
+	
+	struct SlashType3 {
+		float speed;
+		float size;
+		float life;
+	};
+	std::vector<SlashType3> slashtype3;
 };
