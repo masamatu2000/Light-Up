@@ -17,3 +17,20 @@ private:
 	};
 	std::vector<BulletType> bullettype;
 };
+class Slash :public AttackObject
+{
+public:
+	Slash(const Vector2D& pos, SLASH_NUMBER slashNum);
+	~Slash();
+	void Update()override;
+	void Draw()override;
+private:
+	SLASH_NUMBER slashNum_;
+	struct SlashType {
+		float speed;
+		float size;
+		float life;
+	};
+	std::vector<SlashType> slashtype;
+
+};

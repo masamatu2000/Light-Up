@@ -7,9 +7,11 @@
 #include "Player.h"
 #include "Enemy.h"
 #include<assert.h>
-//#include "StageGraphic.h"
+#include"DataHolder.h"
+
 namespace {
 	const char IMAGE_SCALE = 16;
+	const int STAGE_MAX = 4;
 }
 
 int Stage::scrollX = 0;
@@ -89,6 +91,13 @@ Stage::Stage()
 			
 		}
 	}
+
+	//ボスを倒してないことに
+	isBossDefeated.resize(STAGE_MAX);
+	for (int i = 0; i < STAGE_MAX; i++)
+	{
+		isBossDefeated[i] = false;
+	}
 }
 
 Stage::~Stage()
@@ -106,6 +115,20 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
 		SetEnemy();
+
+		//デバッグ用
+		//ボスがいるマップに行ったらkillBossをtrueに
+		DataHolder* dh = FindGameObject<DataHolder>();
+		dh->stageNum;
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				if (map[y][x] == 6) {
+					DataHolder* dh = FindGameObject<DataHolder>();
+					isBossDefeated[dh->stageNum - 1] = true;
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -117,11 +140,10 @@ void Stage::Draw()
 				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 			}
 		}
-	}*/
-	//マップの名前入ってるかの確認用
-	//for (int i = 0; i < mapName.size(); i++) {
-	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
-	//}
+	}
+	
+	//現在のマップ確認用
+	DrawFormatString(0, 100, 0xffff00, "%s", mapName[currentNum].c_str());
 }
 
 int Stage::HitWallRight(int x, int y)
@@ -236,11 +258,30 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextStage()
 {
-	if (currentNum + 1 > mapName.size() - 1)
+	DataHolder* dh = FindGameObject<DataHolder>();
+	if (IsBossComplete())
 	{
-		return;
+		SetStage("stage5-1");
+		dh->stageNum = 5;
 	}
-	SetStage(mapName[currentNum + 1]);
+	else if (isBossDefeated[dh->stageNum-1])
+	{
+		std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
+		SetStage(name);
+		dh->stageNum += 1;
+		if (dh->stageNum > STAGE_MAX)
+		{
+			dh->stageNum = 1;
+		}
+	}
+	else
+	{
+		if (currentNum + 1 > mapName.size() - 1)
+		{
+			return;
+		}
+		SetStage(mapName[currentNum + 1]);
+	}
 	isNext = true; //次に進む
 }
 
@@ -252,6 +293,18 @@ void Stage::PreviousStage()
 	}
 	SetStage(mapName[currentNum - 1]);
 	isNext = false; //前に戻る
+}
+
+bool Stage::IsBossComplete()
+{
+	for (int i = 0; i < STAGE_MAX; i++)
+	{
+		if (!isBossDefeated[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void Stage::SetScroll()
