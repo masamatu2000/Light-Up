@@ -22,6 +22,8 @@ Player::Player()
 	canPrevious = false;
 	canNext = false;
 	playerType = Name1;
+
+	curse = 0;
 }
 
 Player::Player(int x, int y)
@@ -34,6 +36,8 @@ Player::Player(int x, int y)
 	canPrevious = false;
 	canNext = false;
 	playerType = Name1;
+
+	curse = 0;
 }
 
 Player::~Player()

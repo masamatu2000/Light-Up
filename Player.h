@@ -2,10 +2,6 @@
 #include "Character.h"
 #include "PlayerType.h"
 
-struct Curse
-{
-	unsigned int CurseLevel;
-};
 class Player : public Character
 {
 public:
@@ -35,5 +31,5 @@ private:
 	bool canNext; //次のステージに進めるかどうか
 	PlayerName playerType;
 
-
+	float curse; //呪い
 };
