@@ -7,12 +7,12 @@ namespace {
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 3.0f;
 	const float BULLET02_LIFE = 5.0f;
-	const float SLASH01_SPEED = 50.0f;
+	const float SLASH01_SPEED = 25.0f;
 	const float SLASH01_RADIUS = 10.0f;
-	const float SLASH01_LIFE = 1.0f;
+	const float SLASH01_LIFE = 0.5f;
 	const float SLASH02_SPEED = 50.0f;
 	const float SLASH02_RADIUS = 10.0f;
-	const float SLASH02_LIFE = 1.0f;
+	const float SLASH02_LIFE = 0.5f;
 }
 Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
@@ -36,7 +36,7 @@ void Bullet::Update()
 	case bullet01:
 		if (bullettype[bullet01].life > 0) {
 			bullettype[bullet01].life -= dt;
-			if (bullettype[bullet01].life <= 0) {
+			if (bullettype[bullet01].life < 0) {
 				DestroyMe();
 				break;
 			}
@@ -46,7 +46,7 @@ void Bullet::Update()
 	case bullet02:
 		if (bullettype[bullet02].life > 0) {
 			bullettype[bullet02].life -= dt;
-			if (bullettype[bullet02].life <= 0) {
+			if (bullettype[bullet02].life < 0) {
 				DestroyMe();
 				break;
 			}
