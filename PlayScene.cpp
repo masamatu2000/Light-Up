@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include"Stage.h"
 #include"Player.h"
+#include "StageGraphic.h"
 
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é
@@ -17,6 +18,7 @@ PlayScene::PlayScene()
 	new Stage();
 	state = State::START;
 	time = 0;
+	new StageGraphic();
 }
 
 PlayScene::~PlayScene()

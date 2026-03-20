@@ -134,7 +134,7 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	for (int y = 0; y < map.size(); y++) {
+	/*for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
 				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
