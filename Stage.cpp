@@ -291,9 +291,9 @@ void Stage::NextStage()
 			SetStage(name);
 			currentStage = dh->stageNum;
 			dh->stageNum += 1;
-			if (dh->stageNum > STAGE_MAX - 1)
+			if (dh->stageNum > STAGE_MAX - 2)
 			{
-				dh->stageNum = 5;
+				dh->stageNum = 1;
 			}
 		}
 	}
