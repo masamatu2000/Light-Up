@@ -7,6 +7,8 @@
 
 namespace {
 	const char IMAGE_SCALE = 16;
+	int currentNum;
+	int nextNum;
 }
 
 StageGraphic::StageGraphic()
@@ -60,9 +62,16 @@ StageGraphic::StageGraphic()
 		allMap.push_back(oneMap);
 		delete stageCsv;
 	}
+
+	Stage* stage = FindGameObject<Stage>();
+	currentNum = stage->GetCurrentNum();
+	nextNum = stage->GetNextNum();
+	currentNum = 0;
+	nextNum = currentNum;
 	if (!allMap.empty()) {
-		map = allMap[0];
+		map = allMap[currentNum];
 	}
+	IsNextData = true;
 }
 
 StageGraphic::~StageGraphic()
@@ -73,23 +82,43 @@ StageGraphic::~StageGraphic()
 void StageGraphic::Update()
 {
 
+	Stage* stage = FindGameObject<Stage>();
+	currentNum = stage->GetCurrentNum();
+	nextNum = stage->GetNextNum();
+	if (nextNum < allMap.size())
+	{
+		IsNextData = true;
+		if (currentNum != nextNum)
+		{
+			map = allMap[nextNum];
+			currentNum = nextNum;
+		}
+	}
+	else
+	{
+		IsNextData = false;
+	}
+	//DrawFormatString(10, 60, 0xffffff, "C:%d N:%d", currentNum, nextNum);
 }
 
 void StageGraphic::Draw()
 {
-	for (int y = 0; y < map.size(); y++) {
-		for (int x = 0; x < map[y].size(); x++) {
-			for (int B = 0; B <= 39; B++)
-			{
-				if (map[y][x] == B) {
-					DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX,
-						y * IMAGE_SCALE - Stage::scrollY,
-						(B % 10) * IMAGE_SCALE, 
-						(B / 10) * IMAGE_SCALE, 
-						IMAGE_SCALE,
-						IMAGE_SCALE,
-						hImage, true);
-					break;
+	if (IsNextData)
+	{
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				for (int B = 0; B <= 49; B++)
+				{
+					if (map[y][x] == B) {
+						DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX,
+							y * IMAGE_SCALE - Stage::scrollY,
+							(B % 10) * IMAGE_SCALE,
+							(B / 10) * IMAGE_SCALE,
+							IMAGE_SCALE,
+							IMAGE_SCALE,
+							hImage, true);
+						break;
+					}
 				}
 			}
 		}

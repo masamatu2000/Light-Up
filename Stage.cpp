@@ -23,8 +23,8 @@ int Stage::mapRight = 0;
 
 Stage::Stage()
 {
-	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
-	assert(hImage > 0);
+	//hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
+	//assert(hImage > 0);
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
@@ -137,7 +137,8 @@ void Stage::Draw()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
-				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE,GetColor(0,255,255), false);
 			}
 		}
 	}

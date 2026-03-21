@@ -27,6 +27,7 @@ PlayScene::~PlayScene()
 
 void PlayScene::Update()
 {
+	SetFontSize(10);
 	switch (state)
 	{
 	case START:

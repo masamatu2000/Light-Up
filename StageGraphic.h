@@ -14,4 +14,6 @@ private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用
 	std::vector<std::vector<int>> map; //現在のマップを保存
+
+	bool IsNextData;
 };

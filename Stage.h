@@ -28,6 +28,9 @@ public:
 	//通常ステージの全ボス撃破してるかどうか
 	bool IsBossComplete();
 
+	int GetCurrentNum() { return currentNum; };
+	int GetNextNum() { return nextNum; };
+
 	//スクロール用変数
 	static int scrollX;
 	static int scrollY;
