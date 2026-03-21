@@ -11,7 +11,8 @@
 
 namespace {
 	const char IMAGE_SCALE = 16;
-	const int STAGE_MAX = 4;
+	//チュートリアル、裏ステ含めた６ステージ
+	const int STAGE_MAX = 6;
 }
 
 int Stage::scrollX = 0;
@@ -91,13 +92,12 @@ Stage::Stage()
 			
 		}
 	}
+	//マップをチュートリアルに
+	currentStage = 0;
 
 	//ボスを倒してないことに
-	isBossDefeated.resize(STAGE_MAX);
-	for (int i = 0; i < STAGE_MAX; i++)
-	{
-		isBossDefeated[i] = false;
-	}
+	isBossDefeated.clear();
+	isBossDefeated.resize(STAGE_MAX, false);
 }
 
 Stage::~Stage()
@@ -117,14 +117,14 @@ void Stage::Update()
 		SetEnemy();
 
 		//デバッグ用
-		//ボスがいるマップに行ったらkillBossをtrueに
+		//ボスがいるマップに行ったらtrueに
+		//本来はボスを撃破したらtrueに
 		DataHolder* dh = FindGameObject<DataHolder>();
-		dh->stageNum;
+		isBossDefeated[currentStage] = false;
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
 				if (map[y][x] == 6) {
-					DataHolder* dh = FindGameObject<DataHolder>();
-					isBossDefeated[dh->stageNum - 1] = true;
+					isBossDefeated[currentStage] = true;
 					break;
 				}
 			}
@@ -144,6 +144,14 @@ void Stage::Draw()
 	
 	//現在のマップ確認用
 	DrawFormatString(0, 100, 0xffff00, "%s", mapName[currentNum].c_str());
+	DrawFormatString(0, 120, 0x0000ff, "%d %d %d %d %d %d",
+		(int)isBossDefeated[0], 
+		(int)isBossDefeated[1],
+		(int)isBossDefeated[2],
+		(int)isBossDefeated[3],
+		(int)isBossDefeated[4],
+		(int)isBossDefeated[5]
+	);
 }
 
 int Stage::HitWallRight(int x, int y)
@@ -259,21 +267,36 @@ void Stage::SetStage(std::string sName)
 void Stage::NextStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
+	//全ボス倒してたらステージ5に
 	if (IsBossComplete())
 	{
 		SetStage("stage5-1");
 		dh->stageNum = 5;
+		currentStage = dh->stageNum;
+		isBossDefeated.clear();
+		isBossDefeated.resize(STAGE_MAX, false);
 	}
-	else if (isBossDefeated[dh->stageNum-1])
+	//今のステージのボスを倒したら次のステージに
+	else if (isBossDefeated[currentStage])
 	{
-		std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
-		SetStage(name);
-		dh->stageNum += 1;
-		if (dh->stageNum > STAGE_MAX)
+		if (currentStage == 5)
 		{
-			dh->stageNum = 1;
+			//全ボス倒したらタイトルに
+			SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		}
+		else if (currentStage != 5)
+		{
+			std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
+			SetStage(name);
+			currentStage = dh->stageNum;
+			dh->stageNum += 1;
+			if (dh->stageNum > STAGE_MAX - 1)
+			{
+				dh->stageNum = 5;
+			}
 		}
 	}
+	//そのステージの次のセクションに
 	else
 	{
 		if (currentNum + 1 > mapName.size() - 1)
@@ -297,7 +320,8 @@ void Stage::PreviousStage()
 
 bool Stage::IsBossComplete()
 {
-	for (int i = 0; i < STAGE_MAX; i++)
+	//１体でも残ってたらfalseを返す
+	for (int i = 0; i < STAGE_MAX -1; i++)
 	{
 		if (!isBossDefeated[i])
 		{
