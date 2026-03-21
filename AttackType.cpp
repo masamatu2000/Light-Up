@@ -7,6 +7,7 @@ namespace {
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 3.0f;
 	const float BULLET02_LIFE = 5.0f;
+
 	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 10.0f;
 	const float SLASH01_LIFE = 0.1f;
@@ -44,7 +45,7 @@ void Bullet::Update()
 	case bullet01:
 		if (bullettype[bullet01].life > 0) {
 			bullettype[bullet01].life -= dt;
-			if (bullettype[bullet01].life < 0) {
+			if (bullettype[bullet01].life <= 0) {
 				DestroyMe();
 				break;
 			}
@@ -54,7 +55,7 @@ void Bullet::Update()
 	case bullet02:
 		if (bullettype[bullet02].life > 0) {
 			bullettype[bullet02].life -= dt;
-			if (bullettype[bullet02].life < 0) {
+			if (bullettype[bullet02].life <= 0) {
 				DestroyMe();
 				break;
 			}
@@ -103,7 +104,7 @@ void Slash::Update()
 	case slash01:
 		if (slashtype[slash01].life > 0){
 			slashtype[slash01].life -= dt;//ŽaŒ‚‚Ì•\Ž¦‚³‚ê‚Ä‚¢‚éŽžŠÔ‚ðŒ¸‚ç‚·
-			if (slashtype[slash01].life < 0){
+			if (slashtype[slash01].life <= 0){
 				DestroyMe();
 				break;
 			}
@@ -113,7 +114,7 @@ void Slash::Update()
 	case slash02:
 		if (slashtype[slash02].life > 0) {
 			slashtype[slash02].life -= dt;
-			if (slashtype[slash02].life < 0) {
+			if (slashtype[slash02].life <= 0) {
 				DestroyMe();
 				break;
 			}
