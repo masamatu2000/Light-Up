@@ -187,7 +187,7 @@ void Player::Attack()
 	{
 		MainAttack();
 	}
-	if (Input::IsKeepKeyDown(KEY_INPUT_B))
+	if (Input::IsKeyDown(KEY_INPUT_B))
 	{
 		SubAttack();
 	}
