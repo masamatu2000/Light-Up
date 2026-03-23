@@ -6,6 +6,8 @@ public:
 	Character();
 	~Character();
 	virtual void Attack();
+	void SetVel(Vector2D vel) { Velocity = vel; }
+	Vector2D GetVel() { return Velocity; }
 protected:
 	unsigned int Hp;
 	Vector2D Velocity;

@@ -2,6 +2,7 @@
 #include"Stage.h"
 #include"Player.h"
 #include "StageGraphic.h"
+#include"ImageManager.h"
 
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é
@@ -15,6 +16,7 @@ namespace
 
 PlayScene::PlayScene()
 {
+	new Image();
 	new Stage();
 	state = State::START;
 	time = 0;

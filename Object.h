@@ -41,6 +41,7 @@ public:
 	Object();
 	~Object();
     Vector2D GetPosition() { return position; }
+    void SetPosition(Vector2D pos) { position = pos; }
     float GetCollisionRadius() { return circleColid.Radius; }
 protected:
     Vector2D position;

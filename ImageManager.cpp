@@ -2,18 +2,26 @@
 #include"CsvReader.h"
 Image::Image()
 {
-	CsvReader* csv = new CsvReader("ImageName.csv");
+	CsvReader* csv = new CsvReader("data/Image/character/ImageName.csv");
 	int lines = csv->GetLines();//行数を取得
-	Images.resize(lines);//mapの行数を設定
-	Name.resize(lines);
+	images.clear();
+	images.resize(lines);//mapの行数を設定
+	name.clear();
+	name.resize(lines);
 	for (int y = 0; y < lines; y++) {//1行ずつ読む
-		int colos = csv->GetColumns(y);//その行の桁数を取得
-		Images[y].resize(colos);//mapのその行の桁数を設定
-		for (int x = 0; x < colos; x++) {
-			std::string str	 ="data/Image/character/"+csv->GetString(y, x) + ".png";
-			Name[y][x] = csv->GetString(y, x);
-			Images[y][x] = LoadGraph(str.c_str());
+		//改行を消すため一時保存
+		std::string str = csv->GetString(y,0);
+
+		//改行がある場合
+		if (!str.empty() && str.back() == '\r' || !str.empty() && str.back() == '\n')
+		{
+			str.pop_back();
 		}
+
+		name[y] = str;
+
+		std::string path = "data/Image/character/"+ name[y] + ".png";
+		images[y] = LoadGraph(path.c_str());
 	}
 	delete csv;
 }
@@ -24,14 +32,11 @@ Image::~Image()
 
 int Image::ReturnImage(std::string Imname)
 {
-	int i = 0;
-	// Imagesは2次元配列なので、全ての値を探索する必要があります
-	for (size_t y = 0; y < Images.size(); ++y) {
-		for (size_t x = 0; x < Images[y].size(); ++x) {
-			if (Imname ==Name[y][x]) {
-				return Images[y][x];
-			}
+	// imagesは2次元配列なので、全ての値を探索する必要があります
+	for (int y = 0; y < name.size(); y++) {
+		if (Imname == name[y]) {
+			return images[y];
 		}
 	}
-	return 0;
+	return -1;
 }

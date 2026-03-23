@@ -139,6 +139,14 @@ void Stage::Draw()
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
 				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE,GetColor(0,255,255), false);
 			}
+			if (map[y][x] == 3) {
+				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE, GetColor(255, 255, 0), false);
+			}
+			if (map[y][x] == 4) {
+				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE, GetColor(0, 255, 0), false);
+			}
 		}
 	}
 	
@@ -372,6 +380,10 @@ void Stage::SetEnemy()
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 10) {
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
+				break;
+			}
+			if (map[y][x] == 11) {
+				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), ENEMY_NUMBER::Enemy02);
 				break;
 			}
 

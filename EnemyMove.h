@@ -2,6 +2,9 @@
 /// <summary>
 /// akimotomasaki
 /// </summary>
+#include"Math2D.h"
+#include<vector>
+
 enum ENEMY_NUMBER
 {
 	Enemy01,
@@ -11,10 +14,12 @@ enum ENEMY_NUMBER
 	Enemy05,
 	Enemy06,
 };
+class Enemy;
 namespace EnemyAttack {
-	void Enemy1Attack(const Vector2D& pos);
-	void Enemy2Attack(const Vector2D& pos);
-	void Enemy3Attack(const Vector2D& pos);
-	void Enemy4Attack(const Vector2D& pos);
-	void Enemy5Attack(const Vector2D& pos);
+	
+	void Enemy1Attack(const Vector2D& pos,const Vector2D& vel);
+	void Enemy2Attack(const Vector2D& pos,const Vector2D& vel);
+	void Enemy3Attack(const Vector2D& pos,const Vector2D& vel);
+	void Enemy4Attack(const Vector2D& pos,const Vector2D& vel);
+	void Enemy5Attack(const Vector2D& pos,const Vector2D& vel);
 }

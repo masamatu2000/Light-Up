@@ -3,6 +3,7 @@
 #include "input.h"
 #include"ObjectManager.h"
 #include"SceneManager.h"
+#include"ImageManager.h"
 /// <summary>
 /// main関数
 /// スクリーン（ウィンドウ）の管理

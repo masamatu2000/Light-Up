@@ -153,6 +153,7 @@
     <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyMove.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
