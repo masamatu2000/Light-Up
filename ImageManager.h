@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include<vector>
 #include<string.h>
-class Image : GameObject
+class Image : public GameObject
 {
 public:
 	Image();

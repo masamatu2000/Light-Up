@@ -374,6 +374,10 @@ void Stage::SetEnemy()
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
 				break;
 			}
+			if (map[y][x] == 11) {
+				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), ENEMY_NUMBER::Enemy02);
+				break;
+			}
 
 		}
 	}

@@ -8,13 +8,12 @@ public:
 	Enemy();
 	Enemy(const Vector2D &pos,ENEMY_NUMBER ENum);
 	~Enemy();
+	ENEMY_NUMBER GetEnum() { return EnemyNumber; }
 private:
 	void Update() override;
 	void Draw() override;
-	void Attack() override;
-
-	void Mova();
 private:
 	ENEMY_NUMBER EnemyNumber;
 	bool IsTrace;
+	float Speed;
 };
