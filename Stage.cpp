@@ -372,7 +372,7 @@ void Stage::SetEnemy()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 10) {
-				new Enemy(x * IMAGE_SCALE, y * IMAGE_SCALE);
+				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
 				break;
 			}
 

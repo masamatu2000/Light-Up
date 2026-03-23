@@ -6,7 +6,7 @@ class Enemy : public Character
 {
 public:
 	Enemy();
-	Enemy(int x, int y);
+	Enemy(const Vector2D &pos,ENEMY_NUMBER ENum);
 	~Enemy();
 private:
 	void Update() override;
