@@ -6,6 +6,7 @@
 #include<assert.h>
 
 namespace {
+
 	int currentNum;
 	int nextNum;
 }

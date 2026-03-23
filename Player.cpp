@@ -1,17 +1,17 @@
 #include "Player.h"
 #include "Stage.h"
 #include "globals.h"
-
+#include"ImageManager.h"
 /// <summary>
 /// M.Shoji
 /// </summary>
 namespace
 {
 	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 9.8f * 60;//重力 （定数）
+	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
-	const float accel = 2.0f;//加速率
-	const float decal = 1.5f;//減衰率
+	const float accel = 4.0f;//加速率
+	const float decal = 3.0f;//減衰率
 	const float maxSpeed = 15.0f;//最高速度
 }
 Player::Player()
