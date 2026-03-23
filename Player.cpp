@@ -53,6 +53,7 @@ void Player::Update()
 	if (CheckHitKey(KEY_INPUT_D)) {
 		//position.x += 3.0f; 加速度を変えて移動していくのでコメントアウト
 
+		islookleft = false;
 		
 		//徐々に加速していく
 		Velocity.x += accel * dt;
@@ -67,7 +68,8 @@ void Player::Update()
 	else if (CheckHitKey(KEY_INPUT_A)) {
 		//position.x -= 3.0f;
 
-		
+		islookleft = true;
+
 		//徐々に加速していく(プラスの処理）
 		Velocity.x -= accel * dt;
 		if (Velocity.x < -maxSpeed)
@@ -206,17 +208,24 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
+	if (islookleft == true){
+
+	}
+	else {
+
+	}
+
 	//近接（スラッシュ攻撃）
 	switch (playerType)
 	{
 	case(Name1):
-		PlayerAttack::Player1MainAttack(position);
+		PlayerAttack::Player1MainAttack(position,islookleft);
 		break;
 	case(Name2):
-		PlayerAttack::Player2MainAttack(position);
+		PlayerAttack::Player2MainAttack(position,islookleft);
 		break;
 	case(Name3):
-		PlayerAttack::Player3MainAttack(position);
+		PlayerAttack::Player3MainAttack(position,islookleft);
 		break;
 	default:
 		break;
@@ -229,13 +238,13 @@ void Player::SubAttack()
 	switch (playerType)
 	{
 	case (Name1):
-		PlayerAttack::Player1SubAttack(position);
+		PlayerAttack::Player1SubAttack(position,islookleft);
 		break;
 	case (Name2):
-		PlayerAttack::Player2SubAttack(position);
+		PlayerAttack::Player2SubAttack(position,islookleft);
 		break;
 	case(Name3):
-		PlayerAttack::Player3SubAttack(position);
+		PlayerAttack::Player3SubAttack(position,islookleft);
 		break;
 	default:
 		break;

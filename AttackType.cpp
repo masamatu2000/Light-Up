@@ -30,7 +30,7 @@ namespace {
 
 }
 
-Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
+Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
 {
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
@@ -53,6 +53,7 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 	bullettype3.push_back(bt9);
 	bulletNum_ = bulletNum;
 	position = pos;
+	islookleft = lookleft;
 }
 
 Bullet::~Bullet()
@@ -70,7 +71,13 @@ void Bullet::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += bullettype[bullet01].speed * dt;
+			//どちらを向いているか確認して前に発射する
+			if (islookleft == true) {
+				position.x -= bullettype[bullet01].speed * dt;
+			}
+			else {
+				position.x += bullettype[bullet01].speed * dt;
+			}
 		}
 		break;
 	case bullet02:
@@ -80,7 +87,12 @@ void Bullet::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += bullettype[bullet02].speed * dt;
+			if (islookleft == true) {
+				position.x -= bullettype[bullet02].speed * dt;
+			}
+			else {
+				position.x += bullettype[bullet02].speed * dt;
+			}
 		}
 		break;
 	case bullet03:
@@ -90,7 +102,12 @@ void Bullet::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += bullettype[bullet03].speed * dt;
+			if (islookleft == true) {
+				position.x -= bullettype[bullet03].speed * dt;
+			}
+			else {
+				position.x += bullettype[bullet03].speed * dt;
+			}
 		}
 		break;
 	}
@@ -103,7 +120,7 @@ void Bullet::Draw()
 	DrawCircle(posX+16, posY+16, bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
 }
 
-Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
+Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
 {
 	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
 	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
@@ -126,6 +143,7 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
 	slashtype3.push_back(s9);
 	slashNum_ = slashNum;
 	position = pos;
+	islookleft = lookleft;
 
 }
 
@@ -145,7 +163,13 @@ void Slash::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += slashtype[slash01].speed * dt;//時間まで前に進む
+			//左を向いているかどうかを確認する
+			if (islookleft == true) {
+				position.x -= slashtype[slash01].speed * dt;//時間まで左に進む
+			}
+			else {
+				position.x += slashtype[slash01].speed * dt;//時間まで右に進む
+			}
 		}
 		break;
 	case slash02:
@@ -155,7 +179,12 @@ void Slash::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += slashtype[slash02].speed * dt;
+			if (islookleft == true) {
+				position.x -= slashtype[slash02].speed * dt;//時間まで左に進む
+			}
+			else {
+				position.x += slashtype[slash02].speed * dt;//時間まで右に進む
+			}
 		}
 		break;
 	case slash03:
@@ -165,7 +194,12 @@ void Slash::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += slashtype[slash03].speed * dt;
+			if (islookleft == true) {
+				position.x -= slashtype[slash03].speed * dt;//時間まで左に進む
+			}
+			else {
+				position.x += slashtype[slash03].speed * dt;//時間まで右に進む
+			}
 		}
 		break;
 	}

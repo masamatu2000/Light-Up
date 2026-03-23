@@ -26,6 +26,7 @@ private:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
+	
 
 	void jamp();
 	void MainAttack();
@@ -38,6 +39,7 @@ private:
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
+	bool islookleft;//左を向いているかどうか
 	PlayerName playerType;
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 
