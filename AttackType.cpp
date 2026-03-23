@@ -8,24 +8,24 @@
 
 namespace {
 	const float BULLET01_SPEED = 100.0f;
-	const float BULLET01_RADIUS = 5.0f;
-	const float BULLET01_LIFE = 5.0f;
+	const float BULLET01_RADIUS = 8.0f;
+	const float BULLET01_LIFE = 3.0f;
 	const float BULLET02_SPEED = 100.0f;
-	const float BULLET02_RADIUS = 3.0f;
-	const float BULLET02_LIFE = 5.0f;
+	const float BULLET02_RADIUS = 8.0f;
+	const float BULLET02_LIFE = 3.0f;
 	const float BULLET03_SPEED = 100.0f;
-	const float BULLET03_RADIUS = 3.0f;
-	const float BULLET03_LIFE = 5.0f;
+	const float BULLET03_RADIUS = 8.0f;
+	const float BULLET03_LIFE = 3.0f;
 	
 
 	const float SLASH01_SPEED = 200.0f;
-	const float SLASH01_RADIUS = 10.0f;
+	const float SLASH01_RADIUS = 20.0f;
 	const float SLASH01_LIFE = 0.1f;
 	const float SLASH02_SPEED = 200.0f;
-	const float SLASH02_RADIUS = 10.0f;
+	const float SLASH02_RADIUS = 20.0f;
 	const float SLASH02_LIFE = 0.1f;
 	const float SLASH03_SPEED = 200.0f;
-	const float SLASH03_RADIUS = 10.0f;
+	const float SLASH03_RADIUS = 20.0f;
 	const float SLASH03_LIFE = 0.1f;
 
 }
@@ -100,7 +100,7 @@ void Bullet::Draw()
 {
 	float posX = position.x-Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
-	DrawCircle(posX, posY, bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
+	DrawCircle(posX+16, posY+16, bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
 }
 
 Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
@@ -175,6 +175,6 @@ void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
 	float posY = position.y - Stage::scrollY;
-	DrawCircle(posX, posY, slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
+	DrawCircle(posX+16, posY+16, slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
 
 }
