@@ -11,7 +11,6 @@ namespace {
 	const Vector2D ENEMY_SPEED = Vector2D(15, 0);
 	const float LEFT_LIMIT = 50.0f;
 	const float RIGHT_LIMIT = (float)(WIN_WIDTH - 50);
-	const char IMAGE_SCALE = 16;
 }
 Enemy::Enemy()
 {

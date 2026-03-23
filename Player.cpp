@@ -9,7 +9,6 @@ namespace
 {
 	//どのくらいの割合で重力を与えるか
 	const float GRAVITY = 9.8f * 60;//重力 （定数）
-	const int IMAGE_SCALE = 16;
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
 	const float accel = 2.0f;//加速率
 	const float decal = 1.5f;//減衰率
@@ -175,7 +174,7 @@ void Player::Draw()
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
 
-	DrawBox(x, y, x+16, y+16, GetColor(255, 0, 0), TRUE);
+	DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",position.x,position.y);
