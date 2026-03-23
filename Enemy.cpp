@@ -7,11 +7,11 @@
 /// M.Shoji
 /// </summary>
 namespace {
-	const float TRACE_DISTANCE = 16 * 15;
+	const float TRACE_DISTANCE = 16*4;
 	const Vector2D ENEMY_SPEED = Vector2D(15, 0);
 	const float LEFT_LIMIT = 50.0f;
 	const float RIGHT_LIMIT = (float)(WIN_WIDTH - 50);
-	const char IMAGE_SCALE = 16;
+	
 }
 Enemy::Enemy()
 {
@@ -23,6 +23,8 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	circleColid = CircleColid(Vector2D(8.0f, 8.0f), 8.0f);
 	EnemyNumber = ENum;
 	Velocity = ENEMY_SPEED;
+	IsTrace = false;
+	
 }
 
 Enemy::~Enemy()
@@ -40,6 +42,9 @@ void Enemy::Update()
 		if (dist < TRACE_DISTANCE) {
 			Distance = Math2D::Normalize(Distance);
 			float dt = GetDeltaTime();
+			if (Velocity.x < 0) {
+				Velocity.x *= -1;
+			}
 			position.x+= Distance.x*Velocity.x*dt;
 		}
 		else {

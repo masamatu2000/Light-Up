@@ -10,4 +10,5 @@ public:
 	int ReturnImage(std::string Imname);
 private:
 	std::vector<std::vector<int>> Images;
+	std::vector<std::vector<std::string>> Name;
 };

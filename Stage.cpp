@@ -10,7 +10,6 @@
 #include"DataHolder.h"
 
 namespace {
-	const char IMAGE_SCALE = 16;
 	//チュートリアル、裏ステ含めた６ステージ
 	const int STAGE_MAX = 6;
 }

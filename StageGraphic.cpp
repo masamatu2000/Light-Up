@@ -6,7 +6,7 @@
 #include<assert.h>
 
 namespace {
-	const char IMAGE_SCALE = 16;
+
 	int currentNum;
 	int nextNum;
 }
