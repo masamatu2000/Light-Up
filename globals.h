@@ -3,7 +3,6 @@
 //XGA SIZE
 const int WIN_WIDTH = 1920;
 const int WIN_HEIGHT = 1080;
-
 //最終的に何倍のサイズにするか
 //---画像を維持するために整数以外入れるな)---
 //縦に１０マスくらいだとZOOMは6（１１．２５マスくらい）

@@ -1,5 +1,11 @@
 #include "AttackType.h"
 #include "Stage.h"
+
+/// <summary>
+/// プレイヤーの攻撃方法を管理する
+/// M.Shoji
+/// </summary>
+
 namespace {
 	const float BULLET01_SPEED = 100.0f;
 	const float BULLET01_RADIUS = 5.0f;
@@ -7,6 +13,10 @@ namespace {
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 3.0f;
 	const float BULLET02_LIFE = 5.0f;
+	const float BULLET03_SPEED = 100.0f;
+	const float BULLET03_RADIUS = 3.0f;
+	const float BULLET03_LIFE = 5.0f;
+	
 
 	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 10.0f;
@@ -14,22 +24,33 @@ namespace {
 	const float SLASH02_SPEED = 200.0f;
 	const float SLASH02_RADIUS = 10.0f;
 	const float SLASH02_LIFE = 0.1f;
+	const float SLASH03_SPEED = 200.0f;
+	const float SLASH03_RADIUS = 10.0f;
+	const float SLASH03_LIFE = 0.1f;
+
 }
+
 Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
-	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE};
-	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE};
-	BulletType2 bt3 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE };
-	BulletType2 bt4 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE };
-	BulletType3 bt5 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE };
-	BulletType3 bt6 = { BULLET02_SPEED,BULLET02_RADIUS ,BULLET02_LIFE };
+	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
+	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
+	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
+	BulletType2 bt4 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
+	BulletType2 bt5 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
+	BulletType2 bt6 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
+	BulletType3 bt7 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
+	BulletType3 bt8 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
+	BulletType3 bt9 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
 	bullettype.clear();
 	bullettype.push_back(bt1);
 	bullettype.push_back(bt2);
-	bullettype2.push_back(bt3);
+	bullettype.push_back(bt3);
 	bullettype2.push_back(bt4);
-	bullettype3.push_back(bt5);
-	bullettype3.push_back(bt6);
+	bullettype2.push_back(bt5);
+	bullettype2.push_back(bt6);
+	bullettype3.push_back(bt7);
+	bullettype3.push_back(bt8);
+	bullettype3.push_back(bt9);
 	bulletNum_ = bulletNum;
 	position = pos;
 }
@@ -62,6 +83,17 @@ void Bullet::Update()
 			position.x += bullettype[bullet02].speed * dt;
 		}
 		break;
+	case bullet03:
+		if (bullettype[bullet03].life > 0) {
+			bullettype[bullet03].life -= dt;
+			if (bullettype[bullet03].life <= 0) {
+				DestroyMe();
+				break;
+			}
+			position.x += bullettype[bullet03].speed * dt;
+		}
+		break;
+
 	}
 }
 
@@ -76,17 +108,23 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum)
 {
 	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
 	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
-	SlashType2 s3 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
-	SlashType2 s4 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
-	SlashType3 s5 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
-	SlashType3 s6 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	SlashType s3 = { SLASH03_SPEED,SLASH03_RADIUS,SLASH03_LIFE };
+	SlashType2 s4 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
+	SlashType2 s5 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	SlashType2 s6 = { SLASH03_SPEED,SLASH03_RADIUS,SLASH03_LIFE };
+	SlashType3 s7 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
+	SlashType3 s8 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
+	SlashType3 s9 = { SLASH03_SPEED,SLASH03_RADIUS,SLASH03_LIFE };
 	slashtype.clear();
 	slashtype.push_back(s1);
 	slashtype.push_back(s2);
-	slashtype2.push_back(s3);
+	slashtype.push_back(s3);
 	slashtype2.push_back(s4);
-	slashtype3.push_back(s5);
-	slashtype3.push_back(s6);
+	slashtype2.push_back(s5);
+	slashtype2.push_back(s6);
+	slashtype3.push_back(s7);
+	slashtype3.push_back(s8);
+	slashtype3.push_back(s9);
 	slashNum_ = slashNum;
 	position = pos;
 
@@ -118,7 +156,17 @@ void Slash::Update()
 				DestroyMe();
 				break;
 			}
-			position.x += slashtype[slash01].speed * dt;
+			position.x += slashtype[slash02].speed * dt;
+		}
+		break;
+	case slash03:
+		if (slashtype[slash03].life > 0) {
+			slashtype[slash03].life -= dt;
+			if (slashtype[slash03].life <= 0) {
+				DestroyMe();
+				break;
+			}
+			position.x += slashtype[slash03].speed * dt;
 		}
 		break;
 	}
