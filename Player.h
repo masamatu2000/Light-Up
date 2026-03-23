@@ -13,6 +13,15 @@ public:
 	{
 		position = pos;
 	}
+	bool GetKillBoss()
+	{
+		return killBoss;
+	}
+	//デバッグ用の仮の関数
+	void SetKillBoss(bool kill)
+	{
+		killBoss = kill;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -30,6 +39,7 @@ private:
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
 	PlayerName playerType;
+	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 
 	float curse; //呪い
 };

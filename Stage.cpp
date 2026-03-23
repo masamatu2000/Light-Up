@@ -7,8 +7,12 @@
 #include "Player.h"
 #include "Enemy.h"
 #include<assert.h>
+#include"DataHolder.h"
+
 namespace {
 	const char IMAGE_SCALE = 16;
+	//チュートリアル、裏ステ含めた６ステージ
+	const int STAGE_MAX = 6;
 }
 
 int Stage::scrollX = 0;
@@ -20,8 +24,8 @@ int Stage::mapRight = 0;
 
 Stage::Stage()
 {
-	hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
-	assert(hImage > 0);
+	//hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
+	//assert(hImage > 0);
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
@@ -88,6 +92,12 @@ Stage::Stage()
 			
 		}
 	}
+	//マップをチュートリアルに
+	currentStage = 0;
+
+	//ボスを倒してないことに
+	isBossDefeated.clear();
+	isBossDefeated.resize(STAGE_MAX, false);
 }
 
 Stage::~Stage()
@@ -105,6 +115,20 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
 		SetEnemy();
+
+		//デバッグ用
+		//ボスがいるマップに行ったらtrueに
+		//本来はボスを撃破したらtrueに
+		DataHolder* dh = FindGameObject<DataHolder>();
+		isBossDefeated[currentStage] = false;
+		for (int y = 0; y < map.size(); y++) {
+			for (int x = 0; x < map[y].size(); x++) {
+				if (map[y][x] == 6) {
+					isBossDefeated[currentStage] = true;
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -113,14 +137,22 @@ void Stage::Draw()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
-				DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
+				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE,GetColor(0,255,255), false);
 			}
 		}
 	}
-	//マップの名前入ってるかの確認用
-	//for (int i = 0; i < mapName.size(); i++) {
-	//	DrawFormatString(0, 30 * i, GetColor(255, 255, 255), "%s", mapName[i].c_str());
-	//}
+	
+	//現在のマップ確認用
+	DrawFormatString(0, 100, 0xffff00, "%s", mapName[currentNum].c_str());
+	DrawFormatString(0, 120, 0x0000ff, "%d %d %d %d %d %d",
+		(int)isBossDefeated[0], 
+		(int)isBossDefeated[1],
+		(int)isBossDefeated[2],
+		(int)isBossDefeated[3],
+		(int)isBossDefeated[4],
+		(int)isBossDefeated[5]
+	);
 }
 
 int Stage::HitWallRight(int x, int y)
@@ -235,11 +267,45 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextStage()
 {
-	if (currentNum + 1 > mapName.size() - 1)
+	DataHolder* dh = FindGameObject<DataHolder>();
+	//全ボス倒してたらステージ5に
+	if (IsBossComplete())
 	{
-		return;
+		SetStage("stage5-1");
+		dh->stageNum = 5;
+		currentStage = dh->stageNum;
+		isBossDefeated.clear();
+		isBossDefeated.resize(STAGE_MAX, false);
 	}
-	SetStage(mapName[currentNum + 1]);
+	//今のステージのボスを倒したら次のステージに
+	else if (isBossDefeated[currentStage])
+	{
+		if (currentStage == 5)
+		{
+			//全ボス倒したらタイトルに
+			SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		}
+		else if (currentStage != 5)
+		{
+			std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
+			SetStage(name);
+			currentStage = dh->stageNum;
+			dh->stageNum += 1;
+			if (dh->stageNum > STAGE_MAX - 2)
+			{
+				dh->stageNum = 1;
+			}
+		}
+	}
+	//そのステージの次のセクションに
+	else
+	{
+		if (currentNum + 1 > mapName.size() - 1)
+		{
+			return;
+		}
+		SetStage(mapName[currentNum + 1]);
+	}
 	isNext = true; //次に進む
 }
 
@@ -251,6 +317,19 @@ void Stage::PreviousStage()
 	}
 	SetStage(mapName[currentNum - 1]);
 	isNext = false; //前に戻る
+}
+
+bool Stage::IsBossComplete()
+{
+	//１体でも残ってたらfalseを返す
+	for (int i = 0; i < STAGE_MAX -1; i++)
+	{
+		if (!isBossDefeated[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void Stage::SetScroll()

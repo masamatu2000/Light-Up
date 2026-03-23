@@ -14,7 +14,7 @@ enum BULLET_NUMBER
 enum SLASH_NUMBER
 {
 	slash01,
-	clash02
+	slash02
 };
 class AttackObject : public Character
 {
