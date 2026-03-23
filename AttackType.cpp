@@ -1,5 +1,11 @@
 #include "AttackType.h"
 #include "Stage.h"
+
+/// <summary>
+/// プレイヤーの攻撃方法を管理する
+/// M.Shoji
+/// </summary>
+
 namespace {
 	const float BULLET01_SPEED = 100.0f;
 	const float BULLET01_RADIUS = 5.0f;
@@ -15,6 +21,7 @@ namespace {
 	const float SLASH02_RADIUS = 10.0f;
 	const float SLASH02_LIFE = 0.1f;
 }
+
 Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum)
 {
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS ,BULLET01_LIFE};
