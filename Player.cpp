@@ -8,11 +8,11 @@
 namespace
 {
 	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 9.8f * 60;//重力 （定数）
+	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
-	const float accel = 2.0f;//加速率
-	const float decal = 1.5f;//減衰率
-	const float maxSpeed = 15.0f;//最高速度
+	const float accel = 5.0f;//加速率
+	const float decal = 3.0f;//減衰率
+	const float maxSpeed = 10.0f;//最高速度
 }
 Player::Player()
 {
@@ -217,11 +217,17 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
-	//銃（遠距離）
+	//近接（スラッシュ攻撃）
 	switch (playerType)
 	{
 	case(Name1):
 		PlayerAttack::Player1MainAttack(position);
+		break;
+	case(Name2):
+		PlayerAttack::Player2MainAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3MainAttack(position);
 		break;
 	default:
 		break;
@@ -230,11 +236,17 @@ void Player::MainAttack()
 
 void Player::SubAttack()
 {
-	//近接
+	//遠隔（銃攻撃）
 	switch (playerType)
 	{
 	case (Name1):
 		PlayerAttack::Player1SubAttack(position);
+		break;
+	case (Name2):
+		PlayerAttack::Player2SubAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3SubAttack(position);
 		break;
 	default:
 		break;
