@@ -42,4 +42,9 @@ private:
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 
 	float curse; //呪い
+
+	//描画用関数
+	int patX;//縦に何個目？
+	int patY;//横に何個目？
+	int patCounter;
 };

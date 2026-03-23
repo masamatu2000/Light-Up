@@ -8,11 +8,11 @@
 namespace
 {
 	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 9.8f * 60;//重力 （定数）
+	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
-	const float accel = 2.0f;//加速率
-	const float decal = 1.5f;//減衰率
-	const float maxSpeed = 15.0f;//最高速度
+	const float accel = 5.0f;//加速率
+	const float decal = 3.0f;//減衰率
+	const float maxSpeed = 10.0f;//最高速度
 }
 Player::Player()
 {
@@ -24,6 +24,10 @@ Player::Player()
 
 	curse = 0;
 	killBoss = false;
+
+	patX = 0;
+	patY = 0;
+	patCounter = 0;
 }
 
 Player::Player(int x, int y)
@@ -39,6 +43,12 @@ Player::Player(int x, int y)
 
 	curse = 0;
 	killBoss = false;
+
+	patX = 0;
+	patY = 0;
+	patCounter = 0;
+	Image* image = FindGameObject<Image>();
+	hImage = image->ReturnImage("player");
 }
 
 Player::~Player()
@@ -174,10 +184,11 @@ void Player::Draw()
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
 
-	DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
+	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
+	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",position.x,position.y);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 }
 
 void Player::Attack()
@@ -206,11 +217,17 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
-	//銃（遠距離）
+	//近接（スラッシュ攻撃）
 	switch (playerType)
 	{
 	case(Name1):
 		PlayerAttack::Player1MainAttack(position);
+		break;
+	case(Name2):
+		PlayerAttack::Player2MainAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3MainAttack(position);
 		break;
 	default:
 		break;
@@ -219,11 +236,17 @@ void Player::MainAttack()
 
 void Player::SubAttack()
 {
-	//近接
+	//遠隔（銃攻撃）
 	switch (playerType)
 	{
 	case (Name1):
 		PlayerAttack::Player1SubAttack(position);
+		break;
+	case (Name2):
+		PlayerAttack::Player2SubAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3SubAttack(position);
 		break;
 	default:
 		break;

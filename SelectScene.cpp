@@ -7,8 +7,8 @@
 
 namespace
 {
-	const int STAGE_MAX = 5;
-	const int CHARA_MAX = 5;
+	const int STAGE_MAX = 4;
+	const int CHARA_MAX = 3;
 }
 
 SelectScene::SelectScene()
