@@ -107,13 +107,13 @@ void StageGraphic::Draw()
 	{
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
-				for (int B = 0; B <= 49; B++)
+				for (int B = 0; B <= 27; B++)
 				{
 					if (map[y][x] == B) {
-						DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX,
-							y * IMAGE_SCALE - Stage::scrollY,
-							(B % 10) * IMAGE_SCALE,
-							(B / 10) * IMAGE_SCALE,
+						DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX - IMAGE_SCALE,
+							y * IMAGE_SCALE - Stage::scrollY - IMAGE_SCALE,
+							(B%7) * IMAGE_SCALE,
+							(B/7) * IMAGE_SCALE,
 							IMAGE_SCALE,
 							IMAGE_SCALE,
 							hImage, true);
