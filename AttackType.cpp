@@ -93,7 +93,6 @@ void Bullet::Update()
 			position.x += bullettype[bullet03].speed * dt;
 		}
 		break;
-
 	}
 }
 

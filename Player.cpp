@@ -206,11 +206,17 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
-	//銃（遠距離）
+	//近接（スラッシュ攻撃）
 	switch (playerType)
 	{
 	case(Name1):
 		PlayerAttack::Player1MainAttack(position);
+		break;
+	case(Name2):
+		PlayerAttack::Player2MainAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3MainAttack(position);
 		break;
 	default:
 		break;
@@ -219,12 +225,17 @@ void Player::MainAttack()
 
 void Player::SubAttack()
 {
-	//近接
+	//遠隔（銃攻撃）
 	switch (playerType)
 	{
 	case (Name1):
 		PlayerAttack::Player1SubAttack(position);
 		break;
+	case (Name2):
+		PlayerAttack::Player2SubAttack(position);
+		break;
+	case(Name3):
+		PlayerAttack::Player3SubAttack(position);
 	default:
 		break;
 	}
