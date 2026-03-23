@@ -24,6 +24,10 @@ Player::Player()
 
 	curse = 0;
 	killBoss = false;
+
+	patX = 0;
+	patY = 0;
+	patCounter = 0;
 }
 
 Player::Player(int x, int y)
@@ -39,6 +43,12 @@ Player::Player(int x, int y)
 
 	curse = 0;
 	killBoss = false;
+
+	patX = 0;
+	patY = 0;
+	patCounter = 0;
+	Image* image = FindGameObject<Image>();
+	hImage = image->ReturnImage("player");
 }
 
 Player::~Player()
@@ -174,10 +184,11 @@ void Player::Draw()
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
 
-	DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
+	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
+	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",position.x,position.y);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 }
 
 void Player::Attack()
