@@ -16,4 +16,5 @@ private:
 	void Mova();
 private:
 	ENEMY_NUMBER EnemyNumber;
+	bool IsTrace;
 };

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Stage.h"
 #include "globals.h"
-
+#include"ImageManager.h"
 /// <summary>
 /// M.Shoji
 /// </summary>

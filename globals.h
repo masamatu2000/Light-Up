@@ -8,7 +8,6 @@ const int WIN_HEIGHT = 1080;
 //縦に１０マスくらいだとZOOMは6（１１．２５マスくらい）
 const int SCREEN_ZOOM = 3;
 const char IMAGE_SCALE = 32;
-
 extern float gDeltaTime; // フレーム間の時間差
 
 inline float GetDeltaTime()
