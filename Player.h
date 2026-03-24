@@ -58,7 +58,7 @@ private:
 	void Draw() override;
 	void Attack() override;
 	
-
+	void Mova();
 	void jamp();
 	void MainAttack();
 	void SubAttack();

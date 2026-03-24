@@ -22,7 +22,14 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	Velocity = ENEMY_SPEED;
 	IsTrace = false;
 	Speed = ENEMY_SPEED.x;
-	
+	switch (EnemyNumber) {
+	case Enemy01:
+		Hp = EnemyTypeNum::ENEMY_01_HP;
+		break;
+	case Enemy02:
+		Hp = EnemyTypeNum::ENEMY_02_HP;
+		break;
+	}
 }
 
 Enemy::~Enemy()
@@ -31,6 +38,10 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
+	if (Hp <= 0)
+	{
+		DestroyMe();
+	}
 	/*Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
 	Vector2D Distance = Math2D::Sub(ppos, position);
@@ -51,6 +62,6 @@ void Enemy::Draw()
 	float positiony = position.y - Stage::scrollY;
 
 	DrawBox(positionx,positiony,positionx +IMAGE_SCALE,positiony +IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
-	DrawFormatString(20, 20, GetColor(255, 255, 255),"%f %f",position.x,position.y,TRUE);//ïœêîÇèoóÕÇ∑ÇÈ
+	DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//ïœêîÇèoóÕÇ∑ÇÈ
 }
 

@@ -7,26 +7,32 @@
 /// </summary>
 
 namespace {
-	const float BULLET01_SPEED = 100.0f;
-	const float BULLET01_RADIUS = 8.0f;
+	const float BULLET01_SPEED = 300.0f;
+	const float BULLET01_RADIUS = 15.0f;
 	const float BULLET01_LIFE = 3.0f;
+	const float BULLET01_POS = 10.0f;
 	const float BULLET02_SPEED = 100.0f;
 	const float BULLET02_RADIUS = 8.0f;
 	const float BULLET02_LIFE = 3.0f;
+	const float BULLET02_POS = 10.0f;
 	const float BULLET03_SPEED = 100.0f;
 	const float BULLET03_RADIUS = 8.0f;
 	const float BULLET03_LIFE = 3.0f;
+	const float BULLET03_POS = 10.0f;
 	
 
 	const float SLASH01_SPEED = 200.0f;
-	const float SLASH01_RADIUS = 20.0f;
+	const float SLASH01_RADIUS = 40.0f;
 	const float SLASH01_LIFE = 0.1f;
+	const float SLASH01_POS = 10.0f;
 	const float SLASH02_SPEED = 200.0f;
 	const float SLASH02_RADIUS = 20.0f;
 	const float SLASH02_LIFE = 0.1f;
+	const float SLASH02_POS = 10.0f;
 	const float SLASH03_SPEED = 200.0f;
 	const float SLASH03_RADIUS = 20.0f;
 	const float SLASH03_LIFE = 0.1f;
+	const float SLASH03_POS = 10.0f;
 
 }
 
@@ -54,7 +60,41 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
 	bulletNum_ = bulletNum;
 	position = pos;
 	islookleft = lookleft;
-	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
+	switch (bulletNum_) {
+	case bullet01:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(BULLET01_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(BULLET01_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), BULLET01_RADIUS);
+		break;
+	case bullet02:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(BULLET02_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(BULLET02_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), BULLET02_RADIUS);
+		break;
+	case bullet03:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(BULLET03_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(BULLET03_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
+		break;
+	}
 }
 
 Bullet::~Bullet()
@@ -66,47 +106,59 @@ void Bullet::Update()
 	float dt = GetDeltaTime();
 	switch (bulletNum_) {
 	case bullet01:
-		if (bullettype[bullet01].life > 0) {
+		if (bullettype[bullet01].life > 0)
+		{
 			bullettype[bullet01].life -= dt;
-			if (bullettype[bullet01].life <= 0) {
+			if (bullettype[bullet01].life <= 0) 
+			{
 				DestroyMe();
 				break;
 			}
 			//どちらを向いているか確認して前に発射する
-			if (islookleft == true) {
+			if (islookleft == true) 
+			{
 				position.x -= bullettype[bullet01].speed * dt;
 			}
-			else {
+			else 
+			{
 				position.x += bullettype[bullet01].speed * dt;
 			}
 		}
 		break;
 	case bullet02:
-		if (bullettype[bullet02].life > 0) {
+		if (bullettype[bullet02].life > 0) 
+		{
 			bullettype[bullet02].life -= dt;
-			if (bullettype[bullet02].life <= 0) {
+			if (bullettype[bullet02].life <= 0) 
+			{
 				DestroyMe();
 				break;
 			}
-			if (islookleft == true) {
+			if (islookleft == true)
+			{
 				position.x -= bullettype[bullet02].speed * dt;
 			}
-			else {
+			else 
+			{
 				position.x += bullettype[bullet02].speed * dt;
 			}
 		}
 		break;
 	case bullet03:
-		if (bullettype[bullet03].life > 0) {
+		if (bullettype[bullet03].life > 0)
+		{
 			bullettype[bullet03].life -= dt;
-			if (bullettype[bullet03].life <= 0) {
+			if (bullettype[bullet03].life <= 0) 
+			{
 				DestroyMe();
 				break;
 			}
-			if (islookleft == true) {
+			if (islookleft == true) 
+			{
 				position.x -= bullettype[bullet03].speed * dt;
 			}
-			else {
+			else 
+			{
 				position.x += bullettype[bullet03].speed * dt;
 			}
 		}
@@ -143,9 +195,43 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
 	slashtype3.push_back(s8);
 	slashtype3.push_back(s9);
 	slashNum_ = slashNum;
-	position = pos;
 	islookleft = lookleft;
-	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
+	//斬撃の出現位置の指定
+	switch (slashNum_) {
+	case slash01:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(SLASH01_POS, 0.0f));
+		}
+		else 
+		{
+			position = Math2D::Sub(pos, Vector2D(SLASH01_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), SLASH01_RADIUS);
+		break;
+	case slash02:
+		if (islookleft == false) 
+		{
+			position = Math2D::Add(pos, Vector2D(SLASH02_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(SLASH02_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), SLASH02_RADIUS);
+		break;
+	case slash03:
+		if (islookleft == false) 
+		{
+			position = Math2D::Add(pos, Vector2D(SLASH03_POS, 0.0f));
+		}
+		else 
+		{
+			position = Math2D::Sub(pos, Vector2D(SLASH03_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), SLASH03_RADIUS);
+		break;
+	}
 }
 
 Slash::~Slash()
@@ -158,47 +244,59 @@ void Slash::Update()
 	switch (slashNum_){
 		//斬撃によってモーション変化（これはもしかしたら複数ないかもだが）
 	case slash01:
-		if (slashtype[slash01].life > 0){
+		if (slashtype[slash01].life > 0)
+		{
 			slashtype[slash01].life -= dt;//斬撃の表示されている時間を減らす
-			if (slashtype[slash01].life <= 0){
+			if (slashtype[slash01].life <= 0)
+			{
 				DestroyMe();
 				break;
 			}
 			//左を向いているかどうかを確認する
-			if (islookleft == true) {
+			if (islookleft == true) 
+			{
 				position.x -= slashtype[slash01].speed * dt;//時間まで左に進む
 			}
-			else {
+			else
+			{
 				position.x += slashtype[slash01].speed * dt;//時間まで右に進む
 			}
 		}
 		break;
 	case slash02:
-		if (slashtype[slash02].life > 0) {
+		if (slashtype[slash02].life > 0) 
+		{
 			slashtype[slash02].life -= dt;
-			if (slashtype[slash02].life <= 0) {
+			if (slashtype[slash02].life <= 0)
+			{
 				DestroyMe();
 				break;
 			}
-			if (islookleft == true) {
+			if (islookleft == true) 
+			{
 				position.x -= slashtype[slash02].speed * dt;//時間まで左に進む
 			}
-			else {
+			else 
+			{
 				position.x += slashtype[slash02].speed * dt;//時間まで右に進む
 			}
 		}
 		break;
 	case slash03:
-		if (slashtype[slash03].life > 0) {
+		if (slashtype[slash03].life > 0) 
+		{
 			slashtype[slash03].life -= dt;
-			if (slashtype[slash03].life <= 0) {
+			if (slashtype[slash03].life <= 0)
+			{
 				DestroyMe();
 				break;
 			}
-			if (islookleft == true) {
+			if (islookleft == true)
+			{
 				position.x -= slashtype[slash03].speed * dt;//時間まで左に進む
 			}
-			else {
+			else 
+			{
 				position.x += slashtype[slash03].speed * dt;//時間まで右に進む
 			}
 		}

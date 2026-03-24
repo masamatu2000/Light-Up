@@ -3,6 +3,7 @@
 #include "globals.h"
 #include"ImageManager.h"
 #include "DataHolder.h"
+#include "Enemy.h"
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -11,9 +12,13 @@ namespace
 	//どのくらいの割合で重力を与えるか
 	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
-	const float accel = 5.0f;//加速率
-	const float decal = 3.0f;//減衰率
-	const float maxSpeed = 10.0f;//最高速度
+	const float accel = 20.0f;//加速率
+	const float decal = 10.0f;//減衰率
+	const float maxSpeed = 5.0f;//最高速度
+
+	const float curseMax = 99.0f;
+	const float curseDownRatio = 500.0f;
+	const float cursUpIsSubAtttack = 10.0f;
 }
 Player::Player()
 {
@@ -62,6 +67,125 @@ Player::~Player()
 
 void Player::Update()
 {
+	Mova();
+
+	Interact();
+	
+	Scroll();
+
+	Attack();
+	ObjectProcess::HitObject();
+
+	//敵に近づいた時の呪いの減少
+	auto aliveEnemies = FindGameObjects<Enemy>();
+	for (auto& enemy : aliveEnemies)
+	{
+		float dist = Math2D::Length(Math2D::Sub(GetPosition(), enemy->GetPosition()));
+		float collisiondist = GetCurseRecoveryArea();
+
+		if (dist < collisiondist)
+		{
+			float UpData = collisiondist - dist;
+			UpData = UpData / curseDownRatio;
+			UpData = UpData * -1;
+			UpCurse(UpData);
+			if (GetCurse() < GetCurseLowerLimit())
+			{
+				SetCurse(GetCurseLowerLimit());
+			}
+			break;
+		}
+	}
+	if (curse > curseMax)
+	{
+		curse = curseMax;
+	}
+	if (curseLowerLimit > curseMax)
+	{
+		curseLowerLimit = curseMax;
+	}
+	if (curse > 100.0f)
+	{
+		DestroyMe();
+	}
+}
+
+void Player::Draw()
+{
+	float x = position.x - Stage::scrollX;
+	float y = position.y - Stage::scrollY;
+	switch (playerType)
+	{
+	case(Name1):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
+		break;
+	case(Name2):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
+		break;
+	case(Name3):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
+		break;
+	default:
+		break;
+	}
+
+	if (islookleft)
+	{
+		patY = 4;
+	}
+	else
+	{
+		patY = 0;
+	}
+	switch (playerState)
+	{
+	case(STAND):
+		break;
+	case(WALK):
+		patY += 1;
+		break;
+	case(RUN):
+		patY += 2;
+		break;
+	case(JUMP):
+		patY += 3;
+		break;
+	default:
+		break;
+	}
+	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
+	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
+
+	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+	DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
+
+	patCounter++;
+	if (patCounter % 10 == 0)
+	{
+		patX++;
+	}
+	if (patX > 3)
+	{
+		patX = 0;
+	}
+}
+
+void Player::Attack()
+{
+	if (Input::IsKeyDown(KEY_INPUT_M))
+	{
+		MainAttack();
+	}
+	if (Input::IsKeyDown(KEY_INPUT_B) && curse < (curseMax - cursUpIsSubAtttack))
+	{
+		SubAttack();
+	}
+}
+
+void Player::Mova()
+{
 	Stage* s = FindGameObject<Stage>();
 	float dt = GetDeltaTime();
 	//右に進む
@@ -74,7 +198,7 @@ void Player::Update()
 		{
 			playerState = WALK;
 		}
-		
+
 		//徐々に加速していく
 		Velocity.x += accel * dt;
 		if (Velocity.x > maxSpeed)
@@ -141,7 +265,7 @@ void Player::Update()
 	//位置を変える
 	position.x += Velocity.x;
 
-	if (Velocity.x > 0){
+	if (Velocity.x > 0) {
 		int d1 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE - 1);
 		int d2 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y);
 
@@ -153,7 +277,7 @@ void Player::Update()
 
 		position.x -= max(d1, d2);
 	}
-	else if(Velocity.x < 0)
+	else if (Velocity.x < 0)
 	{
 		int d1 = s->HitWallLeft(position.x + 0, position.y + IMAGE_SCALE - 1);
 		int d2 = s->HitWallLeft(position.x + 0, position.y);
@@ -167,21 +291,20 @@ void Player::Update()
 		position.x += max(d1, d2);
 	}
 
-	if (CheckHitKey(KEY_INPUT_SPACE)){
+	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		jamp();
-		playerState = JUMP;
 	}
 	//プレイヤー落下
 	fall();
 
 	//地面との当たり判定
-	if (s != nullptr){
+	if (s != nullptr) {
 		int d1 = s->HitFloor(position.x + 0, position.y + IMAGE_SCALE);
 		int d2 = s->HitFloor(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE);
 
 		int d = max(d1, d2);
 
-		if (d > 0){
+		if (d > 0) {
 			position.y -= (d - 1);
 			Velocity.y = 0;
 			CanJump = true;
@@ -197,8 +320,9 @@ void Player::Update()
 				}
 			}
 		}
-		else{
+		else {
 			CanJump = false;
+			playerState = JUMP;
 		}
 	}
 	if (s != nullptr) {
@@ -213,87 +337,6 @@ void Player::Update()
 			position.y += (d - 1);
 			Velocity.y = 0;
 		}
-	}
-
-	Interact();
-	
-	Scroll();
-
-	Attack();
-	ObjectProcess::HitObject();
-}
-
-void Player::Draw()
-{
-	float x = position.x - Stage::scrollX;
-	float y = position.y - Stage::scrollY;
-	switch (playerType)
-	{
-	case(Name1):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
-		break;
-	case(Name2):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
-		break;
-	case(Name3):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
-		break;
-	default:
-		break;
-	}
-
-	if (islookleft)
-	{
-		patY = 4;
-	}
-	else
-	{
-		patY = 0;
-	}
-	switch (playerState)
-	{
-	case(STAND):
-		break;
-	case(WALK):
-		patY += 1;
-		break;
-	case(RUN):
-		patY += 2;
-		break;
-	case(JUMP):
-		patY += 3;
-		break;
-	default:
-		break;
-	}
-	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
-	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
-
-	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
-	DrawFormatString(0, 250, 0xffffff, "curse：%.0f", curse);
-	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
-
-	patCounter++;
-	if (patCounter % 10 == 0)
-	{
-		patX++;
-	}
-	if (patX > 3)
-	{
-		patX = 0;
-	}
-}
-
-void Player::Attack()
-{
-	if (Input::IsKeyDown(KEY_INPUT_M))
-	{
-		MainAttack();
-	}
-	if (Input::IsKeyDown(KEY_INPUT_B))
-	{
-		SubAttack();
 	}
 }
 
@@ -311,13 +354,6 @@ void Player::jamp()
 
 void Player::MainAttack()
 {
-	if (islookleft == true){
-
-	}
-	else {
-
-	}
-
 	//近接（スラッシュ攻撃）
 	switch (playerType)
 	{
@@ -352,7 +388,7 @@ void Player::SubAttack()
 	default:
 		break;
 	}
-	UpCurse(5.0f);
+	UpCurse(cursUpIsSubAtttack);
 }
 
 void Player::SupportSkill()

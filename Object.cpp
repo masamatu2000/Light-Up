@@ -15,6 +15,8 @@ Object::~Object()
 
 void ObjectProcess::HitObject()
 {
+	const int Damage = 1;
+
 	Player* pl = FindGameObject<Player>();
 	//Enemy* en = FindGameObject<Enemy>();
 
@@ -50,22 +52,6 @@ void ObjectProcess::HitObject()
 		}
 	}
 
-	for (auto& enemy : aliveEnemies)
-	{
-		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
-		float collisiondist = pl->GetCurseRecoveryArea();
-
-		if (dist < collisiondist)
-		{
-			pl->UpCurse(-1);
-			if (pl->GetCurse() < pl->GetCurseLowerLimit())
-			{
-				pl->SetCurse(pl->GetCurseLowerLimit());
-			}
-			break;
-		}
-	}
-
 	//“G‚Æ’e‚Ìƒqƒbƒgƒ`ƒFƒbƒN
 	for (auto& bullet : aliveBullets)
 	{
@@ -76,7 +62,7 @@ void ObjectProcess::HitObject()
 
 			if (dist < collisiondist)
 			{
-				enemy->DestroyMe();
+				enemy->DownHp(Damage);
 				bullet->DestroyMe();
 
 			}
@@ -93,7 +79,7 @@ void ObjectProcess::HitObject()
 
 			if (dist < collisiondist)
 			{
-				enemy->DestroyMe();
+				enemy->DownHp(Damage);
 				slash->DestroyMe();
 
 			}

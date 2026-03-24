@@ -15,6 +15,11 @@ enum ENEMY_NUMBER
 	Enemy06,
 };
 class Enemy;
+namespace EnemyTypeNum
+{
+	const float ENEMY_01_HP = 2.0f;
+	const float ENEMY_02_HP = 2.0f;
+}
 namespace EnemyAttack {
 	
 	void Enemy1Attack(const Vector2D& pos,const Vector2D& vel);
