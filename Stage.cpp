@@ -26,6 +26,9 @@ Stage::Stage()
 	//hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
 	//assert(hImage > 0);
 
+	//ステージ背景の描画の為の画像読み込み
+	hImage = LoadGraph("data/Image/stage/BG/BG.png");
+
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
 	int nLines = nameCsv->GetLines();//行数を取得
@@ -133,6 +136,9 @@ void Stage::Update()
 
 void Stage::Draw()
 {
+	//ステージの背景の描画(仮)
+	DrawGraph(0 - Stage::scrollX, 0 - Stage::scrollY,hImage,true);
+
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
