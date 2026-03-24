@@ -3,8 +3,10 @@
 #include"Player.h"
 #include"Stage.h"
 #include"Enemy.h"
+#include"AttackType.h"
 namespace {
-	const float TRACE_DISTANCE = 32 * 4;
+	const float TRACE_DISTANCE = 32 * 10;
+	const float ENEMY1_BULLET_COOLTIME = 60 * 2;
 }
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
 {
@@ -13,13 +15,14 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
 	auto e=FindGameObjects<Enemy>();
 	Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
-	Vector2D Distance = Math2D::Sub(ppos, epos);
-	float speed = vel.x;
-	float dist = Math2D::Length(Distance);
+	float dx = ppos.x - epos.x;
+	float dist = abs(dx);
 	if (dist < TRACE_DISTANCE) {
-		Distance = Math2D::Normalize(Distance);
+		float speed = abs(vel.x);
 		float dt = GetDeltaTime();
-		epos.x += Distance.x *speed* dt;
+		// š Œü‚«‚¾‚¯Œˆ‚ß‚é
+		float dir = (dx > 0) ? 1.0f : -1.0f;
+		epos.x += dir * speed*dt;
 	}
 	else {
 		float dt = GetDeltaTime();
@@ -59,11 +62,12 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
 			epos.y -= (d - 1);
 			evel.y = 0;
 		}
-		for (auto enemy : e) {
-			if (enemy->GetEnum() == Enemy01) {
-				enemy->SetPosition(epos);
-				enemy->SetVel(evel);
-			}
+		
+	}
+	for (auto enemy : e) {
+		if (enemy->GetEnum() == Enemy01) {
+			enemy->SetPosition(epos);
+			enemy->SetVel(evel);
 		}
 	}
 }
