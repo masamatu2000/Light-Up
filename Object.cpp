@@ -16,7 +16,7 @@ Object::~Object()
 void ObjectProcess::HitObject()
 {
 	Player* pl = FindGameObject<Player>();
-	Enemy* en = FindGameObject<Enemy>();
+	//Enemy* en = FindGameObject<Enemy>();
 
 	//敵のベクトル
 	auto aliveEnemies = FindGameObjects<Enemy>();
@@ -41,9 +41,7 @@ void ObjectProcess::HitObject()
 
 		if (dist < collisiondist)
 		{
-			//pl->DestroyMe();
-
-			enemy->DestroyMe();
+			
 			break;
 		}
 	}
@@ -53,12 +51,12 @@ void ObjectProcess::HitObject()
 	{
 		for (auto& enemy : aliveEnemies)
 		{
-			float dist = Math2D::Length(Math2D::Sub(en->GetPosition(), bullet->GetPosition()));
-			float collisiondist = en->GetCollisionRadius() + bullet->GetCollisionRadius();
+			float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), bullet->GetPosition()));
+			float collisiondist = enemy->GetCollisionRadius() + bullet->GetCollisionRadius();
 
 			if (dist < collisiondist)
 			{
-				en->DestroyMe();
+				enemy->DestroyMe();
 				bullet->DestroyMe();
 
 			}
@@ -68,14 +66,17 @@ void ObjectProcess::HitObject()
 	//敵とスラッシュのヒットチェック
 	for (auto& slash : aliveSlashes)
 	{
-		float dist = Math2D::Length(Math2D::Sub(en->GetPosition(), slash->GetPosition()));
-		float collisiondist = en->GetCollisionRadius() + slash->GetCollisionRadius();
-
-		if (dist < collisiondist)
+		for (auto& enemy : aliveEnemies)
 		{
-			en->DestroyMe();
-			slash->DestroyMe();
+			float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), slash->GetPosition()));
+			float collisiondist = enemy->GetCollisionRadius() + slash->GetCollisionRadius();
 
+			if (dist < collisiondist)
+			{
+				enemy->DestroyMe();
+				slash->DestroyMe();
+
+			}
 		}
 	}
 

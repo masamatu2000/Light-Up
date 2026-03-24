@@ -17,7 +17,7 @@ Enemy::Enemy()
 Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 {
 	position = pos;
-	circleColid = CircleColid(Vector2D(8.0f, 8.0f), 8.0f);
+	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 	EnemyNumber = ENum;
 	Velocity = ENEMY_SPEED;
 	IsTrace = false;

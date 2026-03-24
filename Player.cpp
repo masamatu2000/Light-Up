@@ -35,7 +35,7 @@ Player::Player(int x, int y)
 {
 	position = Vector2D(x, y);
 	Velocity = Vector2D(0.0f,0.0f);
-	circleColid = CircleColid(Vector2D(8.0f, 8.0f), 8.0f);
+	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 	
 	CanJump = true;
 	canPrevious = false;

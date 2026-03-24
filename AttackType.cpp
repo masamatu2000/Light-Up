@@ -54,6 +54,7 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
 	bulletNum_ = bulletNum;
 	position = pos;
 	islookleft = lookleft;
+	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 }
 
 Bullet::~Bullet()
@@ -144,7 +145,7 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
 	slashNum_ = slashNum;
 	position = pos;
 	islookleft = lookleft;
-
+	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 }
 
 Slash::~Slash()
