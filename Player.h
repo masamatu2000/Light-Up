@@ -29,6 +29,30 @@ public:
 	{
 		killBoss = kill;
 	}
+	void UpCurse(float downcurse)
+	{ 
+		curse += downcurse; 
+	}
+	void SetCurse(float downcurse)
+	{
+		curse = downcurse;
+	}
+	float GetCurse() 
+	{ 
+		return curse; 
+	}
+	void UpCurseLowerLimit(float downcurse)
+	{
+		curseLowerLimit += downcurse;
+	}
+	float GetCurseLowerLimit()
+	{
+		return curseLowerLimit;
+	}
+	int GetCurseRecoveryArea()
+	{
+		return curseRecoveryArea;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -42,6 +66,7 @@ private:
 	void fall();
 	void Interact();
 	void Scroll();
+	
 
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか
@@ -52,6 +77,8 @@ private:
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 
 	float curse; //呪い
+	float curseLowerLimit;
+	const int curseRecoveryArea = 100;
 
 	//描画用関数
 	int patX;//縦に何個目？

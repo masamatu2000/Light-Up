@@ -42,6 +42,7 @@ Player::Player(int x, int y)
 	canNext = false;
 
 	curse = 0;
+	curseLowerLimit = 0;
 	killBoss = false;
 
 	patX = 0;
@@ -270,6 +271,8 @@ void Player::Draw()
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+	DrawFormatString(0, 250, 0xffffff, "curse：%.0f", curse);
+	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
 
 	patCounter++;
 	if (patCounter % 10 == 0)
@@ -349,6 +352,7 @@ void Player::SubAttack()
 	default:
 		break;
 	}
+	UpCurse(5.0f);
 }
 
 void Player::SupportSkill()

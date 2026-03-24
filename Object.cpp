@@ -41,7 +41,27 @@ void ObjectProcess::HitObject()
 
 		if (dist < collisiondist)
 		{
-			
+			pl->UpCurseLowerLimit(20.0f);
+			if(pl->GetCurse() < pl-> GetCurseLowerLimit())
+			{
+				pl->SetCurse(pl->GetCurseLowerLimit());
+			}
+			break;
+		}
+	}
+
+	for (auto& enemy : aliveEnemies)
+	{
+		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
+		float collisiondist = pl->GetCurseRecoveryArea();
+
+		if (dist < collisiondist)
+		{
+			pl->UpCurse(-1);
+			if (pl->GetCurse() < pl->GetCurseLowerLimit())
+			{
+				pl->SetCurse(pl->GetCurseLowerLimit());
+			}
 			break;
 		}
 	}
