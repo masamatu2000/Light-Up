@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include "globals.h"
 #include"ImageManager.h"
+#include "DataHolder.h"
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -39,7 +40,6 @@ Player::Player(int x, int y)
 	CanJump = true;
 	canPrevious = false;
 	canNext = false;
-	playerType = Name1;
 
 	curse = 0;
 	killBoss = false;
@@ -49,6 +49,10 @@ Player::Player(int x, int y)
 	patCounter = 0;
 	Image* image = FindGameObject<Image>();
 	hImage = image->ReturnImage("player");
+	DataHolder* dh = FindGameObject<DataHolder>();
+	playerType = (PlayerName)(dh->playerNum - 1);
+
+	playerState = STAND;
 }
 
 Player::~Player()
@@ -64,14 +68,22 @@ void Player::Update()
 		//position.x += 3.0f; 加速度を変えて移動していくのでコメントアウト
 
 		islookleft = false;
+
+		if (playerState != JUMP)
+		{
+			playerState = WALK;
+		}
 		
 		//徐々に加速していく
 		Velocity.x += accel * dt;
 		if (Velocity.x > maxSpeed)
 		{
 			Velocity.x = maxSpeed;
+			if (playerState != JUMP)
+			{
+				playerState = RUN;
+			}
 		}
-
 	}
 	//値がマイナスの時
 	//左に進む
@@ -80,11 +92,20 @@ void Player::Update()
 
 		islookleft = true;
 
+		if (playerState != JUMP)
+		{
+			playerState = WALK;
+		}
+
 		//徐々に加速していく(プラスの処理）
 		Velocity.x -= accel * dt;
 		if (Velocity.x < -maxSpeed)
 		{
 			Velocity.x = -maxSpeed;
+			if (playerState != JUMP)
+			{
+				playerState = RUN;
+			}
 		}
 	}
 	else
@@ -105,6 +126,14 @@ void Player::Update()
 			if (Velocity.x > 0)
 			{
 				Velocity.x = 0;
+			}
+		}
+
+		if (playerState != JUMP)
+		{
+			if (Velocity.x == 0)
+			{
+				playerState = STAND;
 			}
 		}
 	}
@@ -139,6 +168,7 @@ void Player::Update()
 
 	if (CheckHitKey(KEY_INPUT_SPACE)){
 		jamp();
+		playerState = JUMP;
 	}
 	//プレイヤー落下
 	fall();
@@ -154,6 +184,17 @@ void Player::Update()
 			position.y -= (d - 1);
 			Velocity.y = 0;
 			CanJump = true;
+			if (playerState == JUMP)
+			{
+				if (Velocity.x == 0)
+				{
+					playerState = STAND;
+				}
+				else
+				{
+					playerState = WALK;
+				}
+			}
 		}
 		else{
 			CanJump = false;
@@ -185,12 +226,60 @@ void Player::Draw()
 {
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
+	switch (playerType)
+	{
+	case(Name1):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
+		break;
+	case(Name2):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
+		break;
+	case(Name3):
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
+		break;
+	default:
+		break;
+	}
 
+	if (islookleft)
+	{
+		patY = 4;
+	}
+	else
+	{
+		patY = 0;
+	}
+	switch (playerState)
+	{
+	case(STAND):
+		break;
+	case(WALK):
+		patY += 1;
+		break;
+	case(RUN):
+		patY += 2;
+		break;
+	case(JUMP):
+		patY += 3;
+		break;
+	default:
+		break;
+	}
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
 	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
 	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+
+	patCounter++;
+	if (patCounter % 10 == 0)
+	{
+		patX++;
+	}
+	if (patX > 3)
+	{
+		patX = 0;
+	}
 }
 
 void Player::Attack()
