@@ -16,7 +16,7 @@ namespace
 	const float decal = 10.0f;//Œ¸Š—¦
 	const float maxSpeed = 5.0f;//Å‚‘¬“x
 
-	const float curseMax = 99.0f;
+	const float curseMax = 100.0f;
 	const float curseDownRatio = 500.0f;
 	const float cursUpIsSubAtttack = 10.0f;
 }
@@ -59,6 +59,8 @@ Player::Player(int x, int y)
 	playerType = (PlayerName)(dh->playerNum - 1);
 
 	playerState = STAND;
+
+	Hp = 1;
 }
 
 Player::~Player()
@@ -96,17 +98,13 @@ void Player::Update()
 			break;
 		}
 	}
-	if (curse > curseMax)
-	{
-		curse = curseMax;
-	}
 	if (curseLowerLimit > curseMax)
 	{
 		curseLowerLimit = curseMax;
 	}
-	if (curse > 100.0f)
+	if (curse > curseMax)
 	{
-		DestroyMe();
+		curse = curseMax;
 	}
 }
 
@@ -169,6 +167,10 @@ void Player::Draw()
 	if (patX > 3)
 	{
 		patX = 0;
+	}
+	if (Hp <= 0)
+	{
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), true);
 	}
 }
 

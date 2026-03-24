@@ -48,6 +48,10 @@ void ObjectProcess::HitObject()
 			{
 				pl->SetCurse(pl->GetCurseLowerLimit());
 			}
+			if (pl->GetCurse() >= 100.0f)
+			{
+				pl->SetHp(0);
+			}
 			break;
 		}
 	}

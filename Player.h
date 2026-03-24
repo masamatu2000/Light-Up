@@ -53,6 +53,7 @@ public:
 	{
 		return curseRecoveryArea;
 	}
+
 private:
 	void Update() override;
 	void Draw() override;
