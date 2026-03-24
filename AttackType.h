@@ -4,7 +4,7 @@
 
 class Bullet :public AttackObject {
 public:
-	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum);
+	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft);
 	~Bullet();
 	void Update()override;
 	void Draw()override;
@@ -28,11 +28,12 @@ private:
 		float life;
 	};
 	std::vector<BulletType3> bullettype3;
+	bool islookleft;
 };
 class Slash :public AttackObject
 {
 public:
-	Slash(const Vector2D& pos, SLASH_NUMBER slashNum);
+	Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft);//コンストラクタに左を向いているかどうかの処理を追加
 	~Slash();
 	void Update()override;
 	void Draw()override;
@@ -57,4 +58,5 @@ private:
 		float life;
 	};
 	std::vector<SlashType3> slashtype3;
+	bool islookleft;
 };

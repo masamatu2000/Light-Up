@@ -1,6 +1,13 @@
 #pragma once
 #include "Character.h"
 #include "PlayerType.h"
+enum PLAYER_STATE
+{
+	STAND,
+	WALK,
+	RUN,
+	JUMP
+};
 
 class Player : public Character
 {
@@ -26,6 +33,7 @@ private:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
+	
 
 	void jamp();
 	void MainAttack();
@@ -38,7 +46,9 @@ private:
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
+	bool islookleft;//左を向いているかどうか
 	PlayerName playerType;
+	PLAYER_STATE playerState;
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 
 	float curse; //呪い
