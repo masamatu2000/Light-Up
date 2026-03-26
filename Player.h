@@ -95,4 +95,6 @@ private:
 	int patX;//c‚É‰½ŒÂ–ÚH
 	int patY;//‰¡‚É‰½ŒÂ–ÚH
 	int patCounter;
+
+	int attackcounter;
 };
