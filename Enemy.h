@@ -9,11 +9,12 @@ public:
 	Enemy(const Vector2D &pos,ENEMY_NUMBER ENum);
 	~Enemy();
 	ENEMY_NUMBER GetEnum() { return EnemyNumber; }
+	void SetTimer(int time) { timer = time; }//攻撃用のタイマーセッター
 private:
 	void Update() override;
 	void Draw() override;
 private:
 	ENEMY_NUMBER EnemyNumber;
 	bool IsTrace;
-	float Speed;
+	int timer;
 };

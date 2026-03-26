@@ -21,8 +21,7 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	EnemyNumber = ENum;
 	Velocity = ENEMY_SPEED;
 	IsTrace = false;
-	Speed = ENEMY_SPEED.x;
-	
+	timer = 0;
 }
 
 Enemy::~Enemy()
@@ -35,12 +34,14 @@ void Enemy::Update()
 	Vector2D ppos = pl->GetPosition();
 	Vector2D Distance = Math2D::Sub(ppos, position);
 	float dist = Math2D::Length(Distance);*/
+
+	timer++;
 	switch (EnemyNumber) {
 	case Enemy01:
-		EnemyAttack::Enemy1Attack(position,Velocity);
+		EnemyAttack::Enemy1Attack(position,Velocity,timer);
 		break;
 	case Enemy02:
-		EnemyAttack::Enemy2Attack(position, Velocity);
+		EnemyAttack::Enemy2Attack(position, Velocity,timer);
 		break;
 	}
 }

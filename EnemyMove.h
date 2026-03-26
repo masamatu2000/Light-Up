@@ -17,9 +17,9 @@ enum ENEMY_NUMBER
 class Enemy;
 namespace EnemyAttack {
 	
-	void Enemy1Attack(const Vector2D& pos,const Vector2D& vel);
-	void Enemy2Attack(const Vector2D& pos,const Vector2D& vel);
-	void Enemy3Attack(const Vector2D& pos,const Vector2D& vel);
-	void Enemy4Attack(const Vector2D& pos,const Vector2D& vel);
-	void Enemy5Attack(const Vector2D& pos,const Vector2D& vel);
+	void Enemy1Attack(const Vector2D& pos,const Vector2D& vel,const int &timer);
+	void Enemy2Attack(const Vector2D& pos,const Vector2D& vel, const int& timer);
+	void Enemy3Attack(const Vector2D& pos,const Vector2D& vel, const int& timer);
+	void Enemy4Attack(const Vector2D& pos,const Vector2D& vel, const int& timer);
+	void Enemy5Attack(const Vector2D& pos,const Vector2D& vel, const int& timer);
 }

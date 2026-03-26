@@ -6,9 +6,9 @@
 #include"AttackType.h"
 namespace {
 	const float TRACE_DISTANCE = 32 * 10;
-	const float ENEMY1_BULLET_COOLTIME = 60 * 2;
+	const int ENEMY_BULLET_COOLTIME = 60 * 2;
 }
-void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
+void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
@@ -17,6 +17,7 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
 	Vector2D ppos = pl->GetPosition();
 	float dx = ppos.x - epos.x;
 	float dist = abs(dx);
+	bool IsAttack = false;
 	if (dist < TRACE_DISTANCE) {
 		float speed = abs(vel.x);
 		float dt = GetDeltaTime();
@@ -64,15 +65,24 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel)
 		}
 		
 	}
+	if (timer > ENEMY_BULLET_COOLTIME) {
+		IsAttack = true;
+		//’eŠÛ”­ŽË
+		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0);
+	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy01) {
 			enemy->SetPosition(epos);
 			enemy->SetVel(evel);
+			if (IsAttack) {
+				enemy->SetTimer(0);
+			}
 		}
 	}
+	
 }
 
-void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel)
+void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const int &timer)
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
@@ -84,6 +94,9 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel)
 	float dt = GetDeltaTime();
 	Stage* stage = FindGameObject<Stage>();
 	epos.x += evel.x * dt;
+	bool IsAttack = false;
+	Vector2D ppos = pl->GetPosition();
+	float dx = ppos.x - epos.x;
 	if (evel.x > 0) {
 		int d1 = stage->HitWallRight(epos.x + IMAGE_SCALE - 1, epos.y + IMAGE_SCALE - 1);
 		int d2 = stage->HitWallRight(epos.x + IMAGE_SCALE - 1, epos.y);
@@ -118,22 +131,30 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel)
 		epos.y -= (d - 1);
 		evel.y = 0;
 	}
+	if (timer > ENEMY_BULLET_COOLTIME) {
+		IsAttack = true;
+		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0);
+	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy02) {
 			enemy->SetPosition(epos);
 			enemy->SetVel(evel);
+			if (IsAttack) {
+				enemy->SetTimer(0);
+			}
 		}
 	}
+	
 }
 
-void EnemyAttack::Enemy3Attack(const Vector2D& pos, const Vector2D& vel)
+void EnemyAttack::Enemy3Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
 {
 }
 
-void EnemyAttack::Enemy4Attack(const Vector2D& pos, const Vector2D& vel)
+void EnemyAttack::Enemy4Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
 {
 }
 
-void EnemyAttack::Enemy5Attack(const Vector2D& pos, const Vector2D& vel)
+void EnemyAttack::Enemy5Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
 {
 }
