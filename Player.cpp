@@ -19,6 +19,8 @@ namespace
 	const float curseMax = 100.0f;
 	const float curseDownRatio = 500.0f;
 	const float cursUpIsSubAtttack = 10.0f;
+	int pushM;
+	int pushB;
 }
 Player::Player()
 {
@@ -158,6 +160,7 @@ void Player::Draw()
 	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 	DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
+	DrawFormatString(100, 100, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
 
 	patCounter++;
 	if (patCounter % 10 == 0)
@@ -176,11 +179,11 @@ void Player::Draw()
 
 void Player::Attack()
 {
-	if (Input::IsKeyDown(KEY_INPUT_M))
+	if (pushM = Input::IsKeepKeyDown(KEY_INPUT_M))
 	{
 		MainAttack();
 	}
-	if (Input::IsKeyDown(KEY_INPUT_B) && curse < (curseMax - cursUpIsSubAtttack))
+	if ((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) && curse < (curseMax - cursUpIsSubAtttack))
 	{
 		SubAttack();
 	}
@@ -363,7 +366,10 @@ void Player::MainAttack()
 		PlayerAttack::Player1MainAttack(position,islookleft);
 		break;
 	case(Name2):
-		PlayerAttack::Player2MainAttack(position,islookleft);
+		if (pushM % 10 == 0)
+		{
+			PlayerAttack::Player2MainAttack(position, islookleft);
+		}
 		break;
 	case(Name3):
 		PlayerAttack::Player3MainAttack(position,islookleft);
@@ -382,7 +388,11 @@ void Player::SubAttack()
 		PlayerAttack::Player1SubAttack(position,islookleft);
 		break;
 	case (Name2):
-		PlayerAttack::Player2SubAttack(position,islookleft);
+		if (pushB % 10 == 0)
+		{
+			PlayerAttack::Player1SubAttack(position, islookleft);
+			DrawFormatString(500, 500, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
+		}
 		break;
 	case(Name3):
 		PlayerAttack::Player3SubAttack(position,islookleft);

@@ -136,11 +136,13 @@ void Bullet::Update()
 			}
 			if (islookleft == true)
 			{
+				
 				position.x -= bullettype[bullet02].speed * dt;
 			}
 			else 
 			{
 				position.x += bullettype[bullet02].speed * dt;
+
 			}
 		}
 		break;
@@ -274,11 +276,13 @@ void Slash::Update()
 			}
 			if (islookleft == true) 
 			{
-				position.x -= slashtype[slash02].speed * dt;//éûä‘Ç‹Ç≈ç∂Ç…êiÇﬁ
+				
+				position.x -= slashtype[bullet02].speed * dt;
 			}
 			else 
 			{
-				position.x += slashtype[slash02].speed * dt;//éûä‘Ç‹Ç≈âEÇ…êiÇﬁ
+				
+				position.x += slashtype[bullet02].speed * dt;
 			}
 		}
 		break;

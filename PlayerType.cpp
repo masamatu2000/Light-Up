@@ -8,7 +8,8 @@ void PlayerAttack::Player1MainAttack(const Vector2D& pos,bool lookleft)
 
 void PlayerAttack::Player2MainAttack(const Vector2D& pos,bool lookleft)
 {
-	new Slash(pos, SLASH_NUMBER::slash02,lookleft);
+
+	new Slash(pos, SLASH_NUMBER::slash02, lookleft);
 }
 
 void PlayerAttack::Player3MainAttack(const Vector2D& pos,bool lookleft)
