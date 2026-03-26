@@ -43,14 +43,18 @@ void ObjectProcess::HitObject()
 
 		if (dist < collisiondist)
 		{
-			pl->UpCurseLowerLimit(20.0f);
-			if(pl->GetCurse() < pl-> GetCurseLowerLimit())
+			if (pl->GetInvincibilityTime() < 0)
 			{
-				pl->SetCurse(pl->GetCurseLowerLimit());
-			}
-			if (pl->GetCurse() >= 100.0f)
-			{
-				pl->SetHp(0);
+				pl->UpCurseLowerLimit(20.0f);
+				if (pl->GetCurse() < pl->GetCurseLowerLimit())
+				{
+					pl->SetCurse(pl->GetCurseLowerLimit());
+				}
+				if (pl->GetCurse() >= 100.0f)
+				{
+					pl->SetHp(0);
+				}
+				pl->SetInvincibilityTime();
 			}
 			break;
 		}

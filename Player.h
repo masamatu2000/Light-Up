@@ -53,6 +53,14 @@ public:
 	{
 		return curseRecoveryArea;
 	}
+	int GetInvincibilityTime()
+	{
+		return invincibilityTimeCounter;
+	}
+	void SetInvincibilityTime()
+	{
+		invincibilityTimeCounter = INVINCIBILITU_TIME;
+	}
 
 private:
 	void Update() override;
@@ -80,6 +88,8 @@ private:
 	float curse; //ô‚¢
 	float curseLowerLimit;
 	const int curseRecoveryArea = 100;
+	int invincibilityTimeCounter;
+	const int INVINCIBILITU_TIME = 120;
 
 	//•`‰æ—pŠÖ”
 	int patX;//c‚É‰½ŒÂ–ÚH

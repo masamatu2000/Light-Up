@@ -63,6 +63,7 @@ Player::Player(int x, int y)
 	playerState = STAND;
 
 	Hp = 1;
+	invincibilityTimeCounter = 0;
 }
 
 Player::~Player()
@@ -108,12 +109,19 @@ void Player::Update()
 	{
 		curse = curseMax;
 	}
+
+	//–³“GŽžŠÔ‚ÌŒ¸­
+	invincibilityTimeCounter--;
 }
 
 void Player::Draw()
 {
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
+	if (invincibilityTimeCounter > 0)
+	{
+		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(100, 100, 100), true);
+	}
 	switch (playerType)
 	{
 	case(Name1):
@@ -441,8 +449,8 @@ void Player::Interact()
 void Player::Scroll()
 {
 	// ƒXƒNƒ[ƒ‹ˆ—
-	if (position.x >= 100) {
-		Stage::scrollX = position.x - 100;
+	if (position.x >= 200) {
+		Stage::scrollX = position.x - 200;
 	}
 
 	if (position.y - Stage::scrollY <= 100) {
