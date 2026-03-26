@@ -13,5 +13,6 @@ namespace PlayerAttack{
 	void Player1SubAttack(const Vector2D& pos, bool lookleft);
 	void Player2SubAttack(const Vector2D& pos,bool lookleft);
 	void Player3SubAttack(const Vector2D& pos,bool lookleft);
+
 	
 }

@@ -44,9 +44,12 @@ private:
 	void Draw() override;
 	//スクロール、上限値を一括設定
 	void SetScroll();
+	//プレイヤーを生成
+	void SetPlayer();
 	//プレイヤーの位置を初期値に設定
 	void SetPlayerPosition();
-	void SetEnemy();
+	//エネミー、ボスを生成
+	void SetEnemy_Boss();
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用

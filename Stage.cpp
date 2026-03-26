@@ -6,12 +6,18 @@
 #include"CsvReader.h"
 #include "Player.h"
 #include "Enemy.h"
+#include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
 
 namespace {
 	//チュートリアル、裏ステ含めた６ステージ
 	const int STAGE_MAX = 6;
+	//それぞれのCSV番号
+	const int PLAYER_CSV_NUM = 2;
+	const int ENEMY01_CSV_NUM = 10;
+	const int ENEMY02_CSV_NUM = 11;
+	const int BOSS01_CSV_NUM = 21;
 }
 
 int Stage::scrollX = 0;
@@ -25,6 +31,9 @@ Stage::Stage()
 {
 	//hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
 	//assert(hImage > 0);
+
+	//ステージ背景の描画の為の画像読み込み
+	hImage = LoadGraph("data/Image/stage/BG/BG.png");
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
@@ -82,15 +91,10 @@ Stage::Stage()
 	//スクロール、上限値の設定
 	SetScroll();
 	//↓プレイヤーを指定の座標に出現させる
-	for (int y = 0; y < map.size(); y++) {
-		for (int x = 0; x < map[y].size(); x++) {
-			if (map[y][x] == 2) {
-				new Player(x*IMAGE_SCALE, y*IMAGE_SCALE);
-				break;
-			}
-			
-		}
-	}
+	SetPlayer();
+	//敵を生成
+	SetEnemy_Boss();
+
 	//マップをチュートリアルに
 	currentStage = 0;
 
@@ -113,7 +117,7 @@ void Stage::Update()
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
-		SetEnemy();
+		SetEnemy_Boss();
 
 		//デバッグ用
 		//ボスがいるマップに行ったらtrueに
@@ -122,7 +126,8 @@ void Stage::Update()
 		isBossDefeated[currentStage] = false;
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
-				if (map[y][x] == 6) {
+				//ボスのCSV番号の21にで判別
+				if (map[y][x] == 21) {
 					isBossDefeated[currentStage] = true;
 					break;
 				}
@@ -133,6 +138,9 @@ void Stage::Update()
 
 void Stage::Draw()
 {
+	//ステージの背景の描画(仮)
+	DrawGraph(0 - Stage::scrollX, 0 - Stage::scrollY,hImage,true);
+
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == 1) {
@@ -350,6 +358,19 @@ void Stage::SetScroll()
 	Stage::scrollY = Stage::mapBottom;
 }
 
+void Stage::SetPlayer()
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			if (map[y][x] == PLAYER_CSV_NUM) {
+				new Player(x * IMAGE_SCALE, y * IMAGE_SCALE);
+				break;
+			}
+
+		}
+	}
+}
+
 void Stage::SetPlayerPosition()
 {
 	for (int y = 0; y < map.size(); y++) {
@@ -374,16 +395,21 @@ void Stage::SetPlayerPosition()
 	}
 }
 
-void Stage::SetEnemy()
+void Stage::SetEnemy_Boss()
 {
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			if (map[y][x] == 10) {
+			if (map[y][x] == ENEMY01_CSV_NUM) {
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
 				break;
 			}
-			if (map[y][x] == 11) {
+			if (map[y][x] == ENEMY02_CSV_NUM) {
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), ENEMY_NUMBER::Enemy02);
+				break;
+			}
+			if (map[y][x] == BOSS01_CSV_NUM)
+			{
+				new Boss(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), BOSS_NUMBER::BOSS01);
 				break;
 			}
 

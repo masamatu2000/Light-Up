@@ -15,6 +15,8 @@ Object::~Object()
 
 void ObjectProcess::HitObject()
 {
+	const int Damage = 1;
+
 	Player* pl = FindGameObject<Player>();
 	//Enemy* en = FindGameObject<Enemy>();
 
@@ -41,7 +43,19 @@ void ObjectProcess::HitObject()
 
 		if (dist < collisiondist)
 		{
-			
+			if (pl->GetInvincibilityTime() < 0)
+			{
+				pl->UpCurseLowerLimit(20.0f);
+				if (pl->GetCurse() < pl->GetCurseLowerLimit())
+				{
+					pl->SetCurse(pl->GetCurseLowerLimit());
+				}
+				if (pl->GetCurse() >= 100.0f)
+				{
+					pl->SetHp(0);
+				}
+				pl->SetInvincibilityTime();
+			}
 			break;
 		}
 	}
@@ -56,7 +70,7 @@ void ObjectProcess::HitObject()
 
 			if (dist < collisiondist)
 			{
-				enemy->DestroyMe();
+				enemy->DownHp(Damage);
 				bullet->DestroyMe();
 
 			}
@@ -73,7 +87,7 @@ void ObjectProcess::HitObject()
 
 			if (dist < collisiondist)
 			{
-				enemy->DestroyMe();
+				enemy->DownHp(Damage);
 				slash->DestroyMe();
 
 			}
