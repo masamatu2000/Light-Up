@@ -20,7 +20,6 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 	EnemyNumber = ENum;
 	Velocity = ENEMY_SPEED;
-	Speed = ENEMY_SPEED.x;
 	switch (EnemyNumber) {
 	case Enemy01:
 		Hp = EnemyTypeNum::ENEMY_01_HP;
@@ -29,6 +28,8 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 		Hp = EnemyTypeNum::ENEMY_02_HP;
 		break;
 	}
+	IsTrace = false;
+	timer = 0;
 }
 
 Enemy::~Enemy()
@@ -39,18 +40,22 @@ void Enemy::Update()
 {
 	if (Hp <= 0)
 	{
+		Stage* s = FindGameObject<Stage>();
+		s->CreateCorpse(position);
 		DestroyMe();
 	}
 	/*Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
 	Vector2D Distance = Math2D::Sub(ppos, position);
 	float dist = Math2D::Length(Distance);*/
+
+	timer++;
 	switch (EnemyNumber) {
 	case Enemy01:
-		EnemyAttack::Enemy1Attack(position,Velocity);
+		EnemyAttack::Enemy1Attack(position,Velocity,timer);
 		break;
 	case Enemy02:
-		EnemyAttack::Enemy2Attack(position, Velocity);
+		EnemyAttack::Enemy2Attack(position, Velocity,timer);
 		break;
 	}
 }

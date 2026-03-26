@@ -1,6 +1,6 @@
 #pragma once
 enum GIMMICK_TYPE
 {
-	gimmick01,
+	Corpse,
 	gimmick02
 };

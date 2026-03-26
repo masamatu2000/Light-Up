@@ -4,6 +4,7 @@
 #include"ImageManager.h"
 #include "DataHolder.h"
 #include "Enemy.h"
+#include"Gimmick.h"
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -61,7 +62,7 @@ Player::Player(int x, int y)
 	hImage = image->ReturnImage("player");
 	DataHolder* dh = FindGameObject<DataHolder>();
 	playerType = (PlayerName)(dh->playerNum - 1);
-
+	IsCorpse = false;
 	playerState = STAND;
 
 	Hp = 1;
@@ -457,7 +458,7 @@ void Player::Interact()
 	//ステージのインタラクト
 	canPrevious = s->CanChangeStage(position, "previous");
 	canNext = s->CanChangeStage(position, "next");
-
+	IsCorpse = s->IsCorpse(position);
 	if (Input::IsKeyDown(KEY_INPUT_E))
 	{
 		if (canNext)
@@ -467,6 +468,25 @@ void Player::Interact()
 		else if (canPrevious)
 		{
 			s->PreviousStage();
+		}
+		else if (IsCorpse) {
+			if (curse - 20 > curseLowerLimit) {
+				curse -= 20;
+				auto gmmick = FindGameObjects<Gimmick>();
+				for (auto gm : gmmick)
+				{
+					if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+					{
+						Vector2D gpos = gm->GetPosition();
+						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
+						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
+						{
+							gm->Destroy();
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 }
