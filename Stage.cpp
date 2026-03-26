@@ -9,7 +9,7 @@
 #include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
-
+#include"Gimmick.h"
 namespace {
 	//チュートリアル、裏ステ含めた６ステージ
 	const int STAGE_MAX = 6;
@@ -345,6 +345,29 @@ bool Stage::IsBossComplete()
 		}
 	}
 	return true;
+}
+
+bool Stage::IsCorpse(const Vector2D& pos)
+{
+	auto gmmick = FindGameObjects<Gimmick>();
+	for (auto gm : gmmick)
+	{
+		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse) 
+		{
+			Vector2D gpos = gm->GetPosition();
+			Vector2D dist = {abs(gpos.x-pos.x),abs(gpos.y-pos.y)};
+			if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1) {
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
+void Stage::CreateCorpse(const Vector2D& pos)
+{
+	new Gimmick(pos, GIMMICK_TYPE::Corpse);
 }
 
 void Stage::SetScroll()

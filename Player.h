@@ -84,7 +84,7 @@ private:
 	PlayerName playerType;
 	PLAYER_STATE playerState;
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
-
+	bool IsCorpse;
 	float curse; //呪い
 	float curseLowerLimit;
 	const int curseRecoveryArea = 100;

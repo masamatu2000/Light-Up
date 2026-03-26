@@ -27,7 +27,8 @@ public:
 	void PreviousStage();
 	//通常ステージの全ボス撃破してるかどうか
 	bool IsBossComplete();
-
+	bool IsCorpse(const Vector2D& pos);
+	void CreateCorpse(const Vector2D& pos);
 	int GetCurrentNum() { return currentNum; };
 	int GetNextNum() { return nextNum; };
 
