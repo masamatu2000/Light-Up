@@ -148,6 +148,7 @@
     <ClCompile Include="AttackType.cpp" />
     <ClCompile Include="BootScene.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossMove.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CsvReader.cpp" />
     <ClCompile Include="DataHolder.cpp" />

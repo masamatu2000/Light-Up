@@ -20,7 +20,6 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 	EnemyNumber = ENum;
 	Velocity = ENEMY_SPEED;
-	IsTrace = false;
 	Speed = ENEMY_SPEED.x;
 	switch (EnemyNumber) {
 	case Enemy01:

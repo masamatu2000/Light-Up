@@ -48,8 +48,8 @@ private:
 	void SetPlayer();
 	//プレイヤーの位置を初期値に設定
 	void SetPlayerPosition();
-	//エネミーを生成
-	void SetEnemy();
+	//エネミー、ボスを生成
+	void SetEnemy_Boss();
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用

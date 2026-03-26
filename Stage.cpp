@@ -6,6 +6,7 @@
 #include"CsvReader.h"
 #include "Player.h"
 #include "Enemy.h"
+#include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
 
@@ -14,9 +15,9 @@ namespace {
 	const int STAGE_MAX = 6;
 	//それぞれのCSV番号
 	const int PLAYER_CSV_NUM = 2;
-	const int ENEMY1_CSV_NUM = 10;
-	const int ENEMY2_CSV_NUM = 11;
-	const int BOSS_CSV_NUM = 21;
+	const int ENEMY01_CSV_NUM = 10;
+	const int ENEMY02_CSV_NUM = 11;
+	const int BOSS01_CSV_NUM = 21;
 }
 
 int Stage::scrollX = 0;
@@ -92,7 +93,7 @@ Stage::Stage()
 	//↓プレイヤーを指定の座標に出現させる
 	SetPlayer();
 	//敵を生成
-	SetEnemy();
+	SetEnemy_Boss();
 
 	//マップをチュートリアルに
 	currentStage = 0;
@@ -116,7 +117,7 @@ void Stage::Update()
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
-		SetEnemy();
+		SetEnemy_Boss();
 
 		//デバッグ用
 		//ボスがいるマップに行ったらtrueに
@@ -394,16 +395,21 @@ void Stage::SetPlayerPosition()
 	}
 }
 
-void Stage::SetEnemy()
+void Stage::SetEnemy_Boss()
 {
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			if (map[y][x] == 10) {
+			if (map[y][x] == ENEMY01_CSV_NUM) {
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
 				break;
 			}
-			if (map[y][x] == 11) {
+			if (map[y][x] == ENEMY02_CSV_NUM) {
 				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), ENEMY_NUMBER::Enemy02);
+				break;
+			}
+			if (map[y][x] == BOSS01_CSV_NUM)
+			{
+				new Boss(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), BOSS_NUMBER::BOSS01);
 				break;
 			}
 
