@@ -39,6 +39,8 @@ void Boss::Update()
 {
 	if (Hp <= 0)
 	{
+		Stage* s = FindGameObject<Stage>();
+		s->CreateCorpse(position);
 		DestroyMe();
 	}
 }
