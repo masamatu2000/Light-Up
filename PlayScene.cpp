@@ -62,8 +62,8 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
-	DrawString(100, 100, "PlayScene", 0xffffff);
-	DrawString(100, 120, "Push [N]Key To Title", 0xffffff);
+	DrawString(100, 0, "PlayScene", 0xffffff);
+	DrawString(100, 20, "Push [N]Key To Title", 0xffffff);
 }
 
 void PlayScene::UpdateStart()
