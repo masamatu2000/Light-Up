@@ -11,28 +11,28 @@ namespace {
 	const float BULLET01_RADIUS = 15.0f;
 	const float BULLET01_LIFE = 3.0f;
 	const float BULLET01_POS = 10.0f;
-	const float BULLET02_SPEED = 100.0f;
-	const float BULLET02_RADIUS = 8.0f;
+	const float BULLET02_SPEED = 500.0f;
+	const float BULLET02_RADIUS = 2.0f;
 	const float BULLET02_LIFE = 3.0f;
 	const float BULLET02_POS = 10.0f;
 	const float BULLET03_SPEED = 100.0f;
-	const float BULLET03_RADIUS = 8.0f;
+	const float BULLET03_RADIUS = 20.0f;
 	const float BULLET03_LIFE = 3.0f;
-	const float BULLET03_POS = 10.0f;
+	const float BULLET03_POS = 20.0f;
 	
 
 	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 40.0f;
 	const float SLASH01_LIFE = 0.1f;
 	const float SLASH01_POS = 10.0f;
-	const float SLASH02_SPEED = 200.0f;
+	const float SLASH02_SPEED = 300.0f;
 	const float SLASH02_RADIUS = 20.0f;
 	const float SLASH02_LIFE = 0.1f;
-	const float SLASH02_POS = 10.0f;
+	const float SLASH02_POS = 20.0f;
 	const float SLASH03_SPEED = 200.0f;
-	const float SLASH03_RADIUS = 20.0f;
+	const float SLASH03_RADIUS = 40.0f;
 	const float SLASH03_LIFE = 0.1f;
-	const float SLASH03_POS = 10.0f;
+	const float SLASH03_POS = 20.0f;
 
 }
 

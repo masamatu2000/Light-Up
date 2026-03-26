@@ -18,7 +18,9 @@ namespace
 
 	const float curseMax = 100.0f;
 	const float curseDownRatio = 500.0f;
-	const float cursUpIsSubAtttack = 10.0f;
+	const float cursUpIsPlayer01SubAtttack = 5.0f;
+	const float cursUpIsPlayer02SubAtttack = 1.0f;
+	const float cursUpIsPlayer03SubAtttack = 10.0f;
 	int pushM;
 	int pushB;
 }
@@ -191,7 +193,7 @@ void Player::Attack()
 	{
 		MainAttack();
 	}
-	if ((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) && curse < (curseMax - cursUpIsSubAtttack))
+	if (pushB = Input::IsKeepKeyDown(KEY_INPUT_B))
 	{
 		SubAttack();
 	}
@@ -371,16 +373,22 @@ void Player::MainAttack()
 	switch (playerType)
 	{
 	case(Name1):
-		PlayerAttack::Player1MainAttack(position,islookleft);
+		if (pushM == 1)
+		{
+			PlayerAttack::Player1MainAttack(position, islookleft);
+		}
 		break;
 	case(Name2):
-		if (pushM % 10 == 0)
+		if (pushM % 10 == 1)
 		{
 			PlayerAttack::Player2MainAttack(position, islookleft);
 		}
 		break;
 	case(Name3):
-		PlayerAttack::Player3MainAttack(position,islookleft);
+		if (pushM == 1)
+		{
+			PlayerAttack::Player3MainAttack(position, islookleft);
+		}
 		break;
 	default:
 		break;
@@ -393,22 +401,39 @@ void Player::SubAttack()
 	switch (playerType)
 	{
 	case (Name1):
-		PlayerAttack::Player1SubAttack(position,islookleft);
+		if(curse < (curseMax - cursUpIsPlayer01SubAtttack))
+		{
+			if (pushB == 1)
+			{
+				PlayerAttack::Player1SubAttack(position, islookleft);
+				UpCurse(cursUpIsPlayer01SubAtttack);
+			}
+		}
 		break;
 	case (Name2):
-		if (pushB % 10 == 0)
+		if (curse < (curseMax - cursUpIsPlayer02SubAtttack))
 		{
-			PlayerAttack::Player1SubAttack(position, islookleft);
-			DrawFormatString(500, 500, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
+			if (pushB % 10 == 1)
+			{
+				PlayerAttack::Player1SubAttack(position, islookleft);
+				UpCurse(cursUpIsPlayer02SubAtttack);
+			}
 		}
 		break;
 	case(Name3):
-		PlayerAttack::Player3SubAttack(position,islookleft);
+		if (curse < (curseMax - cursUpIsPlayer03SubAtttack))
+		{
+			if (pushB == 1)
+			{
+				PlayerAttack::Player3SubAttack(position, islookleft);
+				UpCurse(cursUpIsPlayer03SubAtttack);
+			}
+		}
 		break;
 	default:
 		break;
 	}
-	UpCurse(cursUpIsSubAtttack);
+	
 }
 
 void Player::SupportSkill()
