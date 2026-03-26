@@ -12,6 +12,11 @@
 namespace {
 	//チュートリアル、裏ステ含めた６ステージ
 	const int STAGE_MAX = 6;
+	//それぞれのCSV番号
+	const int PLAYER_CSV_NUM = 2;
+	const int ENEMY1_CSV_NUM = 10;
+	const int ENEMY2_CSV_NUM = 11;
+	const int BOSS_CSV_NUM = 21;
 }
 
 int Stage::scrollX = 0;
@@ -85,15 +90,10 @@ Stage::Stage()
 	//スクロール、上限値の設定
 	SetScroll();
 	//↓プレイヤーを指定の座標に出現させる
-	for (int y = 0; y < map.size(); y++) {
-		for (int x = 0; x < map[y].size(); x++) {
-			if (map[y][x] == 2) {
-				new Player(x*IMAGE_SCALE, y*IMAGE_SCALE);
-				break;
-			}
-			
-		}
-	}
+	SetPlayer();
+	//敵を生成
+	SetEnemy();
+
 	//マップをチュートリアルに
 	currentStage = 0;
 
@@ -125,7 +125,8 @@ void Stage::Update()
 		isBossDefeated[currentStage] = false;
 		for (int y = 0; y < map.size(); y++) {
 			for (int x = 0; x < map[y].size(); x++) {
-				if (map[y][x] == 6) {
+				//ボスのCSV番号の21にで判別
+				if (map[y][x] == 21) {
 					isBossDefeated[currentStage] = true;
 					break;
 				}
@@ -354,6 +355,19 @@ void Stage::SetScroll()
 
 	Stage::scrollX = Stage::mapLeft;
 	Stage::scrollY = Stage::mapBottom;
+}
+
+void Stage::SetPlayer()
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			if (map[y][x] == PLAYER_CSV_NUM) {
+				new Player(x * IMAGE_SCALE, y * IMAGE_SCALE);
+				break;
+			}
+
+		}
+	}
 }
 
 void Stage::SetPlayerPosition()
