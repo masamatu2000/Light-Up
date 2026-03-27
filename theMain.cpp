@@ -90,6 +90,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 
 		Input::KeyStateUpdate(); // キー入力の状態を更新
+		Input::PadStateUpdate(); //コントローラの入力状態を更新
 
 		crrTime = GetNowCount(); // 現在の時間を取得
 		// 前回の時間との差分を計算
