@@ -67,8 +67,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 	}
 	if (timer > ENEMY_BULLET_COOLTIME) {
 		IsAttack = true;
-		//’eŠÛ”­ŽË
-		new Bullet(pos, BULLET_NUMBER::bullet01, (dx <0), OBJECT_TAG::ENEMY);
+		
+		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
 		
 	}
 	for (auto enemy : e) {
@@ -134,7 +134,15 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	}
 	if (timer > ENEMY_BULLET_COOLTIME) {
 		IsAttack = true;
-		new Bullet(pos, BULLET_NUMBER::bullet01,( dx < 0),OBJECT_TAG::ENEMY);
+		Player* pl = FindGameObject<Player>();
+		Vector2D distance = Math2D::Sub(pl->GetPosition(), epos);
+		Vector2D dir = Math2D::Normalize(distance);
+		float Rad = 30 * (DX_PI_F / 180.0f);
+		Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };//(dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad))
+		Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
+		new Bullet(pos, BULLET_NUMBER::bullet04,dir,OBJECT_TAG::ENEMY);
+		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation, OBJECT_TAG::ENEMY);
+		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation2 , OBJECT_TAG::ENEMY);
 	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy02) {

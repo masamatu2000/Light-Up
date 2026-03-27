@@ -10,7 +10,12 @@ public:
 	~Enemy();
 	ENEMY_NUMBER GetEnum() { return EnemyNumber; }
 	void SetTimer(int time) { timer = time; }//攻撃用のタイマーセッター
-	
+	int GetInvincibilityTime() { return invincibilityTimeCounter; }
+	void SetInvincibilityTime(int timer) { invincibilityTimeCounter = timer; }
+	void SetInvincibilityTime()
+	{
+		invincibilityTimeCounter = INVINCIBILITU_TIME;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -18,4 +23,6 @@ private:
 	ENEMY_NUMBER EnemyNumber;
 	bool IsTrace;
 	int timer;
+	int invincibilityTimeCounter;
+	const int INVINCIBILITU_TIME = 10 % 60;
 };

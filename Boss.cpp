@@ -29,6 +29,7 @@ Boss::Boss(const Vector2D& pos, BOSS_NUMBER bNum)
 		Hp = (unsigned int)BossTypeNum::BOSS_02_HP;
 		break;
 	}
+	invincibilityTimeCounter = 0;//–³“GŽžŠÔ
 }
 
 Boss::~Boss()
@@ -44,6 +45,7 @@ void Boss::Update()
 		s->DefeatedBoss();
 		DestroyMe();
 	}
+	invincibilityTimeCounter--;
 }
 
 void Boss::Draw()

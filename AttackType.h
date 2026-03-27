@@ -10,6 +10,7 @@ enum OBJECT_TAG {
 class Bullet :public AttackObject {
 public:
 	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag);
+	Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum,Vector2D direction, OBJECT_TAG tag);
 	~Bullet();
 	void Update()override;
 	void Draw()override;
@@ -22,28 +23,18 @@ private:
 		float life;
 	};
 	std::vector<BulletType> bullettype;
-	struct BulletType2 {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<BulletType2> bullettype2;
-	struct BulletType3 {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<BulletType3> bullettype3;
 	bool islookleft;
 	OBJECT_TAG objtag;
+	Vector2D dir;
 };
 class Slash :public AttackObject
 {
 public:
-	Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft);//コンストラクタに左を向いているかどうかの処理を追加
+	Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft,OBJECT_TAG tag);//コンストラクタに左を向いているかどうかの処理を追加
 	~Slash();
 	void Update()override;
 	void Draw()override;
+	OBJECT_TAG Gettag() { return objtag; }
 private:
 	SLASH_NUMBER slashNum_;
 	struct SlashType {
@@ -66,4 +57,5 @@ private:
 	};
 	std::vector<SlashType3> slashtype3;
 	bool islookleft;
+	OBJECT_TAG objtag;
 };

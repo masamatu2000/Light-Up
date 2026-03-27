@@ -1,6 +1,6 @@
 #include "AttackType.h"
 #include "Stage.h"
-
+#include"Player.h"
 /// <summary>
 /// プレイヤーの攻撃方法を管理する
 /// M.Shoji
@@ -19,8 +19,10 @@ namespace {
 	const float BULLET03_RADIUS = 20.0f;
 	const float BULLET03_LIFE = 3.0f;
 	const float BULLET03_POS = 20.0f;
-	
-
+	const float BULLET04_SPEED = 300.0f;
+	const float BULLET04_RADIUS = 10.0f;
+	const float BULLET04_LIFE = 3.0f;
+	const float BULLET04_POS = 10.0f;
 	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 40.0f;
 	const float SLASH01_LIFE = 0.1f;
@@ -41,22 +43,12 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
 	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
-	BulletType2 bt4 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
-	BulletType2 bt5 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
-	BulletType2 bt6 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
-	BulletType3 bt7 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
-	BulletType3 bt8 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
-	BulletType3 bt9 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
+	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
 	bullettype.clear();
 	bullettype.push_back(bt1);
 	bullettype.push_back(bt2);
 	bullettype.push_back(bt3);
-	bullettype2.push_back(bt4);
-	bullettype2.push_back(bt5);
-	bullettype2.push_back(bt6);
-	bullettype3.push_back(bt7);
-	bullettype3.push_back(bt8);
-	bullettype3.push_back(bt9);
+	bullettype.push_back(bt4);
 	bulletNum_ = bulletNum;
 	position = pos;
 	islookleft = lookleft;
@@ -94,7 +86,38 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_
 		}
 		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
 		break;
+	case bullet04:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(BULLET03_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(BULLET03_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
+		break;
 	}
+	objtag = tag;
+	/*Player* pl = FindGameObject<Player>();
+	Vector2D distance= Math2D::Sub(pl->GetPosition(), position);
+	dir = Math2D::Normalize(distance);*/
+}
+
+Bullet::Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum, Vector2D direction, OBJECT_TAG tag)
+{
+	dir = direction;
+	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
+	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
+	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
+	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
+	bullettype.clear();
+	bullettype.push_back(bt1);
+	bullettype.push_back(bt2);
+	bullettype.push_back(bt3);
+	bullettype.push_back(bt4);
+	bulletNum_ = bulletNum;
+	position = pos;
 	objtag = tag;
 }
 
@@ -166,6 +189,19 @@ void Bullet::Update()
 			}
 		}
 		break;
+	case bullet04:
+		if (bullettype[bullet04].life > 0)
+		{
+			bullettype[bullet04].life -= dt;
+			if (bullettype[bullet04].life <= 0)
+			{
+				DestroyMe();
+				break;
+			}
+				position.x += bullettype[bullet04].speed *dir.x* dt;
+				position.y+= bullettype[bullet04].speed * dir.y * dt;
+		}
+		break;
 	}
 }
 
@@ -176,7 +212,7 @@ void Bullet::Draw()
 	DrawCircle((int)posX+16,(int) posY+16,(int) bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
 }
 
-Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
+Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft,OBJECT_TAG tag)
 {
 	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
 	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
@@ -235,6 +271,7 @@ Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
 		circleColid = CircleColid(Vector2D(0, 0), SLASH03_RADIUS);
 		break;
 	}
+	objtag = tag;
 }
 
 Slash::~Slash()

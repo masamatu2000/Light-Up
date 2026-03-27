@@ -96,8 +96,12 @@ void ObjectProcess::HitObject()
 
 				if (dist < collisiondist)
 				{
-					enemy->DownHp(Damage);
-					bullet->DestroyMe();
+					if (enemy->GetInvincibilityTime() < 0)
+					{
+						enemy->DownHp(Damage);
+						bullet->DestroyMe();
+						enemy->SetInvincibilityTime();
+					}
 				}
 			}
 		}
@@ -108,7 +112,62 @@ void ObjectProcess::HitObject()
 				float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
-					bs->DownHp(Damage);
+					if (bs->GetInvincibilityTime() < 0)
+					{
+						bs->DownHp(Damage);
+						bullet->DestroyMe();
+						bs->SetInvincibilityTime();
+					}
+				}
+			}
+		}
+	}
+	//敵と弾のヒットチェック
+	for (auto& bullet : aliveBullets)
+	{
+		//通常の敵との判定
+			if (bullet->Gettag() == OBJECT_TAG::ENEMY) {
+				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), bullet->GetPosition()));
+				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
+
+				if (dist < collisiondist)
+				{
+					if (pl->GetInvincibilityTime() < 0)
+					{
+						pl->UpCurseLowerLimit(20.0f);
+						if (pl->GetCurse() < pl->GetCurseLowerLimit())
+						{
+							pl->SetCurse(pl->GetCurseLowerLimit());
+						}
+						if (pl->GetCurse() >= 100.0f)
+						{
+							pl->SetHp(0);
+						}
+						pl->SetInvincibilityTime();
+					}
+					break;
+				}
+			}
+		//ボスとの判定
+		if (bs != nullptr) {
+			if (bullet->Gettag() == OBJECT_TAG::BOSS) {
+				float dist = Math2D::Length(Math2D::Sub(pl ->GetPosition(), bullet->GetPosition()));
+				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
+				if (dist < collisiondist)
+				{
+					if (pl->GetInvincibilityTime() < 0)
+					{
+						pl->UpCurseLowerLimit(20.0f);
+						if (pl->GetCurse() < pl->GetCurseLowerLimit())
+						{
+							pl->SetCurse(pl->GetCurseLowerLimit());
+						}
+						if (pl->GetCurse() >= 100.0f)
+						{
+							pl->SetHp(0);
+						}
+						pl->SetInvincibilityTime();
+					}
 					bullet->DestroyMe();
 				}
 			}
@@ -120,26 +179,82 @@ void ObjectProcess::HitObject()
 		//通常の敵との判定
 		for (auto& enemy : aliveEnemies)
 		{
-			float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), slash->GetPosition()));
-			float collisiondist = enemy->GetCollisionRadius() + slash->GetCollisionRadius();
+			if (slash->Gettag() == OBJECT_TAG::PLAYER) {
+				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), slash->GetPosition()));
+				float collisiondist = enemy->GetCollisionRadius() + slash->GetCollisionRadius();
 
-			if (dist < collisiondist)
-			{
-				enemy->DownHp(Damage);
-				slash->DestroyMe();
-
+				if (dist < collisiondist)
+				{
+					if (enemy->GetInvincibilityTime() < 0) {
+						enemy->DownHp(Damage);
+						slash->DestroyMe();
+						enemy->SetInvincibilityTime();
+					}
+				}
 			}
 		}
 		//ボスとの判定
 		if (bs != nullptr) {
-			float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), slash->GetPosition()));
-			float collisiondist = bs->GetCollisionRadius() + slash->GetCollisionRadius();
-			if (dist < collisiondist)
-			{
-				bs->DownHp(Damage);
-				slash->DestroyMe();
+			if (slash->Gettag() == OBJECT_TAG::PLAYER) {
+				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), slash->GetPosition()));
+				float collisiondist = bs->GetCollisionRadius() + slash->GetCollisionRadius();
+				if (dist < collisiondist)
+				{
+					if (bs->GetInvincibilityTime() < 0) {
+						bs->DownHp(Damage);
+						slash->DestroyMe();
+						bs->SetInvincibilityTime();
+					}
+				}
 			}
 		}
+		if (slash->Gettag() == OBJECT_TAG::ENEMY) {
+			float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
+			float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
+
+			if (dist < collisiondist)
+			{
+				if (pl->GetInvincibilityTime() < 0)
+				{
+					pl->UpCurseLowerLimit(20.0f);
+					if (pl->GetCurse() < pl->GetCurseLowerLimit())
+					{
+						pl->SetCurse(pl->GetCurseLowerLimit());
+					}
+					if (pl->GetCurse() >= 100.0f)
+					{
+						pl->SetHp(0);
+					}
+					pl->SetInvincibilityTime();
+				}
+				break;
+			}
+		}
+		//ボスとの判定
+		if (bs != nullptr) {
+			if (slash->Gettag() == OBJECT_TAG::BOSS) {
+				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
+				float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
+				if (dist < collisiondist)
+				{
+					if (pl->GetInvincibilityTime() < 0)
+					{
+						pl->UpCurseLowerLimit(20.0f);
+						if (pl->GetCurse() < pl->GetCurseLowerLimit())
+						{
+							pl->SetCurse(pl->GetCurseLowerLimit());
+						}
+						if (pl->GetCurse() >= 100.0f)
+						{
+							pl->SetHp(0);
+						}
+						pl->SetInvincibilityTime();
+					}
+					slash->DestroyMe();
+				}
+			}
+		}
+
 	}
 
 }

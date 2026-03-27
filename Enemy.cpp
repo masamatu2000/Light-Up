@@ -29,6 +29,7 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 		break;
 	}
 	timer = 0;
+	invincibilityTimeCounter = 0;//–³“GŽžŠÔ
 }
 
 Enemy::~Enemy()
@@ -57,6 +58,7 @@ void Enemy::Update()
 		EnemyAttack::Enemy2Attack(position, Velocity,timer);
 		break;
 	}
+	invincibilityTimeCounter--;
 }
 
 void Enemy::Draw()

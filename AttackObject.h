@@ -10,7 +10,8 @@ enum BULLET_NUMBER
 {
 	bullet01,
 	bullet02,
-	bullet03
+	bullet03,
+	bullet04
 };
 enum SLASH_NUMBER
 {
