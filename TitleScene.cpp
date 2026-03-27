@@ -1,4 +1,5 @@
 #include "TitleScene.h"
+#include"Input.h"
 
 /// <summary>
 /// ƒ^ƒCƒgƒ‹‰æ–Ê
@@ -15,7 +16,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Update()
 {
-	if (Input::IsKeyDown(KEY_INPUT_N))
+	if (Input::IsKeyDown(KEY_INPUT_N) || Input::IsPadDown(Pad::A))
 	{
 		SceneManager::ChangeScene(SCENE_NAME::SELECT_SCENE);
 	}
