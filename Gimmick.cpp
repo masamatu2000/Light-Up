@@ -4,7 +4,7 @@ Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt)
 {
 	position = pos;
 	gimmicType = gt;
-	IsDestroy = false;
+	
 }
 
 Gimmick::~Gimmick()
@@ -13,9 +13,7 @@ Gimmick::~Gimmick()
 
 void Gimmick::Update()
 {
-	if (IsDestroy) {
-		DestroyMe();
-	}
+	
 }
 
 

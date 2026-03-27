@@ -2,12 +2,18 @@
 #include"AttackObject.h"
 #include<vector>
 
+enum OBJECT_TAG {
+	PLAYER,
+	ENEMY,
+	BOSS
+};
 class Bullet :public AttackObject {
 public:
-	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft);
+	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag);
 	~Bullet();
 	void Update()override;
 	void Draw()override;
+	OBJECT_TAG Gettag() { return objtag; }
 private:
 	BULLET_NUMBER bulletNum_;
 	struct BulletType {
@@ -29,6 +35,7 @@ private:
 	};
 	std::vector<BulletType3> bullettype3;
 	bool islookleft;
+	OBJECT_TAG objtag;
 };
 class Slash :public AttackObject
 {

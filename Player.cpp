@@ -502,7 +502,7 @@ void Player::Interact()
 						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
 						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
 						{
-							gm->Destroy();
+							gm->DestroyMe();
 							break;
 						}
 					}
@@ -510,6 +510,20 @@ void Player::Interact()
 			}
 			else {
 				curse = curseLowerLimit;
+				auto gmmick = FindGameObjects<Gimmick>();
+				for (auto gm : gmmick)
+				{
+					if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+					{
+						Vector2D gpos = gm->GetPosition();
+						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
+						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
+						{
+							gm->DestroyMe();
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

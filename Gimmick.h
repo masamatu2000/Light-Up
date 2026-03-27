@@ -9,11 +9,10 @@ public:
 	~Gimmick();
 	GIMMICK_TYPE GetGimmicType() { return gimmicType; }
 	Vector2D GetPosition() { return position; }
-	void Destroy() { IsDestroy = true; }
 private:
 	void Update() override;
 	void Draw() override;
 private:
 	GIMMICK_TYPE gimmicType;
-	bool IsDestroy;
+	
 };
