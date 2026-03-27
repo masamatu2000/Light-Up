@@ -4,6 +4,7 @@
 #include"ImageManager.h"
 #include "DataHolder.h"
 #include "Enemy.h"
+#include"Boss.h"
 #include"Gimmick.h"
 /// <summary>
 /// M.Shoji
@@ -104,6 +105,26 @@ void Player::Update()
 			break;
 		}
 	}
+	//É{ÉXÇ…ãﬂÇ√Ç¢ÇΩéûÇÃéÙÇ¢å∏è≠
+	Boss* bs = FindGameObject<Boss>();
+	if (bs != nullptr)
+	{
+		float dist = Math2D::Length(Math2D::Sub(GetPosition(), bs->GetPosition()));
+		float collisiondist = GetCurseRecoveryArea();
+
+		if (dist < collisiondist)
+		{
+			float UpData = collisiondist - dist;
+			UpData = UpData / curseDownRatio;
+			UpData = UpData * -1;
+			UpCurse(UpData);
+			if (GetCurse() < GetCurseLowerLimit())
+			{
+				SetCurse(GetCurseLowerLimit());
+			}
+		}
+	}
+
 	if (curseLowerLimit > curseMax)
 	{
 		curseLowerLimit = curseMax;
