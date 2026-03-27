@@ -19,16 +19,16 @@ void PlayerAttack::Player3MainAttack(const Vector2D& pos,bool lookleft)
 
 void PlayerAttack::Player1SubAttack(const Vector2D& pos,bool lookleft)
 {
-	new Bullet(pos, BULLET_NUMBER::bullet01,lookleft);
+	new Bullet(pos, BULLET_NUMBER::bullet01,lookleft,OBJECT_TAG::PLAYER);
 }
 
 void PlayerAttack::Player2SubAttack(const Vector2D& pos,bool lookleft)
 {
-	new Bullet(pos, BULLET_NUMBER::bullet02,lookleft);
+	new Bullet(pos, BULLET_NUMBER::bullet02,lookleft, OBJECT_TAG::PLAYER);
 }
 
 void PlayerAttack::Player3SubAttack(const Vector2D& pos, bool lookleft)
 {
 	new Slash(pos, SLASH_NUMBER::slash03, lookleft);
-	new Bullet(pos, BULLET_NUMBER::bullet03,lookleft);
+	new Bullet(pos, BULLET_NUMBER::bullet03,lookleft, OBJECT_TAG::PLAYER);
 }

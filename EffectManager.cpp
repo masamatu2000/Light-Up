@@ -16,7 +16,7 @@ Effect::Effect()
 Effect::Effect(int x, int y)
 {
 	hImage = LoadGraph("data/image/character/aoi.png");
-	position = Vector2D(x, y);
+	position = Vector2D((float)x, (float)y);
 	patX = 0;
 	patY = 0;
 	patCounter = 0;
@@ -35,7 +35,7 @@ void Effect::Update()
 	//アニメーションをつける
 	if (timer > 0)
 	{
-		timer = timer -GetDeltaTime();
+		timer = timer -(int)GetDeltaTime();
 		patCounter++;
 		patX = (patCounter / 4) % 4;
 	}
@@ -47,6 +47,6 @@ void Effect::Update()
 
 void Effect::Draw()
 {
-	DrawRectGraph(position.x, position.y, patX*64, patY*64, 64, 64, hImage, TRUE);
+	DrawRectGraph((int)position.x,(int) position.y, patX*64, patY*64, 64, 64, hImage, TRUE);
 	//DrawBox(position.x, position.y, position.x + 16, position.y + 16, GetColor(0, 0, 255), TRUE);
 }

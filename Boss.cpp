@@ -23,10 +23,10 @@ Boss::Boss(const Vector2D& pos, BOSS_NUMBER bNum)
 	speed = Velocity.x;
 	switch (bossNumber) {
 	case BOSS01:
-		Hp = BossTypeNum::BOSS_01_HP;
+		Hp =(unsigned int) BossTypeNum::BOSS_01_HP;
 		break;
 	case BOSS02:
-		Hp = BossTypeNum::BOSS_02_HP;
+		Hp = (unsigned int)BossTypeNum::BOSS_02_HP;
 		break;
 	}
 }
@@ -51,6 +51,6 @@ void Boss::Draw()
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
 
-	DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
+	DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
 }
 

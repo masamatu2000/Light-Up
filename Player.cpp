@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include"Boss.h"
 #include"Gimmick.h"
+
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -44,7 +45,7 @@ Player::Player()
 
 Player::Player(int x, int y)
 {
-	position = Vector2D(x, y);
+	position = Vector2D((float)x, (float)y);
 	Velocity = Vector2D(0.0f,0.0f);
 	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
 	
@@ -90,7 +91,7 @@ void Player::Update()
 	for (auto& enemy : aliveEnemies)
 	{
 		float dist = Math2D::Length(Math2D::Sub(GetPosition(), enemy->GetPosition()));
-		float collisiondist = GetCurseRecoveryArea();
+		float collisiondist = (float)GetCurseRecoveryArea();
 
 		if (dist < collisiondist)
 		{
@@ -110,7 +111,7 @@ void Player::Update()
 	if (bs != nullptr)
 	{
 		float dist = Math2D::Length(Math2D::Sub(GetPosition(), bs->GetPosition()));
-		float collisiondist = GetCurseRecoveryArea();
+		float collisiondist = (float)GetCurseRecoveryArea();
 
 		if (dist < collisiondist)
 		{
@@ -144,18 +145,18 @@ void Player::Draw()
 	float y = position.y - Stage::scrollY;
 	if (invincibilityTimeCounter > 0)
 	{
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(100, 100, 100), true);
+		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(100, 100, 100), true);
 	}
 	switch (playerType)
 	{
 	case(Name1):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
+		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
 		break;
 	case(Name2):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
+		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
 		break;
 	case(Name3):
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
+		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
 		break;
 	default:
 		break;
@@ -186,12 +187,14 @@ void Player::Draw()
 		break;
 	}
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
-	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
+	DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
-	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
-	DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
-	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
+	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+
+
+	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
 	DrawFormatString(100, 100, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
 
 	patCounter++;
@@ -205,7 +208,7 @@ void Player::Draw()
 	}
 	if (Hp <= 0)
 	{
-		DrawBox(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), true);
+		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), true);
 	}
 }
 
@@ -303,8 +306,8 @@ void Player::Mova()
 	position.x += Velocity.x;
 
 	if (Velocity.x > 0) {
-		int d1 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE - 1);
-		int d2 = s->HitWallRight(position.x + IMAGE_SCALE - 1, position.y);
+		int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
+		int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -316,8 +319,8 @@ void Player::Mova()
 	}
 	else if (Velocity.x < 0)
 	{
-		int d1 = s->HitWallLeft(position.x + 0, position.y + IMAGE_SCALE - 1);
-		int d2 = s->HitWallLeft(position.x + 0, position.y);
+		int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+		int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -336,8 +339,8 @@ void Player::Mova()
 
 	//地面との当たり判定
 	if (s != nullptr) {
-		int d1 = s->HitFloor(position.x + 0, position.y + IMAGE_SCALE);
-		int d2 = s->HitFloor(position.x + IMAGE_SCALE - 1, position.y + IMAGE_SCALE);
+		int d1 = s->HitFloor((int)(position.x + 0),(int)( position.y + IMAGE_SCALE));
+		int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1),(int)( position.y + IMAGE_SCALE));
 
 		int d = max(d1, d2);
 
@@ -364,8 +367,8 @@ void Player::Mova()
 	}
 	if (s != nullptr) {
 		//天井との当たり判定
-		int d1 = s->HitCeiling(position.x + 0, position.y - 1);//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling(position.x + IMAGE_SCALE - 1, position.y - 1);
+		int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
+		int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
 
 		int d = max(d1, d2);
 
@@ -502,7 +505,7 @@ void Player::Interact()
 						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
 						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
 						{
-							gm->Destroy();
+							gm->DestroyMe();
 							break;
 						}
 					}
@@ -510,6 +513,20 @@ void Player::Interact()
 			}
 			else {
 				curse = curseLowerLimit;
+				auto gmmick = FindGameObjects<Gimmick>();
+				for (auto gm : gmmick)
+				{
+					if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+					{
+						Vector2D gpos = gm->GetPosition();
+						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
+						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
+						{
+							gm->DestroyMe();
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -519,16 +536,16 @@ void Player::Scroll()
 {
 	// スクロール処理
 	if (position.x >= 200) {
-		Stage::scrollX = position.x - 200;
+		Stage::scrollX = (int)(position.x - 200);
 	}
 
 	if (position.y - Stage::scrollY <= 100) {
-		Stage::scrollY = position.y - 100;
+		Stage::scrollY = (int)(position.y - 100);
 	}
 
 	//より自然？なスクロール
 	if (position.y - Stage::scrollY >= 150) {
-		Stage::scrollY = position.y - 150;
+		Stage::scrollY = (int)(position.y - 150);
 	}
 
 	//スクロールの制限

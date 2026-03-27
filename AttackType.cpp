@@ -36,7 +36,7 @@ namespace {
 
 }
 
-Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
+Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag)
 {
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
@@ -95,6 +95,7 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
 		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
 		break;
 	}
+	objtag = tag;
 }
 
 Bullet::~Bullet()
@@ -172,7 +173,7 @@ void Bullet::Draw()
 {
 	float posX = position.x-Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
-	DrawCircle(posX+16, posY+16, bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
+	DrawCircle((int)posX+16,(int) posY+16,(int) bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
 }
 
 Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft)
@@ -312,6 +313,6 @@ void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
 	float posY = position.y - Stage::scrollY;
-	DrawCircle(posX+16, posY+16, slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
+	DrawCircle(int(posX+16), int(posY+16), (int)slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
 
 }

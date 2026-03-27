@@ -90,23 +90,27 @@ void ObjectProcess::HitObject()
 		//’Êí‚Ì“G‚Æ‚Ì”»’è
 		for (auto& enemy : aliveEnemies)
 		{
-			float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), bullet->GetPosition()));
-			float collisiondist = enemy->GetCollisionRadius() + bullet->GetCollisionRadius();
+			if (bullet->Gettag() == OBJECT_TAG::PLAYER) {
+				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), bullet->GetPosition()));
+				float collisiondist = enemy->GetCollisionRadius() + bullet->GetCollisionRadius();
 
-			if (dist < collisiondist)
-			{
-				enemy->DownHp(Damage);
-				bullet->DestroyMe();
+				if (dist < collisiondist)
+				{
+					enemy->DownHp(Damage);
+					bullet->DestroyMe();
+				}
 			}
 		}
 		//ƒ{ƒX‚Æ‚Ì”»’è
 		if (bs != nullptr) {
-			float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), bullet->GetPosition()));
-			float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
-			if (dist < collisiondist)
-			{
-				bs->DownHp(Damage);
-				bullet->DestroyMe();
+			if (bullet->Gettag() == OBJECT_TAG::PLAYER) {
+				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), bullet->GetPosition()));
+				float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
+				if (dist < collisiondist)
+				{
+					bs->DownHp(Damage);
+					bullet->DestroyMe();
+				}
 			}
 		}
 	}
