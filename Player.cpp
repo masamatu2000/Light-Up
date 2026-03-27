@@ -227,11 +227,11 @@ void Player::Draw()
 
 void Player::Attack()
 {
-	if ((pushM = Input::IsKeepKeyDown(KEY_INPUT_M)) && mainAttackRecast <= 0)
+	if (((pushM = Input::IsKeepKeyDown(KEY_INPUT_M)) || (pushM = Input::IsKeepPadDown(Pad::X))) && mainAttackRecast <= 0)
 	{
 		MainAttack();
 	}
-	if ((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) && subAttackRecast <= 0)
+	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) | (pushB =  Input::IsKeepPadDown(Pad::B))) && subAttackRecast <= 0)
 	{
 		SubAttack();
 	}
@@ -252,7 +252,7 @@ void Player::Mova()
 	Stage* s = FindGameObject<Stage>();
 	float dt = GetDeltaTime();
 	//右に進む
-	if (CheckHitKey(KEY_INPUT_D)) {
+	if (CheckHitKey(KEY_INPUT_D) || Input::IsKeepPadDown(Pad::RIGHT)) {
 		//position.x += 3.0f; 加速度を変えて移動していくのでコメントアウト
 
 		islookleft = false;
@@ -275,7 +275,7 @@ void Player::Mova()
 	}
 	//値がマイナスの時
 	//左に進む
-	else if (CheckHitKey(KEY_INPUT_A)) {
+	else if (CheckHitKey(KEY_INPUT_A) || Input::IsKeepPadDown(Pad::LEFT)) {
 		//position.x -= 3.0f;
 
 		islookleft = true;
@@ -354,7 +354,7 @@ void Player::Mova()
 		position.x += max(d1, d2);
 	}
 
-	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE)) {
+	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
 		jamp();
 	}
 	//プレイヤー落下
@@ -521,7 +521,7 @@ void Player::Interact()
 	canPrevious = s->CanChangeStage(position, "previous");
 	canNext = s->CanChangeStage(position, "next");
 	IsCorpse = s->IsCorpse(position);
-	if (Input::IsKeyDown(KEY_INPUT_E))
+	if (Input::IsKeyDown(KEY_INPUT_E) || Input::IsPadDown(Pad::Y))
 	{
 		if (canNext)
 		{

@@ -59,17 +59,17 @@ void SelectScene::Draw()
 void SelectScene::UpdateStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
-	if (Input::IsKeyDown(KEY_INPUT_A))
+	if (Input::IsKeyDown(KEY_INPUT_A) || Input::IsPadDown(Pad::LEFT))
 	{
 		dh->stageNum -= 1;
 		if (dh->stageNum < 1)dh->stageNum = STAGE_MAX;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_D))
+	if (Input::IsKeyDown(KEY_INPUT_D) || Input::IsPadDown(Pad::RIGHT))
 	{
 		dh->stageNum += 1;
 		if (dh->stageNum > STAGE_MAX)dh->stageNum = 1;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_F))
+	if (Input::IsKeyDown(KEY_INPUT_F) || Input::IsPadDown(Pad::A))
 	{
 		state = State::CHARACTER_SELECT;
 	}
@@ -78,17 +78,17 @@ void SelectScene::UpdateStage()
 void SelectScene::UpdateChara()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
-	if (Input::IsKeyDown(KEY_INPUT_A))
+	if (Input::IsKeyDown(KEY_INPUT_A) || Input::IsPadDown(Pad::LEFT))
 	{
 		dh->playerNum -= 1;
 		if (dh->playerNum < 1)dh->playerNum= CHARA_MAX;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_D))
+	if (Input::IsKeyDown(KEY_INPUT_D) || Input::IsPadDown(Pad::RIGHT))
 	{
 		dh->playerNum += 1;
 		if (dh->playerNum > CHARA_MAX)dh->playerNum = 1;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_F))
+	if (Input::IsKeyDown(KEY_INPUT_F) || Input::IsPadDown(Pad::A))
 	{
 		SceneManager::ChangeScene(SCENE_NAME::PLAY_SCENE);
 	}
