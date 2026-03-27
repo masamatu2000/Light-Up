@@ -21,6 +21,7 @@ PlayScene::PlayScene()
 	state = State::START;
 	time = 0;
 	new StageGraphic();
+	new UserInterface();
 }
 
 PlayScene::~PlayScene()

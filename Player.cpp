@@ -192,7 +192,6 @@ void Player::Draw()
 	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 
-	new UserInterface();
 
 	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
