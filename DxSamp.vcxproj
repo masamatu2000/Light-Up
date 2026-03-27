@@ -171,6 +171,7 @@
     <ClCompile Include="StageGraphic.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackObject.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageGraphic.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,6 +5,7 @@
 #include "DataHolder.h"
 #include "Enemy.h"
 #include"Gimmick.h"
+#include "UserInterface.h"
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -167,10 +168,13 @@ void Player::Draw()
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
 	DrawRectGraph(x, y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
-	DrawFormatString(0, 0, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 30, 0xffffff, "X：%.0f　Y:%.0f",x,y);
-	DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
-	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);
+	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+
+	new UserInterface();
+
+	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
 	DrawFormatString(100, 100, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
 
 	patCounter++;
