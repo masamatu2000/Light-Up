@@ -9,10 +9,11 @@ public:
 	~Gimmick();
 	GIMMICK_TYPE GetGimmicType() { return gimmicType; }
 	Vector2D GetPosition() { return position; }
+	void fall();
 private:
 	void Update() override;
 	void Draw() override;
 private:
 	GIMMICK_TYPE gimmicType;
-	
+	Vector2D Velocity;
 };
