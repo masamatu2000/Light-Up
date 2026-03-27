@@ -24,11 +24,14 @@ private:
 		//ボス撃破後
 		CLEAR,
 		//ゲームオーバー
-		OVER
+		OVER,
+		//リザルトシーン
+		RESULT
 	};
 	State state;
 	void UpdateStart();
 	void UpdatePlay();
 	void UpdateClear();
 	void UpdateOver();
+	void UpdateResult();
 };

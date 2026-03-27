@@ -498,11 +498,11 @@ void Player::Interact()
 	{
 		if (canNext)
 		{
-			s->NextStage();
+			s->NextSection();
 		}
 		else if (canPrevious)
 		{
-			s->PreviousStage();
+			s->PreviousSection();
 		}
 		else if (IsCorpse) {
 			if (curse - 20 > curseLowerLimit) {

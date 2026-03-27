@@ -5,6 +5,13 @@
 #pragma once
 #include "Object.h"
 #include <vector>
+
+enum Direction
+{
+	NEXT,
+	PREVIOUS
+};
+
 class Stage : public Object
 {
 public:
@@ -21,10 +28,12 @@ public:
 	bool CanInteract(Vector2D pos, int findNum);
 	//ステージ名（stage0-1など）を引数に与えるとこでステージが変わる
 	void SetStage(std::string sName);
-	//次のステージに移行させる関数（プレイヤーが呼び出す）
-	void NextStage();
-	//前のステージに移行させる関数
-	void PreviousStage();
+	//次のセクションに移行させる関数（プレイヤーが呼ぶのはこれ）
+	void NextSection();
+	//前のセクションに移行させる関数（プレイヤーが呼ぶのはこれ）
+	void PreviousSection();
+	//ボスが死んだらそれをステージに知らせるための関数
+	void DefeatedBoss();
 	//通常ステージの全ボス撃破してるかどうか
 	bool IsBossComplete();
 	bool IsCorpse(const Vector2D& pos);
@@ -51,13 +60,24 @@ private:
 	void SetPlayerPosition();
 	//エネミー、ボスを生成
 	void SetEnemy_Boss();
+	//エネミー、ボス、ギミックを一括削除
+	void DeleteObjects();
+	//最終ステージに移行させる関数
+	void FinalStage();
+	//次のステージに移行させる関数
+	void NextStage();
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用
 	std::vector<std::vector<int>> map; //現在のマップを保存
-	int currentNum; //マップの現在の番号を保存
+
+	int currentNum; //マップの現在の番号を保存（0～34）
 	int nextNum; //次のマップ番号
-	int currentStage; //現在のステージ
-	bool isNext; //進むのかどうか
+	int currentStage; //現在のステージ（0～5）
+	bool isBossSection; //ボスがいるセクションかどうか
+	bool isStartSection; //塔の最初のセクションかどうか
+
+	Direction direction; //進むか戻るか
+
 	std::vector<bool> isBossDefeated; //ボスを撃破したかどうか
 };

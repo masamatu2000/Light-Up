@@ -54,6 +54,9 @@ void PlayScene::Update()
 		UpdateOver();
 		break;
 	}
+	case RESULT:
+		UpdateResult();
+		break;
 	}
 	if (Input::IsKeyDown(KEY_INPUT_N))
 	{
@@ -89,5 +92,9 @@ void PlayScene::UpdateClear()
 }
 
 void PlayScene::UpdateOver()
+{
+}
+
+void PlayScene::UpdateResult()
 {
 }
