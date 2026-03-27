@@ -354,7 +354,7 @@ void Player::Mova()
 		position.x += max(d1, d2);
 	}
 
-	if (Input::IsKeyDown(KEY_INPUT_SPACE)) {
+	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE)) {
 		jamp();
 	}
 	//ÉvÉåÉCÉÑÅ[óéâ∫
@@ -387,11 +387,11 @@ void Player::Mova()
 		}
 		else {
 			timer++;
-			if (timer < BOX_TIME) {
+			if (timer < BOX_TIME && Velocity.y > 0) {
 				CanJump = true;
 			}
 			else {
-				CanJump = false;
+				CanJump = false; 
 				playerState = JUMP;	
 			}
 		}
