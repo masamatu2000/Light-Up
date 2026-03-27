@@ -30,8 +30,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 		Stage* stage = FindGameObject<Stage>();
 		epos.x += vel.x * dt;
 		if (vel.x > 0) {
-			int d1 = stage->HitWallRight(pos.x + IMAGE_SCALE - 1, pos.y + IMAGE_SCALE - 1);
-			int d2 = stage->HitWallRight(pos.x + IMAGE_SCALE - 1, pos.y);
+			int d1 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1),int( pos.y + IMAGE_SCALE - 1));
+			int d2 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1),int( pos.y));
 
 			int d = max(d1, d2);
 			if (d > 0)
@@ -43,8 +43,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 		}
 		else if (vel.x < 0)
 		{
-			int d1 = stage->HitWallLeft(pos.x + 0, pos.y + IMAGE_SCALE - 1);
-			int d2 = stage->HitWallLeft(pos.x + 0, pos.y);
+			int d1 = stage->HitWallLeft(int(pos.x + 0),int( pos.y + IMAGE_SCALE - 1));
+			int d2 = stage->HitWallLeft(int(pos.x + 0), int(pos.y));
 
 			int d = max(d1, d2);
 			if (d > 0)
@@ -54,8 +54,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 
 			epos.x += max(d1, d2);
 		}
-		int d1 = stage->HitFloor(pos.x + 0, pos.y + IMAGE_SCALE);
-		int d2 = stage->HitFloor(pos.x + IMAGE_SCALE - 1, pos.y + IMAGE_SCALE);
+		int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
+		int d2 = stage->HitFloor(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE));
 
 		int d = max(d1, d2);
 
@@ -98,8 +98,8 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	Vector2D ppos = pl->GetPosition();
 	float dx = ppos.x - epos.x;
 	if (evel.x > 0) {
-		int d1 = stage->HitWallRight(epos.x + IMAGE_SCALE - 1, epos.y + IMAGE_SCALE - 1);
-		int d2 = stage->HitWallRight(epos.x + IMAGE_SCALE - 1, epos.y);
+		int d1 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1),int( epos.y + IMAGE_SCALE - 1));
+		int d2 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1), int(epos.y));
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -111,8 +111,8 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	}
 	else if (evel.x < 0)
 	{
-		int d1 = stage->HitWallLeft(epos.x + 0, epos.y + IMAGE_SCALE - 1);
-		int d2 = stage->HitWallLeft(epos.x + 0, epos.y);
+		int d1 = stage->HitWallLeft(int(epos.x + 0), int(epos.y + IMAGE_SCALE - 1));
+		int d2 = stage->HitWallLeft(int(epos.x + 0), int(epos.y));
 
 		int d = max(d1, d2);
 		if (d > 0)
@@ -122,8 +122,8 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 
 		epos.x += max(d1, d2);
 	}
-	int d1 = stage->HitFloor(epos.x + 0, epos.y + IMAGE_SCALE);
-	int d2 = stage->HitFloor(epos.x + IMAGE_SCALE - 1, epos.y + IMAGE_SCALE);
+	int d1 = stage->HitFloor(int(epos.x + 0), int(epos.y + IMAGE_SCALE));
+	int d2 = stage->HitFloor(int(epos.x + IMAGE_SCALE - 1), int(epos.y + IMAGE_SCALE));
 
 	int d = max(d1, d2);
 

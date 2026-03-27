@@ -22,10 +22,10 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	Velocity = ENEMY_SPEED;
 	switch (EnemyNumber) {
 	case Enemy01:
-		Hp = EnemyTypeNum::ENEMY_01_HP;
+		Hp =(unsigned int) EnemyTypeNum::ENEMY_01_HP;
 		break;
 	case Enemy02:
-		Hp = EnemyTypeNum::ENEMY_02_HP;
+		Hp = (unsigned int)EnemyTypeNum::ENEMY_02_HP;
 		break;
 	}
 	timer = 0;
@@ -64,7 +64,7 @@ void Enemy::Draw()
 	float positionx = position.x - Stage::scrollX;
 	float positiony = position.y - Stage::scrollY;
 
-	DrawBox(positionx,positiony,positionx +IMAGE_SCALE,positiony +IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
+	DrawBoxAA(positionx,positiony,positionx +IMAGE_SCALE,positiony +IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
 	DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//ïœêîÇèoóÕÇ∑ÇÈ
 }
 
