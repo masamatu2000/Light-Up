@@ -111,12 +111,29 @@ void Stage::Update()
 {
 	if (currentNum != nextNum)
 	{
+		auto gmmick = FindGameObjects<Gimmick>();
+		for (auto gm : gmmick)
+		{
+			if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+			{
+				gm->DestroyMe();
+			}
+		}
+		auto enemy = FindGameObjects<Enemy>();
+		for (auto e : enemy) {
+			e->DestroyMe();
+		}
+		Boss* boss = FindGameObject<Boss>();
+		if (boss != nullptr) {
+			boss->DestroyMe();
+		}
 		map = allMap[nextNum];
 		currentNum = nextNum;
 		//スクロール、上限値を設定
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
+		
 		SetEnemy_Boss();
 
 		//デバッグ用
@@ -133,6 +150,7 @@ void Stage::Update()
 				}
 			}
 		}
+		
 	}
 }
 
@@ -174,7 +192,7 @@ int Stage::HitWallRight(int x, int y)
 {
 	if (IsInWall(x, y)) {
 		int dx = x % IMAGE_SCALE;
-		return dx + 1.0f;
+		return dx + 1;
 	}
 	return 0;
 }
@@ -191,7 +209,7 @@ int Stage::HitFloor(int x, int y)
 {
 	if (IsInWall(x, y)) {
 		int dy = y % IMAGE_SCALE;
-		return dy + 1.0f;
+		return dy + 1;
 	}
 	return 0;
 }
@@ -249,8 +267,8 @@ bool Stage::CanInteract(Vector2D pos, int findNum)
 			//ポータルの座標を獲得
 			if (map[y][x] == findNum) {
 				//座標をマスの中心に変更
-				portalPos.x = x * IMAGE_SCALE + IMAGE_SCALE / 2;
-				portalPos.y = y * IMAGE_SCALE + IMAGE_SCALE / 2;
+				portalPos.x = (float)(x * IMAGE_SCALE + IMAGE_SCALE / 2);
+				portalPos.y = (float)(y * IMAGE_SCALE + IMAGE_SCALE / 2);
 				break;
 			}
 		}
@@ -372,10 +390,10 @@ void Stage::CreateCorpse(const Vector2D& pos)
 
 void Stage::SetScroll()
 {
-	Stage::mapBottom = map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM);
+	Stage::mapBottom = (int)(map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM));
 	Stage::mapTop = 0;
 	Stage::mapLeft = 0;
-	Stage::mapRight = map[0].size() * IMAGE_SCALE - (WIN_WIDTH / SCREEN_ZOOM);
+	Stage::mapRight = (int)(map[0].size() * IMAGE_SCALE - (WIN_WIDTH / SCREEN_ZOOM));
 
 	Stage::scrollX = Stage::mapLeft;
 	Stage::scrollY = Stage::mapBottom;
@@ -423,16 +441,16 @@ void Stage::SetEnemy_Boss()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == ENEMY01_CSV_NUM) {
-				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE),ENEMY_NUMBER::Enemy01);
+				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)),ENEMY_NUMBER::Enemy01);
 				break;
 			}
 			if (map[y][x] == ENEMY02_CSV_NUM) {
-				new Enemy(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), ENEMY_NUMBER::Enemy02);
+				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), ENEMY_NUMBER::Enemy02);
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
-				new Boss(Vector2D(x * IMAGE_SCALE, y * IMAGE_SCALE), BOSS_NUMBER::BOSS01);
+				new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BOSS_NUMBER::BOSS01);
 				break;
 			}
 

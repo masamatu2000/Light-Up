@@ -36,7 +36,7 @@ namespace {
 
 }
 
-Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
+Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag)
 {
 	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
@@ -95,6 +95,7 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft)
 		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
 		break;
 	}
+	objtag = tag;
 }
 
 Bullet::~Bullet()

@@ -68,7 +68,7 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 	if (timer > ENEMY_BULLET_COOLTIME) {
 		IsAttack = true;
 		//’eŠÛ”­Ë
-		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0);
+		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0,OBJECT_TAG::ENEMY);
 	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy01) {
@@ -133,7 +133,7 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	}
 	if (timer > ENEMY_BULLET_COOLTIME) {
 		IsAttack = true;
-		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0);
+		new Bullet(pos, BULLET_NUMBER::bullet01, dx > 0,OBJECT_TAG::ENEMY);
 	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy02) {

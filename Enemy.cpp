@@ -28,7 +28,6 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 		Hp = EnemyTypeNum::ENEMY_02_HP;
 		break;
 	}
-	IsTrace = false;
 	timer = 0;
 }
 
