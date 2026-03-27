@@ -3,6 +3,7 @@
 #include"Player.h"
 #include "StageGraphic.h"
 #include"ImageManager.h"
+#include "UserInterface.h"
 
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é

@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include"Boss.h"
 #include"Gimmick.h"
-#include "UserInterface.h"
+
 /// <summary>
 /// M.Shoji
 /// </summary>
