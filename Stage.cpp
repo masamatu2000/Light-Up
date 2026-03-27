@@ -111,12 +111,29 @@ void Stage::Update()
 {
 	if (currentNum != nextNum)
 	{
+		auto gmmick = FindGameObjects<Gimmick>();
+		for (auto gm : gmmick)
+		{
+			if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+			{
+				gm->DestroyMe();
+			}
+		}
+		auto enemy = FindGameObjects<Enemy>();
+		for (auto e : enemy) {
+			e->DestroyMe();
+		}
+		Boss* boss = FindGameObject<Boss>();
+		if (boss != nullptr) {
+			boss->DestroyMe();
+		}
 		map = allMap[nextNum];
 		currentNum = nextNum;
 		//スクロール、上限値を設定
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
+		
 		SetEnemy_Boss();
 
 		//デバッグ用
@@ -133,6 +150,7 @@ void Stage::Update()
 				}
 			}
 		}
+		
 	}
 }
 

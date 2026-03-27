@@ -10,6 +10,7 @@ public:
 	~Enemy();
 	ENEMY_NUMBER GetEnum() { return EnemyNumber; }
 	void SetTimer(int time) { timer = time; }//攻撃用のタイマーセッター
+	
 private:
 	void Update() override;
 	void Draw() override;

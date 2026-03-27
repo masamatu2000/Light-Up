@@ -487,6 +487,9 @@ void Player::Interact()
 					}
 				}
 			}
+			else {
+				curse = curseLowerLimit;
+			}
 		}
 	}
 }
