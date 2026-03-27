@@ -7,4 +7,5 @@ namespace Input {
 	bool IsKeyUP(int keyCode);
 	bool IsKeyDown(int keyCode);
 	int IsKeepKeyDown(int keyCode);
+
 }
