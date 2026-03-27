@@ -41,6 +41,7 @@ void Boss::Update()
 	{
 		Stage* s = FindGameObject<Stage>();
 		s->CreateCorpse(position);
+		s->DefeatedBoss();
 		DestroyMe();
 	}
 }

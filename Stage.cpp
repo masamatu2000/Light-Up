@@ -15,6 +15,9 @@ namespace {
 	const int STAGE_MAX = 6;
 	//それぞれのCSV番号
 	const int PLAYER_CSV_NUM = 2;
+	const int NEXTPORTAL_CSV_NUM = 3;
+	const int PREVIOUSPORTAL_CSV_NUM = 4;
+	const int PLAYERSPAWN_CSV_NUM = 5;
 	const int ENEMY01_CSV_NUM = 10;
 	const int ENEMY02_CSV_NUM = 11;
 	const int BOSS01_CSV_NUM = 21;
@@ -82,7 +85,7 @@ Stage::Stage()
 		delete stageCsv;
 	}
 	
-	//マップを初期化（チュートリアルに）
+	//マップを初期化
 	currentNum = 0;
 	nextNum = currentNum;
 	if (!allMap.empty()) {
@@ -101,6 +104,11 @@ Stage::Stage()
 	//ボスを倒してないことに
 	isBossDefeated.clear();
 	isBossDefeated.resize(STAGE_MAX, false);
+
+	isStartSection = true;
+	isBossSection = false;
+	direction == Direction::NEXT;
+
 }
 
 Stage::~Stage()
@@ -111,46 +119,16 @@ void Stage::Update()
 {
 	if (currentNum != nextNum)
 	{
-		auto gmmick = FindGameObjects<Gimmick>();
-		for (auto gm : gmmick)
-		{
-			if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-			{
-				gm->DestroyMe();
-			}
-		}
-		auto enemy = FindGameObjects<Enemy>();
-		for (auto e : enemy) {
-			e->DestroyMe();
-		}
-		Boss* boss = FindGameObject<Boss>();
-		if (boss != nullptr) {
-			boss->DestroyMe();
-		}
+		DeleteObjects();
 		map = allMap[nextNum];
 		currentNum = nextNum;
+		isBossSection = false;
 		//スクロール、上限値を設定
 		SetScroll();
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
-		
+		//敵とボスを生成
 		SetEnemy_Boss();
-
-		//デバッグ用
-		//ボスがいるマップに行ったらtrueに
-		//本来はボスを撃破したらtrueに
-		DataHolder* dh = FindGameObject<DataHolder>();
-		isBossDefeated[currentStage] = false;
-		for (int y = 0; y < map.size(); y++) {
-			for (int x = 0; x < map[y].size(); x++) {
-				//ボスのCSV番号の21にで判別
-				if (map[y][x] == 21) {
-					isBossDefeated[currentStage] = true;
-					break;
-				}
-			}
-		}
-		
 	}
 }
 
@@ -298,58 +276,76 @@ void Stage::SetStage(std::string sName)
 	}
 }
 
+void Stage::NextSection()
+{
+	direction = Direction::NEXT;
+	isStartSection = false;
+	//ボスがいなければ次のセクションに
+	if (!isBossSection)
+	{
+		if (currentNum + 1 <= mapName.size() - 1)
+		{
+			SetStage(mapName[currentNum + 1]);
+		}
+	}
+	//全ボス倒してたら最終ステージに
+	else if (IsBossComplete())
+	{
+		FinalStage();
+	}
+	//今のステージのボスを倒したら
+	else if (isBossDefeated[currentStage])
+	{
+		NextStage();
+	}
+}
+
+void Stage::FinalStage()
+{
+	DataHolder* dh = FindGameObject<DataHolder>();
+	SetStage("stage5-1");
+	dh->stageNum = 5;
+	currentStage = dh->stageNum;
+	isBossDefeated.clear();
+	isBossDefeated.resize(STAGE_MAX, false);
+}
+
 void Stage::NextStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
-	//全ボス倒してたらステージ5に
-	if (IsBossComplete())
+	//ステージが最終ステージならタイトルに
+	if (currentStage == 5)
 	{
-		SetStage("stage5-1");
-		dh->stageNum = 5;
+		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+	}
+	//それ以外のボスなら次のステージに
+	else if (currentStage != 5)
+	{
+		isStartSection = true;
+		std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
+		SetStage(name);
 		currentStage = dh->stageNum;
-		isBossDefeated.clear();
-		isBossDefeated.resize(STAGE_MAX, false);
-	}
-	//今のステージのボスを倒したら次のステージに
-	else if (isBossDefeated[currentStage])
-	{
-		if (currentStage == 5)
+		dh->stageNum += 1;
+		//通常ステージの最後以上になったら1に戻す
+		if (dh->stageNum > STAGE_MAX - 2)
 		{
-			//全ボス倒したらタイトルに
-			SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
-		}
-		else if (currentStage != 5)
-		{
-			std::string name = "stage" + std::to_string(dh->stageNum) + "-1";
-			SetStage(name);
-			currentStage = dh->stageNum;
-			dh->stageNum += 1;
-			if (dh->stageNum > STAGE_MAX - 2)
-			{
-				dh->stageNum = 1;
-			}
+			dh->stageNum = 1;
 		}
 	}
-	//そのステージの次のセクションに
-	else
-	{
-		if (currentNum + 1 > mapName.size() - 1)
-		{
-			return;
-		}
-		SetStage(mapName[currentNum + 1]);
-	}
-	isNext = true; //次に進む
 }
 
-void Stage::PreviousStage()
+void Stage::PreviousSection()
 {
-	if (currentNum - 1 < 0)
+	direction = Direction::PREVIOUS;
+	if (currentNum - 1 >= 0)
 	{
-		return;
+		SetStage(mapName[currentNum - 1]);
 	}
-	SetStage(mapName[currentNum - 1]);
-	isNext = false; //前に戻る
+}
+
+void Stage::DefeatedBoss()
+{
+	isBossDefeated[currentStage] = true;
 }
 
 bool Stage::IsBossComplete()
@@ -414,17 +410,22 @@ void Stage::SetPlayer()
 
 void Stage::SetPlayerPosition()
 {
+	int findNum;
+	if (direction == Direction::NEXT && isStartSection == true)
+	{
+		findNum = PLAYERSPAWN_CSV_NUM;
+	}
+	else if (direction == Direction::NEXT)
+	{
+		findNum = PREVIOUSPORTAL_CSV_NUM;
+	}
+	else if (direction == Direction::PREVIOUS)
+	{
+		findNum = NEXTPORTAL_CSV_NUM;
+	}
+
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			int findNum;
-			if (isNext)
-			{
-				findNum = 4;
-			}
-			else if (!isNext)
-			{
-				findNum = 3;
-			}
 			//階段と同じ場所に
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
@@ -451,9 +452,31 @@ void Stage::SetEnemy_Boss()
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
 				new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BOSS_NUMBER::BOSS01);
+				//ボスがいるかどうかをtrueに
+				isBossSection = true;
 				break;
 			}
 
 		}
+	}
+}
+
+void Stage::DeleteObjects()
+{
+	auto gmmick = FindGameObjects<Gimmick>();
+	for (auto gm : gmmick)
+	{
+		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+		{
+			gm->DestroyMe();
+		}
+	}
+	auto enemy = FindGameObjects<Enemy>();
+	for (auto e : enemy) {
+		e->DestroyMe();
+	}
+	Boss* boss = FindGameObject<Boss>();
+	if (boss != nullptr) {
+		boss->DestroyMe();
 	}
 }
