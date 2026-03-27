@@ -24,6 +24,7 @@ namespace
 	const float cursUpIsPlayer01SubAtttack = 5.0f;
 	const float cursUpIsPlayer02SubAtttack = 1.0f;
 	const float cursUpIsPlayer03SubAtttack = 10.0f;
+	const float BOX_TIME = 10%60;
 	int pushM;
 	int pushB;
 }
@@ -69,6 +70,7 @@ Player::Player(int x, int y)
 
 	Hp = 1;
 	invincibilityTimeCounter = 0;
+	coyotejump = false;
 }
 
 Player::~Player()
@@ -331,7 +333,7 @@ void Player::Mova()
 		position.x += max(d1, d2);
 	}
 
-	if (CheckHitKey(KEY_INPUT_SPACE)) {
+	if (Input::IsKeyDown(KEY_INPUT_SPACE)) {
 		jamp();
 	}
 	//プレイヤー落下
@@ -343,11 +345,13 @@ void Player::Mova()
 		int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1),(int)( position.y + IMAGE_SCALE));
 
 		int d = max(d1, d2);
-
+		static float timer = 0;
+		
 		if (d > 0) {
 			position.y -= (d - 1);
 			Velocity.y = 0;
 			CanJump = true;
+			timer = 0;
 			if (playerState == JUMP)
 			{
 				if (Velocity.x == 0)
@@ -361,8 +365,14 @@ void Player::Mova()
 			}
 		}
 		else {
-			CanJump = false;
-			playerState = JUMP;
+			timer++;
+			if (timer < BOX_TIME) {
+				CanJump = true;
+			}
+			else {
+				CanJump = false;
+				playerState = JUMP;	
+			}
 		}
 	}
 	if (s != nullptr) {
@@ -387,6 +397,7 @@ void Player::jamp()
 		//初期速度の設定
 		float InitialVelocity = -std::sqrt(2.0f * GRAVITY * JUMP_HEIGHT);
 		Velocity.y = InitialVelocity;//dtは正の値でジャンプさせるには負の値にする必要あり
+		CanJump = false;
 	}
 
 }
