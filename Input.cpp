@@ -47,6 +47,7 @@ void Input::KeyStateUpdate()
 bool Input::IsKeyUP(int keyCode)
 {
 	return(key_up[keyCode]);
+
 }
 
 bool Input::IsKeyDown(int keyCode)
