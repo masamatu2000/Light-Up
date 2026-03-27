@@ -27,6 +27,14 @@ namespace
 	const float BOX_TIME = 10%60;
 	int pushM;
 	int pushB;
+
+	const int PLAYER_01_MAIN_ATTACK_RECAST_TIME = 20;
+	const int PLAYER_02_MAIN_ATTACK_RECAST_TIME = 10;
+	const int PLAYER_03_MAIN_ATTACK_RECAST_TIME = 30;
+	const int PLAYER_01_SUB_ATTACK_RECAST_TIME = 30;
+	const int PLAYER_02_SUB_ATTACK_RECAST_TIME = 10;
+	const int PLAYER_03_SUB_ATTACK_RECAST_TIME = 40;
+
 }
 Player::Player()
 {
@@ -71,6 +79,9 @@ Player::Player(int x, int y)
 	Hp = 1;
 	invincibilityTimeCounter = 0;
 	coyotejump = false;
+
+	mainAttackRecast = 0;
+	subAttackRecast = 0;
 }
 
 Player::~Player()
@@ -193,7 +204,7 @@ void Player::Draw()
 
 	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
-
+	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
 	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
@@ -216,13 +227,23 @@ void Player::Draw()
 
 void Player::Attack()
 {
-	if (pushM = Input::IsKeepKeyDown(KEY_INPUT_M))
+	if ((pushM = Input::IsKeepKeyDown(KEY_INPUT_M)) && mainAttackRecast <= 0)
 	{
 		MainAttack();
 	}
-	if (pushB = Input::IsKeepKeyDown(KEY_INPUT_B))
+	if ((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) && subAttackRecast <= 0)
 	{
 		SubAttack();
+	}
+	mainAttackRecast--;
+	subAttackRecast--;
+	if (mainAttackRecast < 0)
+	{
+		mainAttackRecast = 0;
+	}
+	if (subAttackRecast < 0)
+	{
+		subAttackRecast = 0;
 	}
 }
 
@@ -412,18 +433,21 @@ void Player::MainAttack()
 		if (pushM == 1)
 		{
 			PlayerAttack::Player1MainAttack(position, islookleft);
+			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 		}
 		break;
 	case(Name2):
 		if (pushM % 10 == 1)
 		{
 			PlayerAttack::Player2MainAttack(position, islookleft);
+			mainAttackRecast = PLAYER_02_MAIN_ATTACK_RECAST_TIME;
 		}
 		break;
 	case(Name3):
 		if (pushM == 1)
 		{
 			PlayerAttack::Player3MainAttack(position, islookleft);
+			mainAttackRecast = PLAYER_03_MAIN_ATTACK_RECAST_TIME;
 		}
 		break;
 	default:
@@ -444,6 +468,7 @@ void Player::SubAttack()
 				PlayerAttack::Player1SubAttack(position, islookleft);
 				UpCurse(cursUpIsPlayer01SubAtttack);
 			}
+			subAttackRecast = PLAYER_01_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
 	case (Name2):
@@ -454,6 +479,7 @@ void Player::SubAttack()
 				PlayerAttack::Player1SubAttack(position, islookleft);
 				UpCurse(cursUpIsPlayer02SubAtttack);
 			}
+			subAttackRecast = PLAYER_02_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
 	case(Name3):
@@ -464,6 +490,7 @@ void Player::SubAttack()
 				PlayerAttack::Player3SubAttack(position, islookleft);
 				UpCurse(cursUpIsPlayer03SubAtttack);
 			}
+			subAttackRecast = PLAYER_03_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
 	default:

@@ -97,4 +97,7 @@ private:
 	int patCounter;
 	int attackcounter;
 	bool coyotejump;
+
+	int mainAttackRecast;
+	int subAttackRecast;
 };
