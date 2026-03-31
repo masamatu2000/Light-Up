@@ -280,7 +280,7 @@ void Player::Attack()
 	{
 		MainAttack();
 	}
-	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) | (pushB =  Input::IsKeepPadDown(Pad::B))) && subAttackRecast <= 0)
+	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) || (pushB =  Input::IsKeepPadDown(Pad::B))) && subAttackRecast <= 0)
 	{
 		SubAttack();
 	}

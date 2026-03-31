@@ -1,6 +1,6 @@
 #pragma once
 
-enum BOSS_NUMBER
+enum BossNumber
 {
 	BOSS01,
 	BOSS02,

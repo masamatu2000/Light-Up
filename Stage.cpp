@@ -379,11 +379,6 @@ bool Stage::IsCorpse(const Vector2D& pos)
 	return false;
 }
 
-void Stage::CreateCorpse(const Vector2D& pos)
-{
-	new Gimmick(pos, GIMMICK_TYPE::Corpse);
-}
-
 void Stage::SetScroll()
 {
 	Stage::mapBottom = (int)(map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM));
@@ -451,7 +446,7 @@ void Stage::SetEnemy_Boss()
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
-				new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BOSS_NUMBER::BOSS01);
+				new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BossNumber::BOSS01);
 				//ƒ{ƒX‚ª‚¢‚é‚©‚Ç‚¤‚©‚ðtrue‚É
 				isBossSection = true;
 				break;

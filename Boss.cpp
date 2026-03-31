@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "Stage.h"
 #include "Player.h"
+#include"Gimmick.h"
 #include"BossMove.h"
 /// <summary>
 /// ìGÇä«óùÇ∑ÇÈ
@@ -14,7 +15,7 @@ Boss::Boss()
 {
 }
 
-Boss::Boss(const Vector2D& pos, BOSS_NUMBER bNum)
+Boss::Boss(const Vector2D& pos, BossNumber bNum)
 {
 	position = pos;
 	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
@@ -40,8 +41,8 @@ void Boss::Update()
 {
 	if (Hp <= 0)
 	{
+		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Boss", bossNumber);
 		Stage* s = FindGameObject<Stage>();
-		s->CreateCorpse(position);
 		s->DefeatedBoss();
 		DestroyMe();
 	}
