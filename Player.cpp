@@ -51,7 +51,6 @@ Player::Player()
 	playerType = Name1;
 
 	curse = 0;
-	killBoss = false;
 
 	patX = 0;
 	patY = 0;
@@ -70,7 +69,6 @@ Player::Player(int x, int y)
 
 	curse = 0;
 	curseLowerLimit = 0;
-	killBoss = false;
 
 	patX = 0;
 	patY = 0;
@@ -80,7 +78,8 @@ Player::Player(int x, int y)
 	DataHolder* dh = FindGameObject<DataHolder>();
 	playerType = (PlayerName)(dh->playerNum - 1);
 	IsCorpse = false;
-	playerState = STAND;
+	animeState = STAND;
+	playState = START;
 
 	Hp = 1;
 	invincibilityTimeCounter = 0;
@@ -101,10 +100,31 @@ Player::~Player()
 
 void Player::Update()
 {
+	switch (playState)
+	{
+	case START:
+		StartUpdate();
+		break;
+	case PLAY:
+		PlayUpdate();
+		break;
+	case OVER:
+		OverUpdate();
+		break;
+	}
+}
+
+void Player::StartUpdate()
+{
+	playState = PlayState::PLAY;
+}
+
+void Player::PlayUpdate()
+{
 	Mova();
 
 	Interact();
-	
+
 	Scroll();
 
 	Attack();
@@ -163,7 +183,32 @@ void Player::Update()
 	invincibilityTimeCounter--;
 }
 
+void Player::OverUpdate()
+{
+}
+
 void Player::Draw()
+{
+	switch (playState)
+	{
+	case START:
+		StartDraw();
+		break;
+	case PLAY:
+		PlayDraw();
+		break;
+	case OVER:
+		OverDraw();
+		break;
+	}
+}
+
+void Player::StartDraw()
+{
+
+}
+
+void Player::PlayDraw()
 {
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::scrollY;
@@ -194,7 +239,7 @@ void Player::Draw()
 	{
 		patY = 0;
 	}
-	switch (playerState)
+	switch (animeState)
 	{
 	case(STAND):
 		break;
@@ -216,6 +261,8 @@ void Player::Draw()
 	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d SP: %d", mainAttackRecast, subAttackRecast,supportRecast);
+	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
+	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
 	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
@@ -234,6 +281,10 @@ void Player::Draw()
 	{
 		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), true);
 	}
+}
+
+void Player::OverDraw()
+{
 }
 
 void Player::Attack()
@@ -364,9 +415,9 @@ void Player::Mova()
 
 			islookleft = false;
 
-			if (playerState != JUMP)
+			if (animeState != JUMP)
 			{
-				playerState = WALK;
+				animeState = WALK;
 			}
 
 			//徐々に加速していく
@@ -374,9 +425,9 @@ void Player::Mova()
 			if (Velocity.x > maxSpeed)
 			{
 				Velocity.x = maxSpeed;
-				if (playerState != JUMP)
+				if (animeState != JUMP)
 				{
-					playerState = RUN;
+					animeState = RUN;
 				}
 			}
 		}
@@ -387,9 +438,9 @@ void Player::Mova()
 
 			islookleft = true;
 
-			if (playerState != JUMP)
+			if (animeState != JUMP)
 			{
-				playerState = WALK;
+				animeState = WALK;
 			}
 
 			//徐々に加速していく(プラスの処理）
@@ -397,9 +448,9 @@ void Player::Mova()
 			if (Velocity.x < -maxSpeed)
 			{
 				Velocity.x = -maxSpeed;
-				if (playerState != JUMP)
+				if (animeState != JUMP)
 				{
-					playerState = RUN;
+					animeState = RUN;
 				}
 			}
 		}
@@ -424,96 +475,97 @@ void Player::Mova()
 				}
 			}
 
-			if (playerState != JUMP)
+			if (animeState != JUMP)
 			{
 				if (Velocity.x == 0)
 				{
-					playerState = STAND;
+					animeState = STAND;
 				}
 			}
 		}
 		//位置を変える
 		position.x += Velocity.x;
-	}
-	if (Velocity.x > 0) {
-		int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-		int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
 
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			Velocity.x = 0;
-		}
+		if (Velocity.x > 0) {
+			int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
 
-		position.x -= max(d1, d2);
-	}
-	else if (Velocity.x < 0)
-	{
-		int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
-		int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
-
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			Velocity.x = 0;
-		}
-
-		position.x += max(d1, d2);
-	}
-
-	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
-		jamp();
-	}
-	//プレイヤー落下
-	fall();
-
-	//地面との当たり判定
-	if (s != nullptr) {
-		int d1 = s->HitFloor((int)(position.x + 0),(int)( position.y + IMAGE_SCALE));
-		int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1),(int)( position.y + IMAGE_SCALE));
-
-		int d = max(d1, d2);
-		static float timer = 0;
-		
-		if (d > 0) {
-			position.y -= (d - 1);
-			Velocity.y = 0;
-			CanJump = true;
-			timer = 0;
-			if (playerState == JUMP)
+			int d = max(d1, d2);
+			if (d > 0)
 			{
-				if (Velocity.x == 0)
-				{
-					playerState = STAND;
-				}
-				else
-				{
-					playerState = WALK;
-				}
+				Velocity.x = 0;
 			}
+
+			position.x -= max(d1, d2);
 		}
-		else {
-			timer++;
-			if (timer < BOX_TIME && Velocity.y > 0) {
+		else if (Velocity.x < 0)
+		{
+			int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				Velocity.x = 0;
+			}
+
+			position.x += max(d1, d2);
+		}
+
+		if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
+			jamp();
+		}
+		//プレイヤー落下
+		fall();
+
+		//地面との当たり判定
+		if (s != nullptr) {
+			int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
+			int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+
+			int d = max(d1, d2);
+			static float timer = 0;
+
+			if (d > 0) {
+				position.y -= (d - 1);
+				Velocity.y = 0;
 				CanJump = true;
+				timer = 0;
+				if (animeState == JUMP)
+				{
+					if (Velocity.x == 0)
+					{
+						animeState = STAND;
+					}
+					else
+					{
+						animeState = WALK;
+					}
+				}
 			}
 			else {
-				CanJump = false; 
-				playerState = JUMP;	
+				timer++;
+				if (timer < BOX_TIME && Velocity.y > 0) {
+					CanJump = true;
+				}
+				else {
+					CanJump = false;
+					animeState = JUMP;
+				}
 			}
 		}
-	}
-	if (s != nullptr) {
-		//天井との当たり判定
-		int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
+		if (s != nullptr) {
+			//天井との当たり判定
+			int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
+			int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
 
-		int d = max(d1, d2);
+			int d = max(d1, d2);
 
-		//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
-		if (d > 0) {
-			position.y += (d - 1);
-			Velocity.y = 0;
+			//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
+			if (d > 0) {
+				position.y += (d - 1);
+				Velocity.y = 0;
+			}
 		}
 	}
 }

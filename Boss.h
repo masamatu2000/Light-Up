@@ -6,9 +6,9 @@ class Boss : public Character
 {
 public:
 	Boss();
-	Boss(const Vector2D& pos, BOSS_NUMBER bNum);
+	Boss(const Vector2D& pos, BossNumber bNum);
 	~Boss();
-	BOSS_NUMBER GetEnum() { return bossNumber; }
+	BossNumber GetEnum() { return bossNumber; }
 	int GetInvincibilityTime() { return invincibilityTimeCounter; }
 	void SetInvincibilityTime(int timer) { invincibilityTimeCounter = timer; }
 	void SetInvincibilityTime()
@@ -19,7 +19,7 @@ private:
 	void Update() override;
 	void Draw() override;
 private:
-	BOSS_NUMBER bossNumber;
+	BossNumber bossNumber;
 	float speed;
 	int invincibilityTimeCounter;
 	const int INVINCIBILITU_TIME = 10 % 60;

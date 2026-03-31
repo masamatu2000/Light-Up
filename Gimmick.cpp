@@ -8,6 +8,15 @@ Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt)
 	position = pos;
 	gimmicType = gt;
 	Velocity = { 0,0 };
+	corpseName = "";
+}
+
+Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt, std::string name, int num)
+{
+	position = pos;
+	gimmicType = gt;
+	Velocity = { 0,0 };
+	corpseName = name.c_str() + std::to_string(num);
 }
 
 Gimmick::~Gimmick()

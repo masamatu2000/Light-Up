@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Stage.h"
 #include "Player.h"
+#include"Gimmick.h"
 #include"EnemyMove.h"
 /// <summary>
 /// “G‚ğŠÇ—‚·‚é
@@ -40,8 +41,7 @@ void Enemy::Update()
 {
 	if (Hp <= 0)
 	{
-		Stage* s = FindGameObject<Stage>();
-		s->CreateCorpse(position);
+		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Enemy", EnemyNumber);
 		DestroyMe();
 	}
 	/*Player* pl = FindGameObject<Player>();
