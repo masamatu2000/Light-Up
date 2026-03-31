@@ -111,7 +111,7 @@ void StageGraphic::Draw()
 				{
 					if (map[y][x] == B) {
 						DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX - IMAGE_SCALE,
-							y * IMAGE_SCALE - Stage::GetScrollY() - IMAGE_SCALE,
+							(int)(y * IMAGE_SCALE - Stage::GetScrollY() - IMAGE_SCALE),
 							(B%7) * IMAGE_SCALE,
 							(B/7) * IMAGE_SCALE,
 							IMAGE_SCALE,

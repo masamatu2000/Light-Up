@@ -107,7 +107,7 @@ Stage::Stage()
 
 	isStartSection = true;
 	isBossSection = false;
-	direction == Direction::NEXT;
+	direction = Direction::NEXT;
 
 }
 
@@ -135,21 +135,23 @@ void Stage::Update()
 void Stage::Draw()
 {
 	//ÉXÉeÅ[ÉWÇÃîwåiÇÃï`âÊ(âº)
-	DrawGraph(0 - Stage::scrollX, 0 - Stage::GetScrollY(), hImage, true);
+	DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), hImage, true);
 
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
+			int posX = IMAGE_SCALE * x - Stage::scrollX;
+			int posY = (int)(IMAGE_SCALE * y - Stage::GetScrollY());
 			if (map[y][x] == 1) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::GetScrollY(), IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::GetScrollY() + IMAGE_SCALE,GetColor(0,255,255), false);
+				DrawBox(posX,posY,posX + IMAGE_SCALE,posY + IMAGE_SCALE,GetColor(0,255,255), false);
 			}
 			if (map[y][x] == 3) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::GetScrollY(), IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::GetScrollY() + IMAGE_SCALE, GetColor(255, 255, 0), false);
+				DrawBox(posX, posY, posX + IMAGE_SCALE, posY + IMAGE_SCALE, GetColor(255, 255, 0), false);
 			}
 			if (map[y][x] == 4) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::GetScrollY(), IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::GetScrollY() + IMAGE_SCALE, GetColor(0, 255, 0), false);
+				DrawBox(posX, posY, posX + IMAGE_SCALE, posY + IMAGE_SCALE, GetColor(0, 255, 0), false);
 			}
 		}
 	}

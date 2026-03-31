@@ -105,5 +105,5 @@ int Input::IsKeepPadDown(int padCode)
 
 Vector2D Input::GetStick()
 {
-	return Vector2D(Input::stickX,Input::stickY);
+	return Vector2D((float)Input::stickX,(float)Input::stickY);
 }
