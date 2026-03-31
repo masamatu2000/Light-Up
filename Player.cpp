@@ -100,6 +100,9 @@ void Player::Update()
 	case OVER:
 		OverUpdate();
 		break;
+	case CLEAR:
+		ClearUpdate();
+		break;
 	}
 }
 
@@ -173,6 +176,10 @@ void Player::PlayUpdate()
 }
 
 void Player::OverUpdate()
+{
+}
+
+void Player::ClearUpdate()
 {
 }
 
@@ -271,6 +278,10 @@ void Player::PlayDraw()
 }
 
 void Player::OverDraw()
+{
+}
+
+void Player::ClearDraw()
 {
 }
 
@@ -569,7 +580,6 @@ void Player::Interact()
 	//ステージのインタラクト
 	canPrevious = s->CanChangeStage(position, "previous");
 	canNext = s->CanChangeStage(position, "next");
-	IsCorpse = s->IsCorpse(position);
 	if (Input::IsKeyDown(KEY_INPUT_E) || Input::IsPadDown(Pad::Y))
 	{
 		if (canNext)
@@ -580,41 +590,9 @@ void Player::Interact()
 		{
 			s->PreviousSection();
 		}
-		else if (IsCorpse) {
-			if (curse - 20 > curseLowerLimit) {
-				curse -= 20;
-				auto gmmick = FindGameObjects<Gimmick>();
-				for (auto gm : gmmick)
-				{
-					if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-					{
-						Vector2D gpos = gm->GetPosition();
-						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
-						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
-						{
-							gm->DestroyMe();
-							break;
-						}
-					}
-				}
-			}
-			else {
-				curse = curseLowerLimit;
-				auto gmmick = FindGameObjects<Gimmick>();
-				for (auto gm : gmmick)
-				{
-					if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-					{
-						Vector2D gpos = gm->GetPosition();
-						Vector2D dist = { abs(gpos.x - position.x),abs(gpos.y - position.y) };
-						if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1)
-						{
-							gm->DestroyMe();
-							break;
-						}
-					}
-				}
-			}
+		else
+		{
+			CorpseInteract();
 		}
 	}
 }
@@ -658,4 +636,42 @@ void Player::Scroll()
 	{
 		Stage::scrollY = Stage::mapBottom;
 	}
+}
+
+void Player::CorpseInteract()
+{
+	auto gmmick = FindGameObjects<Gimmick>();
+	for (auto gm : gmmick)
+	{
+		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+		{
+			Vector2D gpos = gm->GetPosition();
+			float dist = Math2D::Length(Math2D::Sub(gpos, position));
+			if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Enemy")
+			{
+				CurseRecovery();
+				gm->DestroyMe();
+				break;
+			}
+			else if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Boss")
+			{
+				ClearAnimation();
+				playState = PlayState::CLEAR;
+			}
+		}
+	}
+}
+
+void Player::CurseRecovery()
+{
+	curse -= 20;
+	if (curseLowerLimit > curse)
+	{
+		curse = curseLowerLimit;
+	}
+	
+}
+
+void Player::ClearAnimation()
+{
 }
