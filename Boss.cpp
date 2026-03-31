@@ -55,7 +55,7 @@ void Boss::Update()
 void Boss::Draw()
 {
 	float x = position.x - Stage::scrollX;
-	float y = position.y - Stage::scrollY;
+	float y = position.y - Stage::GetScrollY();
 
 	DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
 }

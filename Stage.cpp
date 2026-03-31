@@ -107,7 +107,7 @@ Stage::Stage()
 
 	isStartSection = true;
 	isBossSection = false;
-	direction == Direction::NEXT;
+	direction = Direction::NEXT;
 
 }
 
@@ -135,21 +135,23 @@ void Stage::Update()
 void Stage::Draw()
 {
 	//ÉXÉeÅ[ÉWÇÃîwåiÇÃï`âÊ(âº)
-	DrawGraph(0 - Stage::scrollX, 0 - Stage::scrollY,hImage,true);
+	DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), hImage, true);
 
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
+			int posX = IMAGE_SCALE * x - Stage::scrollX;
+			int posY = (int)(IMAGE_SCALE * y - Stage::GetScrollY());
 			if (map[y][x] == 1) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE,GetColor(0,255,255), false);
+				DrawBox(posX,posY,posX + IMAGE_SCALE,posY + IMAGE_SCALE,GetColor(0,255,255), false);
 			}
 			if (map[y][x] == 3) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE, GetColor(255, 255, 0), false);
+				DrawBox(posX, posY, posX + IMAGE_SCALE, posY + IMAGE_SCALE, GetColor(255, 255, 0), false);
 			}
 			if (map[y][x] == 4) {
 				//DrawRectGraph(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, 0, 0, IMAGE_SCALE, IMAGE_SCALE, hImage, true);
-				DrawBox(IMAGE_SCALE * x - Stage::scrollX, y * IMAGE_SCALE - Stage::scrollY, IMAGE_SCALE * x - Stage::scrollX + IMAGE_SCALE, y * IMAGE_SCALE - Stage::scrollY + IMAGE_SCALE, GetColor(0, 255, 0), false);
+				DrawBox(posX, posY, posX + IMAGE_SCALE, posY + IMAGE_SCALE, GetColor(0, 255, 0), false);
 			}
 		}
 	}
@@ -361,24 +363,6 @@ bool Stage::IsBossComplete()
 	return true;
 }
 
-bool Stage::IsCorpse(const Vector2D& pos)
-{
-	auto gmmick = FindGameObjects<Gimmick>();
-	for (auto gm : gmmick)
-	{
-		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse) 
-		{
-			Vector2D gpos = gm->GetPosition();
-			Vector2D dist = {abs(gpos.x-pos.x),abs(gpos.y-pos.y)};
-			if (dist.x / IMAGE_SCALE <= 1 && dist.y / IMAGE_SCALE <= 1) {
-				return true;
-			}
-		}
-	}
-	
-	return false;
-}
-
 void Stage::SetScroll()
 {
 	Stage::mapBottom = (int)(map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM));
@@ -388,6 +372,12 @@ void Stage::SetScroll()
 
 	Stage::scrollX = Stage::mapLeft;
 	Stage::scrollY = Stage::mapBottom;
+}
+
+float Stage::GetScrollY()
+{
+	Player* p = FindGameObject<Player>();
+	return Stage::scrollY + p->GetCameraY();
 }
 
 void Stage::SetPlayer()

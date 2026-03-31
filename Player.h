@@ -45,7 +45,10 @@ public:
 	{
 		invincibilityTimeCounter = INVINCIBILITU_TIME;
 	}
-
+	float GetCameraY()
+	{
+		return cameraY;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -57,8 +60,18 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
+	//カメラのセット
+	void SetCamera();
+	//インタラクト
 	void Interact();
+	//スクロール
 	void Scroll();
+	//死体のインタラクト
+	void CorpseInteract();
+	//呪いの回復
+	void CurseRecovery();
+	//クリア演出
+	void ClearAnimation();
 	
 
 	bool CanJump;//ジャンプできる状態かどうか
@@ -88,6 +101,9 @@ private:
 	int rushCounter;
 	int blinkCounter;
 
+	//カメラ移動用の変数
+	float cameraY;
+
 	//アニメーションの状態保存
 	enum AnimeState
 	{
@@ -106,15 +122,23 @@ private:
 		//プレイ中
 		PLAY,
 		//プレイヤーが死んだとき
-		OVER
+		OVER,
+		//クリア演出
+		CLEAR
 	};
 	PlayState playState;
 	//プレイ状態ごとの更新処理
 	void StartUpdate();
 	void PlayUpdate();
 	void OverUpdate();
+	void ClearUpdate();
 	//プレイ状態ごとの描画処理
 	void StartDraw();
 	void PlayDraw();
 	void OverDraw();
+	void ClearDraw();
+
+	int pushM;
+	int pushB;
+	int pushV;
 };

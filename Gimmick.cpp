@@ -8,6 +8,7 @@ Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt)
 	position = pos;
 	gimmicType = gt;
 	Velocity = { 0,0 };
+	corpseKind = "";
 	corpseName = "";
 }
 
@@ -16,7 +17,8 @@ Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt, std::string name, 
 	position = pos;
 	gimmicType = gt;
 	Velocity = { 0,0 };
-	corpseName = name.c_str() + std::to_string(num);
+	corpseKind = name;
+	corpseName = corpseKind + std::to_string(num);
 }
 
 Gimmick::~Gimmick()
@@ -42,7 +44,7 @@ void Gimmick::Draw()
 {
 	switch (gimmicType) {
 	case GIMMICK_TYPE::Corpse:
-		DrawBoxAA(position.x - Stage::scrollX, position.y - Stage::scrollY, position.x + IMAGE_SCALE - Stage::scrollX, position.y + IMAGE_SCALE - Stage::scrollY, GetColor(255, 0, 0), TRUE);
+		DrawBoxAA(position.x - Stage::scrollX, position.y - Stage::GetScrollY(), position.x + IMAGE_SCALE - Stage::scrollX, position.y + IMAGE_SCALE - Stage::GetScrollY(), GetColor(255, 0, 0), TRUE);
 		break;
 	}
 }

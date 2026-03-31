@@ -36,6 +36,7 @@ void Input::KeyStateUpdate()
 	for (int i = 0; i < KEY_MAX; i++)
 	{
 		if (keyBuff[i] && keyBuffOld[i]) Key_Keep[i]++;
+		if (Key_Keep[i] < 0)Key_Keep[i] = 1; //オーバーフロー対策
 		int key_xor = keyBuff[i] ^ keyBuffOld[i];	//前フレームと現フレームのxor
 		if (key_xor) Key_Keep[i] = 0;
 		key_down[i] = key_xor & keyBuff[i];		//押された瞬間 = (現フレームとkey_xorのAND) 
@@ -79,6 +80,7 @@ void Input::PadStateUpdate()
 		}
 
 		if (padBuff[i] && padBuffOld[i]) pad_keep[i]++;
+		if (pad_keep[i] < 0)pad_keep[i] = 1; //オーバーフロー対策
 		int pad_xor = padBuff[i] ^ padBuffOld[i];	//前フレームと現フレームのxor
 		if (pad_xor) pad_keep[i] = 0;
 		pad_down[i] = pad_xor & padBuff[i];		//押された瞬間 = (現フレームとkey_xorのAND) 
@@ -105,5 +107,5 @@ int Input::IsKeepPadDown(int padCode)
 
 Vector2D Input::GetStick()
 {
-	return Vector2D(Input::stickX,Input::stickY);
+	return Vector2D((float)Input::stickX,(float)Input::stickY);
 }

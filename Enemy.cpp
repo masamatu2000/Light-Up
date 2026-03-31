@@ -64,7 +64,7 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 	float positionx = position.x - Stage::scrollX;
-	float positiony = position.y - Stage::scrollY;
+	float positiony = position.y - Stage::GetScrollY();
 
 	DrawBoxAA(positionx,positiony,positionx +IMAGE_SCALE,positiony +IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
 	DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//ïœêîÇèoóÕÇ∑ÇÈ

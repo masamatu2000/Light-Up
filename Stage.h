@@ -36,7 +36,6 @@ public:
 	void DefeatedBoss();
 	//通常ステージの全ボス撃破してるかどうか
 	bool IsBossComplete();
-	bool IsCorpse(const Vector2D& pos);
 	int GetCurrentNum() { return currentNum; };
 	int GetNextNum() { return nextNum; };
 
@@ -47,6 +46,7 @@ public:
 	static int mapTop;
 	static int mapLeft;
 	static int mapRight;
+	static float GetScrollY();
 
 private:
 	void Update() override;
