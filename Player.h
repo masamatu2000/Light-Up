@@ -81,6 +81,8 @@ private:
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
 	bool islookleft;//左を向いているかどうか
+	bool isRush;//走っているかどうか
+	bool isBlink;
 	PlayerName playerType;
 	PLAYER_STATE playerState;
 	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
@@ -100,4 +102,7 @@ private:
 
 	int mainAttackRecast;
 	int subAttackRecast;
+	int supportRecast;
+	int rushCounter;
+	int blinkCounter;
 };

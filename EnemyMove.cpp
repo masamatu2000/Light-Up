@@ -5,8 +5,9 @@
 #include"Enemy.h"
 #include"AttackType.h"
 namespace {
-	const float TRACE_DISTANCE = 32 * 10;
+	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
 	const int ENEMY_BULLET_COOLTIME = 60 * 2;
+	const float ENEMY2_ATTACK_DISTANCE = IMAGE_SCALE * 10;
 }
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
 {
@@ -97,7 +98,10 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	epos.x += evel.x * dt;
 	bool IsAttack = false;
 	Vector2D ppos = pl->GetPosition();
-	float dx = ppos.x - epos.x;
+	Vector2D distance = Math2D::Sub(ppos, epos);
+	distance.x = abs(distance.x);
+	distance.y = abs(distance.y);
+	float dx = abs(ppos.x - epos.x);
 	if (evel.x > 0) {
 		int d1 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1),int( epos.y + IMAGE_SCALE - 1));
 		int d2 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1), int(epos.y));
@@ -132,7 +136,7 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 		epos.y -= (d - 1);
 		evel.y = 0;
 	}
-	if (timer > ENEMY_BULLET_COOLTIME) {
+	if (timer > ENEMY_BULLET_COOLTIME&&distance.x<= ENEMY2_ATTACK_DISTANCE&&distance.y<= ENEMY2_ATTACK_DISTANCE) {
 		IsAttack = true;
 		Player* pl = FindGameObject<Player>();
 		Vector2D distance = Math2D::Sub(pl->GetPosition(), epos);
