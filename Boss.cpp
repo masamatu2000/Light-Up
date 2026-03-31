@@ -31,6 +31,8 @@ Boss::Boss(const Vector2D& pos, BossNumber bNum)
 		break;
 	}
 	invincibilityTimeCounter = 0;//–³“GŽžŠÔ
+	canJamp = true;
+	attackCounter = 0;
 }
 
 Boss::~Boss()
@@ -39,6 +41,7 @@ Boss::~Boss()
 
 void Boss::Update()
 {
+	Mova();
 	if (Hp <= 0)
 	{
 		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Boss", bossNumber);
@@ -55,5 +58,36 @@ void Boss::Draw()
 	float y = position.y - Stage::scrollY;
 
 	DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
+}
+
+void Boss::Mova()
+{
+	switch (bossNumber)
+	{
+	case BOSS01:
+		if (Hp > 7)
+		{
+			BossMove::Boss01mova01();
+		}
+		else if (Hp > 4)
+		{
+			BossMove::Boss01mova02();
+		}
+		else
+		{
+			BossMove::Boss01mova03();
+		}
+		break;
+	case BOSS02:
+		break;
+	case BOSS03:
+		break;
+	case BOSS04:
+		break;
+	case BOSS05:
+		break;
+	default:
+		break;
+	}
 }
 

@@ -15,12 +15,19 @@ public:
 	{
 		invincibilityTimeCounter = INVINCIBILITU_TIME;
 	}
+	bool GetCanJamp() { return canJamp; }
+	void SetCanJamp(bool can) { canJamp = can; }
+	int GetAttackCounter() { return attackCounter; }
+	void SetAttackCounter(int can) { attackCounter = can; }
 private:
 	void Update() override;
 	void Draw() override;
+	void Mova();
 private:
 	BossNumber bossNumber;
 	float speed;
 	int invincibilityTimeCounter;
 	const int INVINCIBILITU_TIME = 10 % 60;
+	bool canJamp;
+	int attackCounter;
 };
