@@ -71,6 +71,8 @@ private:
 	bool canPrevious; //前のステージに戻れるかどうか
 	bool canNext; //次のステージに進めるかどうか
 	bool islookleft;//左を向いているかどうか
+	bool isRush;//走っているかどうか
+	bool isBlink;
 	PlayerName playerType;
 	bool IsCorpse;
 	float curse; //呪い
@@ -88,6 +90,9 @@ private:
 
 	int mainAttackRecast;
 	int subAttackRecast;
+	int supportRecast;
+	int rushCounter;
+	int blinkCounter;
 
 	//アニメーションの状態保存
 	enum AnimeState

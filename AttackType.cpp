@@ -128,6 +128,7 @@ Bullet::~Bullet()
 void Bullet::Update()
 {
 	float dt = GetDeltaTime();
+	Stage* s = FindGameObject<Stage>();
 	switch (bulletNum_) {
 	case bullet01:
 		if (bullettype[bullet01].life > 0)
@@ -150,20 +151,20 @@ void Bullet::Update()
 		}
 		break;
 	case bullet02:
-		if (bullettype[bullet02].life > 0) 
+		if (bullettype[bullet02].life > 0)
 		{
 			bullettype[bullet02].life -= dt;
-			if (bullettype[bullet02].life <= 0) 
+			if (bullettype[bullet02].life <= 0)
 			{
 				DestroyMe();
 				break;
 			}
 			if (islookleft == true)
 			{
-				
 				position.x -= bullettype[bullet02].speed * dt;
+
 			}
-			else 
+			else
 			{
 				position.x += bullettype[bullet02].speed * dt;
 
@@ -201,7 +202,24 @@ void Bullet::Update()
 				position.x += bullettype[bullet04].speed *dir.x* dt;
 				position.y+= bullettype[bullet04].speed * dir.y * dt;
 		}
+	
 		break;
+	}
+	int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
+	int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+
+	int da = max(d1, d2);
+	if (da > 0)
+	{
+		DestroyMe();
+	}
+	int d3 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+	int d4 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+
+	int db = max(d3, d4);
+	if (db > 0)
+	{
+		DestroyMe();
 	}
 }
 

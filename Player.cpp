@@ -34,7 +34,13 @@ namespace
 	const int PLAYER_01_SUB_ATTACK_RECAST_TIME = 30;
 	const int PLAYER_02_SUB_ATTACK_RECAST_TIME = 10;
 	const int PLAYER_03_SUB_ATTACK_RECAST_TIME = 40;
-
+	const int PLAYER_01_SUPPORT_RECAST_TIME = 60;
+	const int PLAYER_02_SUPPORT_RECAST_TIME = 60;
+	const int PLAYER_03_SUPPORT_RECAST_TIME = 60;
+	const int PLAYER_01_RUSH = 5;
+	const float PLAYER_01_RUSH_SPEED = IMAGE_SCALE*5;
+	const int PLAYER_02_BLINK = 5;
+	const float PLAYER_02_BLINK_SPEED = IMAGE_SCALE* 5;
 }
 Player::Player()
 {
@@ -81,6 +87,11 @@ Player::Player(int x, int y)
 
 	mainAttackRecast = 0;
 	subAttackRecast = 0;
+	supportRecast = 0;
+	isRush = false;
+	rushCounter = 0;
+	isBlink = false;
+	blinkCounter = 0;
 }
 
 Player::~Player()
@@ -255,6 +266,8 @@ void Player::PlayDraw()
 	DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
 	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d SP: %d", mainAttackRecast, subAttackRecast,supportRecast);
 	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
 	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
@@ -295,8 +308,13 @@ void Player::Attack()
 	{
 		SubAttack();
 	}
+	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_V)) || (pushB = Input::IsKeepPadDown(Pad::Y))) && supportRecast <= 0)
+	{
+		SupportSkill();
+	}
 	mainAttackRecast--;
 	subAttackRecast--;
+	supportRecast--;
 	if (mainAttackRecast < 0)
 	{
 		mainAttackRecast = 0;
@@ -305,6 +323,9 @@ void Player::Attack()
 	{
 		subAttackRecast = 0;
 	}
+	if (supportRecast < 0) {
+		supportRecast = 0;
+	}
 }
 
 void Player::Mova()
@@ -312,161 +333,250 @@ void Player::Mova()
 	Stage* s = FindGameObject<Stage>();
 	float dt = GetDeltaTime();
 	//右に進む
-	if (CheckHitKey(KEY_INPUT_D) || Input::IsKeepPadDown(Pad::RIGHT)) {
-		//position.x += 3.0f; 加速度を変えて移動していくのでコメントアウト
-
-		islookleft = false;
-
-		if (animeState != JUMP)
-		{
-			animeState = WALK;
-		}
-
-		//徐々に加速していく
-		Velocity.x += accel * dt;
-		if (Velocity.x > maxSpeed)
-		{
-			Velocity.x = maxSpeed;
-			if (animeState != JUMP)
-			{
-				animeState = RUN;
-			}
-		}
-	}
-	//値がマイナスの時
-	//左に進む
-	else if (CheckHitKey(KEY_INPUT_A) || Input::IsKeepPadDown(Pad::LEFT)) {
-		//position.x -= 3.0f;
-
-		islookleft = true;
-
-		if (animeState != JUMP)
-		{
-			animeState = WALK;
-		}
-
-		//徐々に加速していく(プラスの処理）
-		Velocity.x -= accel * dt;
-		if (Velocity.x < -maxSpeed)
-		{
-			Velocity.x = -maxSpeed;
-			if (animeState != JUMP)
-			{
-				animeState = RUN;
-			}
-		}
-	}
-	else
-	{
-		//徐々に減速させる
-		if (Velocity.x > 0)//現在のスピードが正のとき
-		{
-			Velocity.x -= decal * dt;
-			if (Velocity.x < 0)//現在のスピードが正かつマイナスになった =0になった
-			{
-				Velocity.x = 0;
-			}
-		}
-
-		if (Velocity.x < 0)//現在のスピードがマイナスなとき
-		{
-			Velocity.x += decal * dt;
-			if (Velocity.x > 0)
-			{
-				Velocity.x = 0;
-			}
-		}
-
-		if (animeState != JUMP)
-		{
-			if (Velocity.x == 0)
-			{
-				animeState = STAND;
-			}
-		}
-	}
-	//位置を変える
-	position.x += Velocity.x;
-
-	if (Velocity.x > 0) {
-		int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-		int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
-
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			Velocity.x = 0;
-		}
-
-		position.x -= max(d1, d2);
-	}
-	else if (Velocity.x < 0)
-	{
-		int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
-		int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
-
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			Velocity.x = 0;
-		}
-
-		position.x += max(d1, d2);
-	}
-
-	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
-		jamp();
-	}
-	//プレイヤー落下
-	fall();
-
-	//地面との当たり判定
-	if (s != nullptr) {
-		int d1 = s->HitFloor((int)(position.x + 0),(int)( position.y + IMAGE_SCALE));
-		int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1),(int)( position.y + IMAGE_SCALE));
-
-		int d = max(d1, d2);
-		static float timer = 0;
+	if (isRush) {
 		
-		if (d > 0) {
-			position.y -= (d - 1);
-			Velocity.y = 0;
-			CanJump = true;
-			timer = 0;
-			if (animeState == JUMP)
+		if (islookleft) {
+			float dx = PLAYER_01_RUSH_SPEED * (60.0f / PLAYER_01_RUSH) * dt;
+			float step = dx / 10.0f;
+
+			for (float moved = 0; moved <= dx; moved += step) {
+				float nextX = position.x - moved;
+
+				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + IMAGE_SCALE - 1));
+				int d2 = s->HitWallLeft((int)(nextX), (int)(position.y));
+
+				if (max(d1, d2) > 0) {
+					dx = moved - step; // 壁の手前で止める
+					break;
+				}
+			}
+
+			position.x -= dx;
+		}
+		else {
+			float dx = PLAYER_01_RUSH_SPEED * (60.0f / PLAYER_01_RUSH) * dt;
+			float step = dx / 10.0f;
+
+			for (float moved = 0; moved <= dx; moved += step) {
+				float nextX = position.x + moved;
+
+				int d1 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y + IMAGE_SCALE - 1));
+				int d2 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y));
+
+				if (max(d1, d2) > 0) {
+					dx = moved - step;
+					break;
+				}
+			}
+
+			position.x += dx;
+		}
+
+		rushCounter++;
+		if (rushCounter > PLAYER_01_RUSH) {
+			isRush = false;
+			rushCounter = 0;
+		}
+	}
+	else if (isBlink) {
+	
+		if (islookleft) {
+			float dx = PLAYER_02_BLINK_SPEED * (60.0f / PLAYER_02_BLINK) * dt;
+			float step = dx / 10.0f;
+			for (float moved = 0; moved <= dx; moved += step) {
+				float nextX = position.x - moved;
+
+				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + IMAGE_SCALE - 1));
+				int d2 = s->HitWallLeft((int)(nextX), (int)(position.y));
+
+				if (max(d1, d2) > 0) {
+					dx = moved - step; // 壁の手前で止める
+					break;
+				}
+			}
+			position.x -= dx;
+		}
+		else {
+			float dx = PLAYER_02_BLINK_SPEED * (60.0f / PLAYER_02_BLINK) * dt;
+			float step = dx / 10.0f;
+
+			for (float moved = 0; moved <= dx; moved += step) {
+				float nextX = position.x + moved;
+
+				int d1 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y + IMAGE_SCALE - 1));
+				int d2 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y));
+
+				if (max(d1, d2) > 0) {
+					dx = moved - step;
+					break;
+				}
+			}
+
+			position.x += dx;
+		}
+		blinkCounter++;
+		if (blinkCounter > PLAYER_02_BLINK) {
+			isBlink = false;
+			blinkCounter = 0;
+		}
+	}
+	else {
+		if (CheckHitKey(KEY_INPUT_D) || Input::IsKeepPadDown(Pad::RIGHT)) {
+			//position.x += 3.0f; 加速度を変えて移動していくのでコメントアウト
+
+			islookleft = false;
+
+			if (animeState != JUMP)
+			{
+				animeState = WALK;
+			}
+
+			//徐々に加速していく
+			Velocity.x += accel * dt;
+			if (Velocity.x > maxSpeed)
+			{
+				Velocity.x = maxSpeed;
+				if (animeState != JUMP)
+				{
+					animeState = RUN;
+				}
+			}
+		}
+		//値がマイナスの時
+		//左に進む
+		else if (CheckHitKey(KEY_INPUT_A) || Input::IsKeepPadDown(Pad::LEFT)) {
+			//position.x -= 3.0f;
+
+			islookleft = true;
+
+			if (animeState != JUMP)
+			{
+				animeState = WALK;
+			}
+
+			//徐々に加速していく(プラスの処理）
+			Velocity.x -= accel * dt;
+			if (Velocity.x < -maxSpeed)
+			{
+				Velocity.x = -maxSpeed;
+				if (animeState != JUMP)
+				{
+					animeState = RUN;
+				}
+			}
+		}
+		else
+		{
+			//徐々に減速させる
+			if (Velocity.x > 0)//現在のスピードが正のとき
+			{
+				Velocity.x -= decal * dt;
+				if (Velocity.x < 0)//現在のスピードが正かつマイナスになった =0になった
+				{
+					Velocity.x = 0;
+				}
+			}
+
+			if (Velocity.x < 0)//現在のスピードがマイナスなとき
+			{
+				Velocity.x += decal * dt;
+				if (Velocity.x > 0)
+				{
+					Velocity.x = 0;
+				}
+			}
+
+			if (animeState != JUMP)
 			{
 				if (Velocity.x == 0)
 				{
 					animeState = STAND;
 				}
-				else
+			}
+		}
+		//位置を変える
+		position.x += Velocity.x;
+
+		if (Velocity.x > 0) {
+			int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				Velocity.x = 0;
+			}
+
+			position.x -= max(d1, d2);
+		}
+		else if (Velocity.x < 0)
+		{
+			int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				Velocity.x = 0;
+			}
+
+			position.x += max(d1, d2);
+		}
+
+		if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
+			jamp();
+		}
+		//プレイヤー落下
+		fall();
+
+		//地面との当たり判定
+		if (s != nullptr) {
+			int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
+			int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+
+			int d = max(d1, d2);
+			static float timer = 0;
+
+			if (d > 0) {
+				position.y -= (d - 1);
+				Velocity.y = 0;
+				CanJump = true;
+				timer = 0;
+				if (animeState == JUMP)
 				{
-					animeState = WALK;
+					if (Velocity.x == 0)
+					{
+						animeState = STAND;
+					}
+					else
+					{
+						animeState = WALK;
+					}
+				}
+			}
+			else {
+				timer++;
+				if (timer < BOX_TIME && Velocity.y > 0) {
+					CanJump = true;
+				}
+				else {
+					CanJump = false;
+					animeState = JUMP;
 				}
 			}
 		}
-		else {
-			timer++;
-			if (timer < BOX_TIME && Velocity.y > 0) {
-				CanJump = true;
-			}
-			else {
-				CanJump = false; 
-				animeState = JUMP;	
-			}
-		}
-	}
-	if (s != nullptr) {
-		//天井との当たり判定
-		int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
+		if (s != nullptr) {
+			//天井との当たり判定
+			int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
+			int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
 
-		int d = max(d1, d2);
+			int d = max(d1, d2);
 
-		//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
-		if (d > 0) {
-			position.y += (d - 1);
-			Velocity.y = 0;
+			//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
+			if (d > 0) {
+				position.y += (d - 1);
+				Velocity.y = 0;
+			}
 		}
 	}
 }
@@ -561,6 +671,25 @@ void Player::SubAttack()
 
 void Player::SupportSkill()
 {
+	Stage* s = FindGameObject<Stage>();
+	switch (playerType)
+	{
+	case (Name1):
+		isRush = true;
+		supportRecast = PLAYER_01_SUPPORT_RECAST_TIME;
+		break;
+	case (Name2):
+		isBlink = true;
+		SetInvincibilityTime();
+		supportRecast = PLAYER_02_SUPPORT_RECAST_TIME;
+		break;
+	case(Name3):
+		//ガード
+		supportRecast = PLAYER_03_SUPPORT_RECAST_TIME;
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::fall()
