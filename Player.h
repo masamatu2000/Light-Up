@@ -59,6 +59,12 @@ private:
 	void fall();
 	void Interact();
 	void Scroll();
+	//死体のインタラクト
+	void CorpseInteract();
+	//呪いの回復
+	void CurseRecovery();
+	//クリア演出
+	void ClearAnimation();
 	
 
 	bool CanJump;//ジャンプできる状態かどうか
@@ -106,15 +112,19 @@ private:
 		//プレイ中
 		PLAY,
 		//プレイヤーが死んだとき
-		OVER
+		OVER,
+		//クリア演出
+		CLEAR
 	};
 	PlayState playState;
 	//プレイ状態ごとの更新処理
 	void StartUpdate();
 	void PlayUpdate();
 	void OverUpdate();
+	void ClearUpdate();
 	//プレイ状態ごとの描画処理
 	void StartDraw();
 	void PlayDraw();
 	void OverDraw();
+	void ClearDraw();
 };
