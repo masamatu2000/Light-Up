@@ -46,6 +46,7 @@ public:
 	static int mapTop;
 	static int mapLeft;
 	static int mapRight;
+	static float GetScrollY();
 
 private:
 	void Update() override;

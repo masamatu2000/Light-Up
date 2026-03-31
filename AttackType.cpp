@@ -367,7 +367,7 @@ void Slash::Update()
 void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
-	float posY = position.y - Stage::scrollY;
+	float posY = position.y - Stage::GetScrollY();
 	DrawCircle(int(posX+16), int(posY+16), (int)slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
 
 }

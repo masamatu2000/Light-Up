@@ -45,7 +45,10 @@ public:
 	{
 		invincibilityTimeCounter = INVINCIBILITU_TIME;
 	}
-
+	float GetCameraY()
+	{
+		return cameraY;
+	}
 private:
 	void Update() override;
 	void Draw() override;
@@ -57,7 +60,11 @@ private:
 	void SubAttack();
 	void SupportSkill();
 	void fall();
+	//カメラのセット
+	void SetCamera();
+	//インタラクト
 	void Interact();
+	//スクロール
 	void Scroll();
 	//死体のインタラクト
 	void CorpseInteract();
@@ -93,6 +100,9 @@ private:
 	int supportRecast;
 	int rushCounter;
 	int blinkCounter;
+
+	//カメラ移動用の変数
+	float cameraY;
 
 	//アニメーションの状態保存
 	enum AnimeState

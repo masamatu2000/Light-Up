@@ -41,6 +41,10 @@ namespace
 	const float PLAYER_01_RUSH_SPEED = IMAGE_SCALE*5;
 	const int PLAYER_02_BLINK = 5;
 	const float PLAYER_02_BLINK_SPEED = IMAGE_SCALE* 5;
+
+	//カメラの移動する上限値
+	const int CAMERA_OFFSET = 60;
+	const float CAMERA_MOVE_TIME = 0.1f;
 }
 Player::Player()
 {
@@ -92,6 +96,8 @@ Player::Player(int x, int y)
 	rushCounter = 0;
 	isBlink = false;
 	blinkCounter = 0;
+
+	cameraY = 0;
 }
 
 Player::~Player()
@@ -127,6 +133,8 @@ void Player::PlayUpdate()
 	Mova();
 
 	Interact();
+
+	SetCamera();
 
 	Scroll();
 
@@ -218,7 +226,7 @@ void Player::StartDraw()
 void Player::PlayDraw()
 {
 	float x = position.x - Stage::scrollX;
-	float y = position.y - Stage::scrollY;
+	float y = position.y - Stage::GetScrollY();
 	if (invincibilityTimeCounter > 0)
 	{
 		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(100, 100, 100), true);
@@ -703,6 +711,39 @@ void Player::fall()
 	DrawFormatString(30, 80, 0xffffff, "%0.3f", dt);
 }
 
+void Player::SetCamera()
+{
+	static float timer = 0;
+	static float startY = 0;
+	int offsetY = 0;
+	if (Input::IsKeepKeyDown(KEY_INPUT_S) || Input::IsKeepPadDown(Pad::DOWN))
+	{
+		offsetY = CAMERA_OFFSET;
+		if (offsetY + Stage::scrollY > Stage::mapBottom)
+		{
+			offsetY = Stage::mapBottom - Stage::scrollY;
+		}
+	}
+
+	//押したとき、離したときに初期化
+	if (Input::IsKeyDown(KEY_INPUT_S) || Input::IsPadDown(Pad::DOWN) ||
+		Input::IsKeyUP(KEY_INPUT_S) || Input::IsPadUp(Pad::DOWN))
+	{
+		startY = cameraY;
+		timer = 0.0f;
+	}
+
+	//カメラの移動
+	timer += gDeltaTime;
+	if (timer > CAMERA_MOVE_TIME)
+	{
+		timer = CAMERA_MOVE_TIME;
+	}
+	float t = timer / CAMERA_MOVE_TIME;
+
+	cameraY = startY + (offsetY - startY) * t;
+}
+
 void Player::Interact()
 {
 	Stage* s = FindGameObject<Stage>();
@@ -724,6 +765,44 @@ void Player::Interact()
 			CorpseInteract();
 		}
 	}
+}
+
+void Player::CorpseInteract()
+{
+	auto gmmick = FindGameObjects<Gimmick>();
+	for (auto gm : gmmick)
+	{
+		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+		{
+			Vector2D gpos = gm->GetPosition();
+			float dist = Math2D::Length(Math2D::Sub(gpos, position));
+			if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Enemy")
+			{
+				CurseRecovery();
+				gm->DestroyMe();
+				break;
+			}
+			else if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Boss")
+			{
+				ClearAnimation();
+				playState = PlayState::CLEAR;
+			}
+		}
+	}
+}
+
+void Player::CurseRecovery()
+{
+	curse -= 20;
+	if (curseLowerLimit > curse)
+	{
+		curse = curseLowerLimit;
+	}
+
+}
+
+void Player::ClearAnimation()
+{
 }
 
 void Player::Scroll()
@@ -767,40 +846,3 @@ void Player::Scroll()
 	}
 }
 
-void Player::CorpseInteract()
-{
-	auto gmmick = FindGameObjects<Gimmick>();
-	for (auto gm : gmmick)
-	{
-		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-		{
-			Vector2D gpos = gm->GetPosition();
-			float dist = Math2D::Length(Math2D::Sub(gpos, position));
-			if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Enemy")
-			{
-				CurseRecovery();
-				gm->DestroyMe();
-				break;
-			}
-			else if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Boss")
-			{
-				ClearAnimation();
-				playState = PlayState::CLEAR;
-			}
-		}
-	}
-}
-
-void Player::CurseRecovery()
-{
-	curse -= 20;
-	if (curseLowerLimit > curse)
-	{
-		curse = curseLowerLimit;
-	}
-	
-}
-
-void Player::ClearAnimation()
-{
-}
