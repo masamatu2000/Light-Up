@@ -137,4 +137,8 @@ private:
 	void PlayDraw();
 	void OverDraw();
 	void ClearDraw();
+
+	int pushM;
+	int pushB;
+	int pushV;
 };

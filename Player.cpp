@@ -25,8 +25,6 @@ namespace
 	const float cursUpIsPlayer02SubAtttack = 1.0f;
 	const float cursUpIsPlayer03SubAtttack = 10.0f;
 	const float BOX_TIME = 10%60;
-	int pushM;
-	int pushB;
 
 	const int PLAYER_01_MAIN_ATTACK_RECAST_TIME = 20;
 	const int PLAYER_02_MAIN_ATTACK_RECAST_TIME = 10;
@@ -98,6 +96,10 @@ Player::Player(int x, int y)
 	blinkCounter = 0;
 
 	cameraY = 0;
+
+	pushM = 0;
+	pushB = 0;
+	pushV = 0;
 }
 
 Player::~Player()
@@ -281,7 +283,6 @@ void Player::PlayDraw()
 
 	/*DrawFormatString(0, 250, 0xffffff, "curseÅF%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLLÅF%.0f", curseLowerLimit);*/
-	DrawFormatString(100, 100, GetColor(255, 255, 255), "%d %d", pushB, TRUE);
 
 	patCounter++;
 	if (patCounter % 10 == 0)
@@ -316,7 +317,7 @@ void Player::Attack()
 	{
 		SubAttack();
 	}
-	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_V)) || (pushB = Input::IsKeepPadDown(Pad::Y))) && supportRecast <= 0)
+	if (((pushV = Input::IsKeepKeyDown(KEY_INPUT_V)) || (pushV = Input::IsKeepPadDown(Pad::Y))) && supportRecast <= 0)
 	{
 		SupportSkill();
 	}
@@ -615,11 +616,8 @@ void Player::MainAttack()
 		}
 		break;
 	case(Name2):
-		if (pushM % 10 == 1)
-		{
-			PlayerAttack::Player2MainAttack(position, islookleft);
-			mainAttackRecast = PLAYER_02_MAIN_ATTACK_RECAST_TIME;
-		}
+		PlayerAttack::Player2MainAttack(position, islookleft);
+		mainAttackRecast = PLAYER_02_MAIN_ATTACK_RECAST_TIME;
 		break;
 	case(Name3):
 		if (pushM == 1)
@@ -652,11 +650,9 @@ void Player::SubAttack()
 	case (Name2):
 		if (curse < (curseMax - cursUpIsPlayer02SubAtttack))
 		{
-			if (pushB % 10 == 1)
-			{
-				PlayerAttack::Player1SubAttack(position, islookleft);
-				UpCurse(cursUpIsPlayer02SubAtttack);
-			}
+			PlayerAttack::Player1SubAttack(position, islookleft);
+			UpCurse(cursUpIsPlayer02SubAtttack);
+
 			subAttackRecast = PLAYER_02_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
