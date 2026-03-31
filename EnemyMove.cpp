@@ -7,6 +7,7 @@
 namespace {
 	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
 	const int ENEMY_BULLET_COOLTIME = 60 * 2;
+	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;
 	const float ENEMY2_ATTACK_DISTANCE = IMAGE_SCALE * 10;
 }
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
@@ -16,10 +17,14 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 	auto e=FindGameObjects<Enemy>();
 	Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
-	float dx = ppos.x - epos.x;
-	float dist = abs(dx);
+	Vector2D distance = Math2D::Sub(ppos, epos);
+	float dx = distance.x;
+	distance.x = abs(distance.x);
+	distance.y = abs(distance.y);
+	distance.x = abs(distance.x);
+	distance.y = abs(distance.y);
 	bool IsAttack = false;
-	if (dist < TRACE_DISTANCE) {
+	if (distance.x < TRACE_DISTANCE) {
 		float speed = abs(vel.x);
 		float dt = GetDeltaTime();
 		// š Œü‚«‚¾‚¯Œˆ‚ß‚é
@@ -66,9 +71,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 		}
 		
 	}
-	if (timer > ENEMY_BULLET_COOLTIME) {
+	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {
 		IsAttack = true;
-		
 		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
 		
 	}
