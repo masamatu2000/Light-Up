@@ -1,13 +1,6 @@
 #pragma once
 #include "Character.h"
 #include "PlayerType.h"
-enum PLAYER_STATE
-{
-	STAND,
-	WALK,
-	RUN,
-	JUMP
-};
 
 class Player : public Character
 {
@@ -19,15 +12,6 @@ public:
 	void SetPosition(Vector2D pos)
 	{
 		position = pos;
-	}
-	bool GetKillBoss()
-	{
-		return killBoss;
-	}
-	//デバッグ用の仮の関数
-	void SetKillBoss(bool kill)
-	{
-		killBoss = kill;
 	}
 	void UpCurse(float downcurse)
 	{ 
@@ -82,8 +66,6 @@ private:
 	bool canNext; //次のステージに進めるかどうか
 	bool islookleft;//左を向いているかどうか
 	PlayerName playerType;
-	PLAYER_STATE playerState;
-	bool killBoss; //ボスを倒したらステージを進むためにフラグをtrueに
 	bool IsCorpse;
 	float curse; //呪い
 	float curseLowerLimit;
@@ -100,4 +82,34 @@ private:
 
 	int mainAttackRecast;
 	int subAttackRecast;
+
+	//アニメーションの状態保存
+	enum AnimeState
+	{
+		STAND,
+		WALK,
+		RUN,
+		JUMP
+	};
+	AnimeState animeState;
+
+	//プレイ状態保存
+	enum PlayState
+	{
+		//スタートアニメーション
+		START,
+		//プレイ中
+		PLAY,
+		//プレイヤーが死んだとき
+		OVER
+	};
+	PlayState playState;
+	//プレイ状態ごとの更新処理
+	void StartUpdate();
+	void PlayUpdate();
+	void OverUpdate();
+	//プレイ状態ごとの描画処理
+	void StartDraw();
+	void PlayDraw();
+	void OverDraw();
 };
