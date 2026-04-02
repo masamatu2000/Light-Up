@@ -23,6 +23,11 @@ namespace {
 	const float BULLET04_RADIUS = 10.0f;
 	const float BULLET04_LIFE = 3.0f;
 	const float BULLET04_POS = 10.0f;
+	const float BULLET05_SPEED = 300.0f;
+	const float BULLET05_RADIUS = 10.0f;
+	const float BULLET05_LIFE = 7.0f;
+	const float BULLET05_POS = 10.0f;
+
 	const float SLASH01_SPEED = 200.0f;
 	const float SLASH01_RADIUS = 40.0f;
 	const float SLASH01_LIFE = 0.1f;
@@ -44,11 +49,13 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
 	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
 	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
+	BulletType bt5 = { BULLET05_SPEED,BULLET05_RADIUS,BULLET05_LIFE };
 	bullettype.clear();
 	bullettype.push_back(bt1);
 	bullettype.push_back(bt2);
 	bullettype.push_back(bt3);
 	bullettype.push_back(bt4);
+	bullettype.push_back(bt5);
 	bulletNum_ = bulletNum;
 	position = pos;
 	islookleft = lookleft;
@@ -89,13 +96,24 @@ Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_
 	case bullet04:
 		if (islookleft == false)
 		{
-			position = Math2D::Add(pos, Vector2D(BULLET03_POS, 0.0f));
+			position = Math2D::Add(pos, Vector2D(BULLET04_POS, 0.0f));
 		}
 		else
 		{
-			position = Math2D::Sub(pos, Vector2D(BULLET03_POS, 0.0f));
+			position = Math2D::Sub(pos, Vector2D(BULLET04_POS, 0.0f));
 		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
+		circleColid = CircleColid(Vector2D(0, 0), BULLET04_RADIUS);
+		break;
+	case TURRET_BULLET:
+		if (islookleft == false)
+		{
+			position = Math2D::Add(pos, Vector2D(BULLET05_POS, 0.0f));
+		}
+		else
+		{
+			position = Math2D::Sub(pos, Vector2D(BULLET05_POS, 0.0f));
+		}
+		circleColid = CircleColid(Vector2D(0, 0), BULLET05_RADIUS);
 		break;
 	}
 	objtag = tag;
@@ -111,11 +129,13 @@ Bullet::Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum, Vector2D direction,
 	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
 	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
 	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
+	BulletType bt5 = { BULLET05_SPEED,BULLET05_RADIUS,BULLET05_LIFE };
 	bullettype.clear();
 	bullettype.push_back(bt1);
 	bullettype.push_back(bt2);
 	bullettype.push_back(bt3);
 	bullettype.push_back(bt4);
+	bullettype.push_back(bt5);
 	bulletNum_ = bulletNum;
 	position = pos;
 	objtag = tag;
@@ -202,7 +222,18 @@ void Bullet::Update()
 				position.x += bullettype[bullet04].speed *dir.x* dt;
 				position.y+= bullettype[bullet04].speed * dir.y * dt;
 		}
-	
+	case TURRET_BULLET:
+		if (bullettype[TURRET_BULLET].life > 0)
+		{
+			bullettype[TURRET_BULLET].life -= dt;
+			if (bullettype[TURRET_BULLET].life <= 0)
+			{
+				DestroyMe();
+				break;
+			}
+			position.x += bullettype[TURRET_BULLET].speed * dir.x * dt;
+			position.y += bullettype[TURRET_BULLET].speed * dir.y * dt;
+		}
 		break;
 	}
 	int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));

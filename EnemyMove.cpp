@@ -6,9 +6,17 @@
 #include"AttackType.h"
 namespace {
 	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
-	const int ENEMY_BULLET_COOLTIME = 60 * 2;
+	const float ENEMY_BULLET_COOLTIME = 2.0f;
 	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;
 	const float ENEMY2_ATTACK_DISTANCE = IMAGE_SCALE * 10;
+
+	//タレット用の定数
+	//タレットの攻撃時間
+	const float TURRET_SHOT_TIME = 1.0f;
+	//タレットのクールタイム
+	const float TURRET_COOLTIME = 3.0f;
+	//タレットの攻撃距離 5ブロック以内で
+	const float TURRET_ATTACK_DISTANCE = IMAGE_SCALE * 15;
 }
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
 {
@@ -164,14 +172,45 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	
 }
 
-void EnemyAttack::Enemy3Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
+void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 {
-}
+	Vector2D ePos = pos;
+	Player* pl = FindGameObject<Player>();
+	Vector2D pPos = pl->GetPosition();
+	//プレイヤーとの距離
+	float distance = Math2D::Length(Math2D::Sub(pPos, pos));
+	//レーザーの方向ベクトル 攻撃可能になった時にだけ設定する
+	static Vector2D dir = { 0,0 };
+	//攻撃が可能かどうか
+	static bool isAttack = false;
+	//攻撃時間（1秒間）を管理する用のタイマー
+	static float shotTimer = 0.0f;
 
-void EnemyAttack::Enemy4Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
-{
-}
+	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
+	if (distance < TURRET_ATTACK_DISTANCE && timer > TURRET_COOLTIME)
+	{
+		isAttack = true;
+		dir = Math2D::Normalize(Math2D::Sub(pPos, pos));
+		auto e = FindGameObjects<Enemy>();
+		for (auto enemy : e) {
+			if (enemy->GetEnum() == ENEMY_NUMBER::Turret) {
+				enemy->SetTimer(0);
+			}
+		}
+	}
 
-void EnemyAttack::Enemy5Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
-{
+	if (isAttack)
+	{
+		if (shotTimer < TURRET_SHOT_TIME)
+		{
+			shotTimer += gDeltaTime;
+			new Bullet(pos, BULLET_NUMBER::TURRET_BULLET, dir, OBJECT_TAG::ENEMY);
+			if (shotTimer >= TURRET_SHOT_TIME)
+			{
+				shotTimer = 0.0f;
+				dir = { 0,0 };
+				isAttack = false;
+			}
+		}
+	}
 }
