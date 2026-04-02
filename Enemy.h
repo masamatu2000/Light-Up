@@ -22,7 +22,7 @@ private:
 private:
 	ENEMY_NUMBER EnemyNumber;
 	bool IsTrace;
-	int timer;
+	float timer;
 	int invincibilityTimeCounter;
 	const int INVINCIBILITU_TIME = 10 % 60;
 };

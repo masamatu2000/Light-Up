@@ -28,6 +28,9 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	case Enemy02:
 		Hp = (unsigned int)EnemyTypeNum::ENEMY_02_HP;
 		break;
+	case Turret:
+		Hp = (unsigned int)EnemyTypeNum::TURRET_HP;
+		break;
 	}
 	timer = 0;
 	invincibilityTimeCounter = 0;//–³“GŽžŠÔ
@@ -49,13 +52,16 @@ void Enemy::Update()
 	Vector2D Distance = Math2D::Sub(ppos, position);
 	float dist = Math2D::Length(Distance);*/
 
-	timer++;
+	timer += gDeltaTime;
 	switch (EnemyNumber) {
 	case Enemy01:
 		EnemyAttack::Enemy1Attack(position,Velocity,timer);
 		break;
 	case Enemy02:
 		EnemyAttack::Enemy2Attack(position, Velocity,timer);
+		break;
+	case Turret:
+		EnemyAttack::TurretAttack(position,timer);
 		break;
 	}
 	invincibilityTimeCounter--;
