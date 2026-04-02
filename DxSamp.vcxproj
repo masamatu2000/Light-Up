@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AttackObject.cpp" />
     <ClCompile Include="AttackType.cpp" />
     <ClCompile Include="BootScene.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="AttackObject.h" />
     <ClInclude Include="AttackType.h" />
     <ClInclude Include="BootScene.h" />

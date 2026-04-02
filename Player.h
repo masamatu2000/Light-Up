@@ -49,6 +49,8 @@ public:
 	{
 		return cameraY;
 	}
+	//アニメーションの終了を知らせる関数
+	void AnimationEnd();
 private:
 	void Update() override;
 	void Draw() override;
@@ -72,7 +74,6 @@ private:
 	void CurseRecovery();
 	//クリア演出
 	void ClearAnimation();
-	
 
 	bool CanJump;//ジャンプできる状態かどうか
 	bool canPrevious; //前のステージに戻れるかどうか
@@ -87,6 +88,8 @@ private:
 	const int curseRecoveryArea = 100;
 	int invincibilityTimeCounter;
 	const int INVINCIBILITU_TIME = 120;
+	//アニメーションが終わったかどうか
+	bool isAnimationEnd;
 
 	//描画用関数
 	int patX;//縦に何個目？

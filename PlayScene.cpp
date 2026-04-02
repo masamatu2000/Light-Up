@@ -4,6 +4,7 @@
 #include "StageGraphic.h"
 #include"ImageManager.h"
 #include "UserInterface.h"
+#include "Animation.h"
 
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é

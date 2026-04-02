@@ -364,6 +364,20 @@ bool Stage::IsBossComplete()
 	return true;
 }
 
+Vector2D Stage::GetAnimationPos()
+{
+	for (int y = 0; y < map.size(); y++) {
+		for (int x = 0; x < map[y].size(); x++) {
+			//入り口の場所をアニメーションの開始位置に
+			if (map[y][x] == PREVIOUSPORTAL_CSV_NUM) {
+				return Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE));
+				break;
+			}
+		}
+	}
+	return Vector2D(0,0);
+}
+
 void Stage::SetScroll()
 {
 	Stage::mapBottom = (int)(map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM));

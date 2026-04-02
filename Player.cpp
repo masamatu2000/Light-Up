@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include"Boss.h"
 #include"Gimmick.h"
+#include"Animation.h"
 
 /// <summary>
 /// M.Shoji
@@ -82,6 +83,7 @@ Player::Player(int x, int y)
 	IsCorpse = false;
 	animeState = STAND;
 	playState = START;
+	isAnimationEnd = false;
 
 	Hp = 1;
 	invincibilityTimeCounter = 0;
@@ -202,6 +204,12 @@ void Player::OverUpdate()
 
 void Player::ClearUpdate()
 {
+	if (isAnimationEnd)
+	{
+		playState = PlayState::START;
+		Stage* s = FindGameObject<Stage>();
+		s->NextSection();
+	}
 }
 
 void Player::Draw()
@@ -803,6 +811,12 @@ void Player::CurseRecovery()
 
 void Player::ClearAnimation()
 {
+	new Animation(Name::CLEAR);
+}
+
+void Player::AnimationEnd()
+{
+	isAnimationEnd = true;
 }
 
 void Player::Scroll()

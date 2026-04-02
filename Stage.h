@@ -38,6 +38,8 @@ public:
 	bool IsBossComplete();
 	int GetCurrentNum() { return currentNum; };
 	int GetNextNum() { return nextNum; };
+	//アニメーションの開始位置を返す関数
+	Vector2D GetAnimationPos();
 
 	//スクロール用変数
 	static int scrollX;
