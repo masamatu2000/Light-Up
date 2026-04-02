@@ -19,7 +19,7 @@ namespace {
 	const float BULLET03_RADIUS = 20.0f;
 	const float BULLET03_LIFE = 3.0f;
 	const float BULLET03_POS = 20.0f;
-	const float BULLET04_SPEED = 300.0f;
+	const float BULLET04_SPEED = 100.0f;
 	const float BULLET04_RADIUS = 10.0f;
 	const float BULLET04_LIFE = 3.0f;
 	const float BULLET04_POS = 10.0f;
@@ -222,6 +222,7 @@ void Bullet::Update()
 				position.x += bullettype[bullet04].speed *dir.x* dt;
 				position.y+= bullettype[bullet04].speed * dir.y * dt;
 		}
+		break;
 	case TURRET_BULLET:
 		if (bullettype[TURRET_BULLET].life > 0)
 		{
