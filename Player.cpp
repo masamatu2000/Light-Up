@@ -275,14 +275,15 @@ void Player::PlayDraw()
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
 	DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
 
-	DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+	//DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+	//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
 	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d SP: %d", mainAttackRecast, subAttackRecast,supportRecast);
-	DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
-	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
+	//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
+	//DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
 	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
 	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
+	DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
 
 	patCounter++;
 	if (patCounter % 10 == 0)
@@ -704,7 +705,7 @@ void Player::fall()
 
 	//positionを加速度分上昇させる、位置を変える処理
 	position.y += Velocity.y * dt;
-	DrawFormatString(30, 80, 0xffffff, "%0.3f", dt);
+	//DrawFormatString(30, 80, 0xffffff, "dt:%0.3f", dt);
 }
 
 void Player::SetCamera()
@@ -712,22 +713,25 @@ void Player::SetCamera()
 	static float timer = 0;
 	static float startY = 0;
 	int offsetY = 0;
-	if (Input::IsKeepKeyDown(KEY_INPUT_S) || Input::IsKeepPadDown(Pad::DOWN))
-	{
-		offsetY = CAMERA_OFFSET;
-		if (offsetY + Stage::scrollY > Stage::mapBottom)
-		{
-			offsetY = Stage::mapBottom - Stage::scrollY;
-		}
-	}
-
 	//押したとき、離したときに初期化
-	if (Input::IsKeyDown(KEY_INPUT_S) || Input::IsPadDown(Pad::DOWN) ||
-		Input::IsKeyUP(KEY_INPUT_S) || Input::IsPadUp(Pad::DOWN))
+	if (Input::IsKeyDown(KEY_INPUT_S) || (Input::IsKeepPadDown(Pad::DOWN) && (!Input::IsPadDown(Pad::LEFT) && !Input::IsPadDown(Pad::RIGHT))) ||
+		Input::IsKeyUP(KEY_INPUT_S) || (Input::IsPadUp(Pad::DOWN) && (!Input::IsPadUp(Pad::LEFT) && !Input::IsPadUp(Pad::RIGHT))))
 	{
 		startY = cameraY;
 		timer = 0.0f;
 	}
+
+	if (Input::IsKeepKeyDown(KEY_INPUT_S) || (Input::IsKeepPadDown(Pad::DOWN) && (Input::IsKeepPadDown(Pad::LEFT) == 0 && Input::IsKeepPadDown(Pad::RIGHT) == 0)))
+	{
+		offsetY = CAMERA_OFFSET;
+		
+		if (offsetY + Stage::scrollY > Stage::mapBottom)
+		{
+			offsetY = Stage::mapBottom - Stage::scrollY;
+		}
+		
+	}
+	
 
 	//カメラの移動
 	timer += gDeltaTime;
@@ -735,9 +739,9 @@ void Player::SetCamera()
 	{
 		timer = CAMERA_MOVE_TIME;
 	}
-	float t = timer / CAMERA_MOVE_TIME;
+	float rate = timer / CAMERA_MOVE_TIME;
 
-	cameraY = startY + (offsetY - startY) * t;
+	cameraY = startY + (offsetY - startY) * rate;
 }
 
 void Player::Interact()
@@ -746,7 +750,7 @@ void Player::Interact()
 	//ステージのインタラクト
 	canPrevious = s->CanChangeStage(position, "previous");
 	canNext = s->CanChangeStage(position, "next");
-	if (Input::IsKeyDown(KEY_INPUT_E) || Input::IsPadDown(Pad::Y))
+	if (Input::IsKeyDown(KEY_INPUT_E) || Input::IsPadDown(Pad::UP))
 	{
 		if (canNext)
 		{
