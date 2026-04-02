@@ -21,6 +21,7 @@ namespace {
 	const int ENEMY01_CSV_NUM = 10;
 	const int ENEMY02_CSV_NUM = 11;
 	const int TURRET_CSV_NUM = 12;
+	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
 }
 
@@ -450,7 +451,11 @@ void Stage::SetEnemy_Boss()
 				break;
 			}
 			if (map[y][x] == TURRET_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), ENEMY_NUMBER::Turret);
+				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), ENEMY_NUMBER::TURRET);
+				break;
+			}
+			if (map[y][x] == BOMBER_CSV_NUM) {
+				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), ENEMY_NUMBER::BOMBER);
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)

@@ -11,10 +11,16 @@ class Bullet :public AttackObject {
 public:
 	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag);
 	Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum,Vector2D direction, OBJECT_TAG tag);
+	//放物線用コンストラクタ
+	Bullet(const Vector2D& pos, Vector2D distance, BULLET_NUMBER bulletNum, OBJECT_TAG tag);
 	~Bullet();
 	void Update()override;
 	void Draw()override;
 	OBJECT_TAG Gettag() { return objtag; }
+	BULLET_NUMBER GetBulletNum()
+	{
+		return bulletNum_;
+	}
 private:
 	BULLET_NUMBER bulletNum_;
 	struct BulletType {
@@ -25,7 +31,13 @@ private:
 	std::vector<BulletType> bullettype;
 	bool islookleft;
 	OBJECT_TAG objtag;
+	//方向ベクトル
 	Vector2D dir;
+	//差分ベクトル
+	Vector2D dis;
+	float gravity;
+	//速度計算用の関数
+	void CalculateVelocity();
 };
 class Slash :public AttackObject
 {

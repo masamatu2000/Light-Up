@@ -9,15 +9,26 @@ namespace {
 	const float ENEMY_BULLET_COOLTIME = 2.0f;
 	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;
 	const float ENEMY2_ATTACK_DISTANCE = IMAGE_SCALE * 10;
-
-	//タレット用の定数
-	//タレットの攻撃時間
-	const float TURRET_SHOT_TIME = 1.0f;
-	//タレットのクールタイム
-	const float TURRET_COOLTIME = 3.0f;
-	//タレットの攻撃距離 5ブロック以内で
-	const float TURRET_ATTACK_DISTANCE = IMAGE_SCALE * 15;
 }
+//タレット用の定数
+namespace Turret
+{
+	//タレットの継続時間
+	const float SHOT_TIME = 1.0f;
+	const float COOLTIME = 3.0f;
+	const float ATTACK_DISTANCE = IMAGE_SCALE * 15;
+}
+//ボマー用の定数
+namespace Bomber
+{
+	//最高到達地点
+	const float MAX_HEIGHT = IMAGE_SCALE * 2;
+	//最高到達点までの時間
+	const float MAX_TIME = 1.0f;
+	const float COOLTIME = 3.0f;
+	const float ATTACK_DISTANCE = IMAGE_SCALE * 8;
+}
+
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
 {
 	Vector2D epos = pos;
@@ -187,13 +198,13 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 	static float shotTimer = 0.0f;
 
 	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
-	if (distance < TURRET_ATTACK_DISTANCE && timer > TURRET_COOLTIME)
+	if (distance < Turret::ATTACK_DISTANCE && timer > Turret::COOLTIME)
 	{
 		isAttack = true;
-		dir = Math2D::Normalize(Math2D::Sub(pPos, pos));
+		dir = Math2D::Normalize(Math2D::Sub(pPos, ePos));
 		auto e = FindGameObjects<Enemy>();
 		for (auto enemy : e) {
-			if (enemy->GetEnum() == ENEMY_NUMBER::Turret) {
+			if (enemy->GetEnum() == ENEMY_NUMBER::TURRET) {
 				enemy->SetTimer(0);
 			}
 		}
@@ -201,16 +212,48 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 
 	if (isAttack)
 	{
-		if (shotTimer < TURRET_SHOT_TIME)
+		if (shotTimer < Turret::SHOT_TIME)
 		{
 			shotTimer += gDeltaTime;
-			new Bullet(pos, BULLET_NUMBER::TURRET_BULLET, dir, OBJECT_TAG::ENEMY);
-			if (shotTimer >= TURRET_SHOT_TIME)
+			new Bullet(ePos, BULLET_NUMBER::TURRET_BULLET, dir, OBJECT_TAG::ENEMY);
+			if (shotTimer >= Turret::SHOT_TIME)
 			{
 				shotTimer = 0.0f;
 				dir = { 0,0 };
 				isAttack = false;
 			}
 		}
+	}
+}
+
+void EnemyAttack::BomberAttack(const Vector2D& pos, const int& timer)
+{
+	Vector2D ePos = pos;
+	Player* pl = FindGameObject<Player>();
+	Vector2D pPos = pl->GetPosition();
+	//プレイヤーとの距離（ベクトル）
+	Vector2D dis = Math2D::Sub(pPos, ePos);
+	//プレイヤーとの距離（距離）
+	float distance = Math2D::Length(dis);
+	//攻撃が可能かどうか
+	static bool isAttack = false;
+
+	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
+	if (distance < Bomber::ATTACK_DISTANCE && timer > Bomber::COOLTIME)
+	{
+		isAttack = true;
+		auto e = FindGameObjects<Enemy>();
+		for (auto enemy : e) {
+			if (enemy->GetEnum() == ENEMY_NUMBER::BOMBER) {
+				enemy->SetTimer(0);
+			}
+		}
+	}
+
+	if (isAttack)
+	{
+		//放物線を描くバレットを生成
+		new Bullet(ePos, dis, BULLET_NUMBER::BOMBER_BULLET, OBJECT_TAG::ENEMY);
+		isAttack = false;
 	}
 }

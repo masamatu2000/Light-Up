@@ -132,6 +132,12 @@ void ObjectProcess::HitObject()
 
 				if (dist < collisiondist)
 				{
+					//ボマーの弾は当たった時に爆発するように、ヒットしたときにスラッシュを生成
+					if (bullet->GetBulletNum() == BULLET_NUMBER::BOMBER_BULLET)
+					{
+						Vector2D pos = bullet->GetPosition();
+						new Slash(pos, SLASH_NUMBER::BOMBER_SLASH, false, OBJECT_TAG::ENEMY);
+					}
 					if (pl->GetInvincibilityTime() < 0)
 					{
 						pl->UpCurseLowerLimit(20.0f);
@@ -145,6 +151,7 @@ void ObjectProcess::HitObject()
 						}
 						pl->SetInvincibilityTime();
 					}
+					bullet->DestroyMe();
 					break;
 				}
 			}

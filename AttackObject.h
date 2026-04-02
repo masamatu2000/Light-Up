@@ -12,13 +12,15 @@ enum BULLET_NUMBER
 	bullet02,
 	bullet03,
 	bullet04,
-	TURRET_BULLET
+	TURRET_BULLET,
+	BOMBER_BULLET
 };
 enum SLASH_NUMBER
 {
 	slash01,
 	slash02,
-	slash03
+	slash03,
+	BOMBER_SLASH
 };
 class AttackObject : public Character
 {

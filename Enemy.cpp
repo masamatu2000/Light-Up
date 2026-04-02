@@ -28,8 +28,11 @@ Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
 	case Enemy02:
 		Hp = (unsigned int)EnemyTypeNum::ENEMY_02_HP;
 		break;
-	case Turret:
+	case TURRET:
 		Hp = (unsigned int)EnemyTypeNum::TURRET_HP;
+		break;
+	case BOMBER:
+		Hp = (unsigned int)EnemyTypeNum::BOMBER_HP;
 		break;
 	}
 	timer = 0;
@@ -60,8 +63,11 @@ void Enemy::Update()
 	case Enemy02:
 		EnemyAttack::Enemy2Attack(position, Velocity,timer);
 		break;
-	case Turret:
+	case TURRET:
 		EnemyAttack::TurretAttack(position,timer);
+		break;
+	case BOMBER:
+		EnemyAttack::BomberAttack(position, timer);
 		break;
 	}
 	invincibilityTimeCounter--;
