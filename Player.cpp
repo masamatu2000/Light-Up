@@ -17,8 +17,8 @@ namespace
 	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
 	const float accel = 20.0f;//加速率
-	const float decal = 10.0f;//減衰率
-	const float maxSpeed = 5.0f;//最高速度
+	const float decal = 15.0f;//減衰率
+	const float maxSpeed = 8.0f;//最高速度
 
 	const float curseMax = 100.0f;
 	const float curseDownRatio = 500.0f;
