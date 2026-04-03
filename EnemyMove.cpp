@@ -5,6 +5,7 @@
 #include"Enemy.h"
 #include"AttackType.h"
 namespace {
+	const float GRAVITY = 9.8f * 60 * 2;
 	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
 	const float ENEMY_BULLET_COOLTIME = 2.0f;
 	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;
@@ -26,7 +27,7 @@ namespace Bomber
 	//最高到達点までの時間
 	const float MAX_TIME = 1.0f;
 	const float COOLTIME = 3.0f;
-	const float ATTACK_DISTANCE = IMAGE_SCALE * 8;
+	const float ATTACK_DISTANCE = IMAGE_SCALE * 5;
 }
 
 void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
@@ -43,6 +44,8 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 	distance.x = abs(distance.x);
 	distance.y = abs(distance.y);
 	bool IsAttack = false;
+	float dt = GetDeltaTime();
+	Stage* stage = FindGameObject<Stage>();
 	if (distance.x < TRACE_DISTANCE) {
 		float speed = abs(vel.x);
 		float dt = GetDeltaTime();
@@ -51,8 +54,6 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 		epos.x += dir * speed*dt;
 	}
 	else {
-		float dt = GetDeltaTime();
-		Stage* stage = FindGameObject<Stage>();
 		epos.x += vel.x * dt;
 		if (vel.x > 0) {
 			int d1 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1),int( pos.y + IMAGE_SCALE - 1));
@@ -68,7 +69,7 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 		}
 		else if (vel.x < 0)
 		{
-			int d1 = stage->HitWallLeft(int(pos.x + 0),int( pos.y + IMAGE_SCALE - 1));
+			int d1 = stage->HitWallLeft(int(pos.x + 0), int(pos.y + IMAGE_SCALE - 1));
 			int d2 = stage->HitWallLeft(int(pos.x + 0), int(pos.y));
 
 			int d = max(d1, d2);
@@ -79,17 +80,19 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 
 			epos.x += max(d1, d2);
 		}
-		int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
-		int d2 = stage->HitFloor(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE));
-
-		int d = max(d1, d2);
-
-		if (d > 0) {
-			epos.y -= (d - 1);
-			evel.y = 0;
-		}
-		
 	}
+	evel.y += GRAVITY * dt;
+	epos.y += evel.y * dt;
+	int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
+	int d2 = stage->HitFloor(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE));
+
+	int d = max(d1, d2);
+
+	if (d > 0) {
+		epos.y -= (d - 1);
+		evel.y = 0;
+	}
+
 	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {
 		IsAttack = true;
 		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
@@ -226,9 +229,10 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 	}
 }
 
-void EnemyAttack::BomberAttack(const Vector2D& pos, const int& timer)
+void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const int& timer)
 {
 	Vector2D ePos = pos;
+	Vector2D eVel = vel;
 	Player* pl = FindGameObject<Player>();
 	Vector2D pPos = pl->GetPosition();
 	//プレイヤーとの距離（ベクトル）
@@ -237,19 +241,80 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const int& timer)
 	float distance = Math2D::Length(dis);
 	//攻撃が可能かどうか
 	static bool isAttack = false;
-
-	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
-	if (distance < Bomber::ATTACK_DISTANCE && timer > Bomber::COOLTIME)
+	//ステージのポインタ
+	Stage* s = FindGameObject<Stage>();
+	//敵すべてのポインタ（ここから検索）
+	auto e = FindGameObjects<Enemy>();
+	//ボマー保存用のポインタ
+	Enemy* bomber = nullptr;
+	for (auto enemy : e)
 	{
-		isAttack = true;
-		auto e = FindGameObjects<Enemy>();
-		for (auto enemy : e) {
-			if (enemy->GetEnum() == ENEMY_NUMBER::BOMBER) {
-				enemy->SetTimer(0);
-			}
+		if (enemy->GetEnum() == ENEMY_NUMBER::BOMBER)
+		{
+			bomber = enemy;
+			break;
 		}
 	}
+	//フレーム間時間
+	float dt = GetDeltaTime();
 
+	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
+	//この間は移動しない
+	if (distance < Bomber::ATTACK_DISTANCE)
+	{
+		if (timer > Bomber::COOLTIME)
+		{
+			isAttack = true;
+			bomber->SetTimer(0);
+		}
+	}
+	else {
+		//X座標の更新
+		ePos.x += eVel.x * dt;
+		if (eVel.x > 0) {
+			int d1 = s->HitWallRight(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallRight(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				eVel.x *= -1;
+			}
+
+			ePos.x -= max(d1, d2);
+		}
+		else if (eVel.x < 0)
+		{
+			int d1 = s->HitWallLeft(int(ePos.x + 0), int(ePos.y + IMAGE_SCALE - 1));
+			int d2 = s->HitWallLeft(int(ePos.x + 0), int(ePos.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				eVel.x *= -1;
+			}
+
+			ePos.x += max(d1, d2);
+		}
+	}
+	//重力処理
+	eVel.y += GRAVITY * dt;
+	//Y座標の更新
+	ePos.y += eVel.y * dt;
+	int d1 = s->HitFloor(int(ePos.x + 0), int(ePos.y + IMAGE_SCALE));
+	int d2 = s->HitFloor(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y + IMAGE_SCALE));
+
+	int d = max(d1, d2);
+
+	if (d > 0) {
+		ePos.y -= (d - 1);
+		eVel.y = 0;
+	}
+
+	//座標と速度をセット
+	bomber->SetPosition(ePos);
+	bomber->SetVel(eVel);
+	
 	if (isAttack)
 	{
 		//放物線を描くバレットを生成
