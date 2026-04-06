@@ -95,7 +95,7 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 
 	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {
 		IsAttack = true;
-		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
+		new Slash(pos, SlashNumber::BASE , (dx < 0), ObjectTag::ENEMY);
 		
 	}
 	for (auto enemy : e) {
@@ -170,9 +170,9 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 		float Rad = 30 * (DX_PI_F / 180.0f);
 		Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };//(dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad))
 		Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
-		new Bullet(pos, BULLET_NUMBER::bullet04,dir,OBJECT_TAG::ENEMY);
-		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation, OBJECT_TAG::ENEMY);
-		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation2 , OBJECT_TAG::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY,dir,ObjectTag::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY,Rotation, ObjectTag::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY,Rotation2 , ObjectTag::ENEMY);
 	}
 	for (auto enemy : e) {
 		if (enemy->GetEnum() == Enemy02) {
@@ -218,7 +218,7 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 		if (shotTimer < Turret::SHOT_TIME)
 		{
 			shotTimer += gDeltaTime;
-			new Bullet(ePos, BULLET_NUMBER::TURRET_BULLET, dir, OBJECT_TAG::ENEMY);
+			new Bullet(ePos, BulletNumber::TURRET, dir, ObjectTag::ENEMY);
 			if (shotTimer >= Turret::SHOT_TIME)
 			{
 				shotTimer = 0.0f;
@@ -318,7 +318,7 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 	if (isAttack)
 	{
 		//•ú•¨ü‚ğ•`‚­ƒoƒŒƒbƒg‚ğ¶¬
-		new Bullet(ePos, dis, BULLET_NUMBER::BOMBER_BULLET, OBJECT_TAG::ENEMY);
+		new Bullet(ePos, dis, BulletNumber::BOMBER, ObjectTag::ENEMY);
 		isAttack = false;
 	}
 }

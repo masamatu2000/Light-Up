@@ -90,7 +90,7 @@ void ObjectProcess::HitObject()
 		//通常の敵との判定
 		for (auto& enemy : aliveEnemies)
 		{
-			if (bullet->Gettag() == OBJECT_TAG::PLAYER) {
+			if (bullet->Gettag() == ObjectTag::PLAYER) {
 				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), bullet->GetPosition()));
 				float collisiondist = enemy->GetCollisionRadius() + bullet->GetCollisionRadius();
 
@@ -107,7 +107,7 @@ void ObjectProcess::HitObject()
 		}
 		//ボスとの判定
 		if (bs != nullptr) {
-			if (bullet->Gettag() == OBJECT_TAG::PLAYER) {
+			if (bullet->Gettag() == ObjectTag::PLAYER) {
 				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), bullet->GetPosition()));
 				float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
@@ -126,17 +126,17 @@ void ObjectProcess::HitObject()
 	for (auto& bullet : aliveBullets)
 	{
 		//通常の敵との判定
-			if (bullet->Gettag() == OBJECT_TAG::ENEMY) {
+			if (bullet->Gettag() == ObjectTag::ENEMY) {
 				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), bullet->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
 
 				if (dist < collisiondist)
 				{
 					//ボマーの弾は当たった時に爆発するように、ヒットしたときにスラッシュを生成
-					if (bullet->GetBulletNum() == BULLET_NUMBER::BOMBER_BULLET)
+					if (bullet->GetBulletNum() == BulletNumber::BOMBER)
 					{
 						Vector2D pos = bullet->GetPosition();
-						new Slash(pos, SLASH_NUMBER::BOMBER_SLASH, false, OBJECT_TAG::ENEMY);
+						new Slash(pos, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
 					}
 					if (pl->GetInvincibilityTime() < 0)
 					{
@@ -157,7 +157,7 @@ void ObjectProcess::HitObject()
 			}
 		//ボスとの判定
 		if (bs != nullptr) {
-			if (bullet->Gettag() == OBJECT_TAG::BOSS) {
+			if (bullet->Gettag() == ObjectTag::BOSS) {
 				float dist = Math2D::Length(Math2D::Sub(pl ->GetPosition(), bullet->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
@@ -186,7 +186,7 @@ void ObjectProcess::HitObject()
 		//通常の敵との判定
 		for (auto& enemy : aliveEnemies)
 		{
-			if (slash->Gettag() == OBJECT_TAG::PLAYER) {
+			if (slash->Gettag() == ObjectTag::PLAYER) {
 				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), slash->GetPosition()));
 				float collisiondist = enemy->GetCollisionRadius() + slash->GetCollisionRadius();
 
@@ -202,7 +202,7 @@ void ObjectProcess::HitObject()
 		}
 		//ボスとの判定
 		if (bs != nullptr) {
-			if (slash->Gettag() == OBJECT_TAG::PLAYER) {
+			if (slash->Gettag() == ObjectTag::PLAYER) {
 				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), slash->GetPosition()));
 				float collisiondist = bs->GetCollisionRadius() + slash->GetCollisionRadius();
 				if (dist < collisiondist)
@@ -215,7 +215,7 @@ void ObjectProcess::HitObject()
 				}
 			}
 		}
-		if (slash->Gettag() == OBJECT_TAG::ENEMY) {
+		if (slash->Gettag() == ObjectTag::ENEMY) {
 			float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
 			float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
 
@@ -239,7 +239,7 @@ void ObjectProcess::HitObject()
 		}
 		//ボスとの判定
 		if (bs != nullptr) {
-			if (slash->Gettag() == OBJECT_TAG::BOSS) {
+			if (slash->Gettag() == ObjectTag::BOSS) {
 				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
 				if (dist < collisiondist)

@@ -2,72 +2,71 @@
 #include"AttackObject.h"
 #include<vector>
 
-enum OBJECT_TAG {
-	PLAYER,
-	ENEMY,
-	BOSS
+struct BulletType {
+	float vel;
+	float rad;
+	float life;
+	float offsetX;
 };
+
+struct SlashType {
+	float vel;
+	float rad;
+	float life;
+	float offsetX;
+};
+
 class Bullet :public AttackObject {
 public:
-	Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag);
-	Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum,Vector2D direction, OBJECT_TAG tag);
+	Bullet(const Vector2D &pos,BulletNumber bulletNum,bool lookleft,ObjectTag tag);
+	//角度指定用コンストラクタ
+	Bullet(const Vector2D& pos, BulletNumber bulletNum,Vector2D direction, ObjectTag tag);
 	//放物線用コンストラクタ
-	Bullet(const Vector2D& pos, Vector2D distance, BULLET_NUMBER bulletNum, OBJECT_TAG tag);
+	Bullet(const Vector2D& pos, Vector2D distance, BulletNumber bulletNum, ObjectTag tag);
 	~Bullet();
 	void Update()override;
 	void Draw()override;
-	OBJECT_TAG Gettag() { return objtag; }
-	BULLET_NUMBER GetBulletNum()
+	BulletNumber GetBulletNum()
 	{
-		return bulletNum_;
+		return bulletNumber;
 	}
 private:
-	BULLET_NUMBER bulletNum_;
-	struct BulletType {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<BulletType> bullettype;
-	bool islookleft;
-	OBJECT_TAG objtag;
-	//方向ベクトル
-	Vector2D dir;
+	BulletNumber bulletNumber;
+	BulletType bulletType;
+	
 	//差分ベクトル
 	Vector2D dis;
 	float gravity;
+private:
 	//速度計算用の関数
-	void CalculateVelocity();
+	void CalculateVelocity() override;
+	//重力計算用の関数
+	void CalculateGravity();
+	//方向により発射位置の調整
+	void SetOffsetPosition() override;
+	//ライフの計算、識別
+	bool CheckNoLife() override;
+	//壁との接触
+	bool HitWall();
+	//爆弾魔用のUpdate（特殊な動作をするため）
+	void UpdateBomber();
 };
 class Slash :public AttackObject
 {
 public:
-	Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft,OBJECT_TAG tag);//コンストラクタに左を向いているかどうかの処理を追加
+	Slash(const Vector2D& pos, SlashNumber slashNum,bool lookleft,ObjectTag tag);//コンストラクタに左を向いているかどうかの処理を追加
 	~Slash();
 	void Update()override;
 	void Draw()override;
-	OBJECT_TAG Gettag() { return objtag; }
+	ObjectTag Gettag() { return objtag; }
 private:
-	SLASH_NUMBER slashNum_;
-	struct SlashType {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<SlashType> slashtype;
-	struct SlashType2 {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<SlashType2> slashtype2;
-	
-	struct SlashType3 {
-		float speed;
-		float size;
-		float life;
-	};
-	std::vector<SlashType3> slashtype3;
-	bool islookleft;
-	OBJECT_TAG objtag;
+	SlashNumber slashNum_;
+	SlashType slashType;
+private:
+	//速度計算用の関数
+	void CalculateVelocity() override;
+	//方向により発射位置の調整
+	void SetOffsetPosition() override;
+	//ライフの計算、識別
+	bool CheckNoLife() override;
 };

@@ -94,7 +94,7 @@ void BossMove::Boss01mova01()
 	{
 		if (attackCounter % 10 == 0 && attackCounter < 30)
 		{
-			new Slash(bPos, SLASH_NUMBER::slash01, (dx < 0), OBJECT_TAG::ENEMY);
+			new Slash(bPos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 		}
 	}
 	else
@@ -147,7 +147,7 @@ void BossMove::Boss01mova02()
 	float distance = Math2D::Length(Math2D::Sub(bPos, pPos));
 	if (attackCounter % 10 == 0)
 	{
-		new Slash(bPos, SLASH_NUMBER::slash01, (dx < 0), OBJECT_TAG::ENEMY);
+		new Slash(bPos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 	}
 	attackCounter++;
 	bPos.y += vel.y * -1;
@@ -174,7 +174,7 @@ void BossMove::Boss01mova03()
 	{
 		if (attackCounter % 10 == 0 && attackCounter < 30)
 		{
-			new Slash(bPos, SLASH_NUMBER::slash01, (dx < 0), OBJECT_TAG::ENEMY);
+			new Slash(bPos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 		}
 	}
 	else

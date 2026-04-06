@@ -1,26 +1,33 @@
 #pragma once
 #include "Character.h"
 
-enum ATTACK_TYPE
+enum class AttackType
 {
-	bullet,
-	slash
+	BULLET,
+	SLASH
 };
-enum BULLET_NUMBER
+enum class ObjectTag 
 {
-	bullet01,
-	bullet02,
-	bullet03,
-	bullet04,
-	TURRET_BULLET,
-	BOMBER_BULLET
+	PLAYER,
+	ENEMY,
+	BOSS
 };
-enum SLASH_NUMBER
+enum class BulletNumber
 {
-	slash01,
-	slash02,
-	slash03,
-	BOMBER_SLASH
+	BASE,
+	MAGE,
+	KNIGHT,
+	FAIRY,
+	TURRET,
+	BOMBER
+};
+enum class SlashNumber
+{
+	BASE,
+	MAGE,
+	KNIGHT,
+	KURIBOH,
+	BOMBER
 };
 class AttackObject : public Character
 {
@@ -31,8 +38,23 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
+	ObjectTag Gettag() { return objtag; }
 protected:
-	ATTACK_TYPE attackType;
-	BULLET_NUMBER bulletNumber;
-	SLASH_NUMBER slashNumber;
+	AttackType attackType;
+	bool islookleft;
+	ObjectTag objtag;
+	//方向ベクトル 初期値右方向に設定
+	Vector2D dir = { 1.0f,0.0f };
+protected:
+	//向きを計算
+	void CheckDirection();
+	//速度計算用の関数
+	virtual void CalculateVelocity() {}
+	//方向により発射位置の調整
+	virtual void SetOffsetPosition() {}
+	//ライフの計算、識別
+	virtual bool CheckNoLife()
+	{
+		return false;
+	}
 };

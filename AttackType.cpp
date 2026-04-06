@@ -4,179 +4,88 @@
 /// <summary>
 /// プレイヤーの攻撃方法を管理する
 /// M.Shoji
+/// H.suginuma
 /// </summary>
 
-namespace {
-	const float BULLET01_SPEED = 300.0f;
-	const float BULLET01_RADIUS = 15.0f;
-	const float BULLET01_LIFE = 3.0f;
-	const float BULLET01_POS = 10.0f;
-	const float BULLET02_SPEED = 500.0f;
-	const float BULLET02_RADIUS = 2.0f;
-	const float BULLET02_LIFE = 3.0f;
-	const float BULLET02_POS = 10.0f;
-	const float BULLET03_SPEED = 100.0f;
-	const float BULLET03_RADIUS = 20.0f;
-	const float BULLET03_LIFE = 3.0f;
-	const float BULLET03_POS = 20.0f;
-	const float BULLET04_SPEED = 100.0f;
-	const float BULLET04_RADIUS = 10.0f;
-	const float BULLET04_LIFE = 3.0f;
-	const float BULLET04_POS = 10.0f;
-	const float BULLET05_SPEED = 300.0f;
-	const float BULLET05_RADIUS = 10.0f;
-	const float BULLET05_LIFE = 7.0f;
-	const float BULLET05_POS = 10.0f;
-	const float BULLET06_SPEED = 300.0f;
-	const float BULLET06_RADIUS = 10.0f;
-	const float BULLET06_LIFE = 7.0f;
-	const float BULLET06_POS = 10.0f;
+//全体に共通する定数
+namespace 
+{
+	//弾の構造体定数			　　速度　サイズ　寿命　 位置
+	//プレイヤー
+	const BulletType BASE_B   = { 300.0f,  15.0f, 3.0f, 10.0f }; //基本プレイヤー
+	const BulletType MAGE_B   = { 500.0f,   2.0f, 3.0f, 10.0f }; //メイジ
+	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f }; //騎士
+	//敵
+	const BulletType FAIRY_B  = { 100.0f,  10.0f, 3.0f, 10.0f }; //妖精
+	const BulletType TURRET_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //タレット
+	const BulletType BOMBER_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //爆弾魔
+
+	//斬撃の構造体定数				速度　サイズ　寿命　 位置
+	//プレイヤー
+	const SlashType BASE_S    = { 200.0f,  40.0f, 0.1f, 10.0f }; //基本プレイヤー
+	const SlashType MAGE_S    = { 300.0f,  20.0f, 0.1f, 20.0f }; //メイジ
+	const SlashType KNIGHT_S  = { 200.0f,  40.0f, 0.1f, 20.0f }; //騎士
+	//敵
+	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 10.0f }; //クリボー
+	const SlashType BOMBER_S  = {   0.0f,  30.0f, 0.1f,  0.0f }; //爆弾魔
+}
+
+//爆弾魔用定数
+namespace Bomber
+{
 	//最高到達地点
 	const float MAX_HEIGHT = IMAGE_SCALE * 2;
 	//最高到達点までの時間	
 	const float MAX_TIME = 1.0f;
-
-	const float SLASH01_SPEED = 200.0f;
-	const float SLASH01_RADIUS = 40.0f;
-	const float SLASH01_LIFE = 0.1f;
-	const float SLASH01_POS = 10.0f;
-	const float SLASH02_SPEED = 300.0f;
-	const float SLASH02_RADIUS = 20.0f;
-	const float SLASH02_LIFE = 0.1f;
-	const float SLASH02_POS = 20.0f;
-	const float SLASH03_SPEED = 200.0f;
-	const float SLASH03_RADIUS = 40.0f;
-	const float SLASH03_LIFE = 0.1f;
-	const float SLASH03_POS = 20.0f;
-	const float SLASH04_SPEED = 0.0f;
-	const float SLASH04_RADIUS = 30.0f;
-	const float SLASH04_LIFE = 0.1f;
-	const float SLASH04_POS = 0.0f;
-
 }
 
-Bullet::Bullet(const Vector2D &pos,BULLET_NUMBER bulletNum,bool lookleft,OBJECT_TAG tag)
+Bullet::Bullet(const Vector2D &pos,BulletNumber bulletNum,bool lookleft,ObjectTag tag)
 {
-	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
-	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
-	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
-	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
-	BulletType bt5 = { BULLET05_SPEED,BULLET05_RADIUS,BULLET05_LIFE };
-	BulletType bt6 = { BULLET06_SPEED,BULLET06_RADIUS,BULLET06_LIFE };
-	bullettype.clear();
-	bullettype.push_back(bt1);
-	bullettype.push_back(bt2);
-	bullettype.push_back(bt3);
-	bullettype.push_back(bt4);
-	bullettype.push_back(bt5);
-	bullettype.push_back(bt6);
-	bulletNum_ = bulletNum;
+	bulletNumber = bulletNum;
 	position = pos;
 	islookleft = lookleft;
-	switch (bulletNum_) {
-	case bullet01:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(BULLET01_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(BULLET01_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET01_RADIUS);
+	objtag = tag;
+	switch (bulletNumber) {
+	case BulletNumber::BASE:
+		bulletType = BASE_B;
 		break;
-	case bullet02:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(BULLET02_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(BULLET02_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET02_RADIUS);
+	case BulletNumber::MAGE:
+		bulletType = MAGE_B;
 		break;
-	case bullet03:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(BULLET03_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(BULLET03_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET03_RADIUS);
+	case BulletNumber::KNIGHT:
+		bulletType = KNIGHT_B;
 		break;
-	case bullet04:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(BULLET04_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(BULLET04_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET04_RADIUS);
+	case BulletNumber::FAIRY:
+		bulletType = FAIRY_B;
 		break;
-	case TURRET_BULLET:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(BULLET05_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(BULLET05_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), BULLET05_RADIUS);
+	case BulletNumber::TURRET:
+		bulletType = TURRET_B;
+		break;
+	case BulletNumber::BOMBER:
+		bulletType = BOMBER_B;
 		break;
 	}
-	objtag = tag;
-	/*Player* pl = FindGameObject<Player>();
-	Vector2D distance= Math2D::Sub(pl->GetPosition(), position);
-	dir = Math2D::Normalize(distance);*/
-}
-
-Bullet::Bullet(const Vector2D& pos, BULLET_NUMBER bulletNum, Vector2D direction, OBJECT_TAG tag)
-{
-	dir = direction;
-	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
-	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
-	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
-	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
-	BulletType bt5 = { BULLET05_SPEED,BULLET05_RADIUS,BULLET05_LIFE };
-	BulletType bt6 = { BULLET06_SPEED,BULLET06_RADIUS,BULLET06_LIFE };
-	bullettype.clear();
-	bullettype.push_back(bt1);
-	bullettype.push_back(bt2);
-	bullettype.push_back(bt3);
-	bullettype.push_back(bt4);
-	bullettype.push_back(bt5);
-	bullettype.push_back(bt6);
-	bulletNum_ = bulletNum;
-	position = pos;
-	objtag = tag;
-}
-
-Bullet::Bullet(const Vector2D& pos,Vector2D distance, BULLET_NUMBER bulletNum, OBJECT_TAG tag)
-{
-	dis = distance;
-	BulletType bt1 = { BULLET01_SPEED,BULLET01_RADIUS,BULLET01_LIFE };
-	BulletType bt2 = { BULLET02_SPEED,BULLET02_RADIUS,BULLET02_LIFE };
-	BulletType bt3 = { BULLET03_SPEED,BULLET03_RADIUS,BULLET03_LIFE };
-	BulletType bt4 = { BULLET04_SPEED,BULLET04_RADIUS,BULLET04_LIFE };
-	BulletType bt5 = { BULLET05_SPEED,BULLET05_RADIUS,BULLET05_LIFE };
-	BulletType bt6 = { BULLET06_SPEED,BULLET06_RADIUS,BULLET06_LIFE };
-	bullettype.clear();
-	bullettype.push_back(bt1);
-	bullettype.push_back(bt2);
-	bullettype.push_back(bt3);
-	bullettype.push_back(bt4);
-	bullettype.push_back(bt5);
-	bullettype.push_back(bt6);
-	bulletNum_ = bulletNum;
-	position = pos;
-	objtag = tag;
+	//位置を調整
+	SetOffsetPosition();
+	//向きの設定
+	CheckDirection();
+	//速度を計算
 	CalculateVelocity();
+}
+
+Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, Vector2D direction, ObjectTag tag)
+	:Bullet(pos,bulletNum,false,tag)
+{
+	//向き、速度の上書き
+	dir = direction;
+	CalculateVelocity();
+}
+
+Bullet::Bullet(const Vector2D& pos,Vector2D distance, BulletNumber bulletNum, ObjectTag tag)
+	:Bullet(pos, bulletNum, false, tag)
+{
+	dis = distance; 
+ 	CalculateGravity();
 }
 
 Bullet::~Bullet()
@@ -185,144 +94,62 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
+	if (bulletNumber == BulletNumber::BOMBER)
+	{
+		UpdateBomber();
+		return;
+	}
+	//ライフがないなら処理をしない
+	if (CheckNoLife())
+	{
+		return;
+	}
+	//ポジションの更新
 	float dt = GetDeltaTime();
-	Stage* s = FindGameObject<Stage>();
-	switch (bulletNum_) {
-	case bullet01:
-		if (bullettype[bullet01].life > 0)
-		{
-			bullettype[bullet01].life -= dt;
-			if (bullettype[bullet01].life <= 0) 
-			{
-				DestroyMe();
-				break;
-			}
-			//どちらを向いているか確認して前に発射する
-			if (islookleft == true) 
-			{
-				position.x -= bullettype[bullet01].speed * dt;
-			}
-			else 
-			{
-				position.x += bullettype[bullet01].speed * dt;
-			}
-		}
-		break;
-	case bullet02:
-		if (bullettype[bullet02].life > 0)
-		{
-			bullettype[bullet02].life -= dt;
-			if (bullettype[bullet02].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-			if (islookleft == true)
-			{
-				position.x -= bullettype[bullet02].speed * dt;
+	position.x += Velocity.x * dt;
+	position.y += Velocity.y * dt;
 
-			}
-			else
-			{
-				position.x += bullettype[bullet02].speed * dt;
-
-			}
-		}
-		break;
-	case bullet03:
-		if (bullettype[bullet03].life > 0)
-		{
-			bullettype[bullet03].life -= dt;
-			if (bullettype[bullet03].life <= 0) 
-			{
-				DestroyMe();
-				break;
-			}
-			if (islookleft == true) 
-			{
-				position.x -= bullettype[bullet03].speed * dt;
-			}
-			else 
-			{
-				position.x += bullettype[bullet03].speed * dt;
-			}
-		}
-		break;
-	case bullet04:
-		if (bullettype[bullet04].life > 0)
-		{
-			bullettype[bullet04].life -= dt;
-			if (bullettype[bullet04].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-				position.x += bullettype[bullet04].speed *dir.x* dt;
-				position.y+= bullettype[bullet04].speed * dir.y * dt;
-		}
-		break;
-	case TURRET_BULLET:
-		if (bullettype[TURRET_BULLET].life > 0)
-		{
-			bullettype[TURRET_BULLET].life -= dt;
-			if (bullettype[TURRET_BULLET].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-			position.x += bullettype[TURRET_BULLET].speed * dir.x * dt;
-			position.y += bullettype[TURRET_BULLET].speed * dir.y * dt;
-		}
-		break;
-	case BOMBER_BULLET:
-		if (bullettype[BOMBER_BULLET].life > 0)
-		{
-			position.x += Velocity.x * dt;
-			position.y += Velocity.y * dt;
-			Velocity.y += gravity * dt;
-
-		}
-	}
-	int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-	int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
-
-	int da = max(d1, d2);
-	//ボマーの時は壁に当たった時に爆発（代わりに斬撃)を生成
-	if (da > 0 && bulletNum_ == BOMBER_BULLET)
-	{
-		DestroyMe();
-		new Slash(position, SLASH_NUMBER::BOMBER_SLASH, false, OBJECT_TAG::ENEMY);
-	}
-	else if (da > 0)
-	{
-		DestroyMe();
-	}
-	int d3 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
-	int d4 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
-
-	int db = max(d3, d4);
-	if (db > 0 && bulletNum_ == BOMBER_BULLET)
-	{
-		DestroyMe();
-		new Slash(position, SLASH_NUMBER::BOMBER_SLASH, false, OBJECT_TAG::ENEMY);
-	}
-	if (db > 0)
+	if (HitWall())
 	{
 		DestroyMe();
 	}
 }
+
+void Bullet::UpdateBomber()
+{
+	//ポジションの更新
+	float dt = GetDeltaTime();
+	position.x += Velocity.x * dt;
+	position.y += Velocity.y * dt;
+	Velocity.y += gravity * dt;
+
+	//何かにあったたら爆発（斬撃で代用）
+	if (HitWall())
+	{
+		new Slash(position, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
+		DestroyMe();
+	}
+}
+
 
 void Bullet::Draw()
 {
 	float posX = position.x-Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
-	DrawCircle((int)posX+16,(int) posY+16,(int) bullettype[bulletNum_].size, GetColor(255, 255, 255), TRUE);
+	DrawCircle((int)posX+16,(int) posY+16,(int) bulletType.rad, GetColor(255, 255, 255), TRUE);
 }
 
 void Bullet::CalculateVelocity()
 {
-	float H = MAX_HEIGHT;
-	float T = MAX_TIME;
+	Velocity = Math2D::Mul(dir, bulletType.vel);
+	/*float dt = GetDeltaTime();
+	Velocity = Math2D::Mul(Velocity, dt);*/
+}
+
+void Bullet::CalculateGravity()
+{
+	float H = Bomber::MAX_HEIGHT;
+	float T = Bomber::MAX_TIME;
 	//重力
 	gravity = (2.0f * H) / (T * T);
 	//初速（Y軸）
@@ -331,60 +158,105 @@ void Bullet::CalculateVelocity()
 	Velocity.x = dis.x / (T * 2.0f);
 }
 
-Slash::Slash(const Vector2D& pos, SLASH_NUMBER slashNum,bool lookleft,OBJECT_TAG tag)
+void Bullet::SetOffsetPosition()
 {
-	SlashType s1 = { SLASH01_SPEED,SLASH01_RADIUS,SLASH01_LIFE };
-	SlashType s2 = { SLASH02_SPEED,SLASH02_RADIUS,SLASH02_LIFE };
-	SlashType s3 = { SLASH03_SPEED,SLASH03_RADIUS,SLASH03_LIFE };
-	SlashType s4 = { SLASH04_SPEED,SLASH04_RADIUS,SLASH04_LIFE };
-	slashtype.clear();
-	slashtype.push_back(s1);
-	slashtype.push_back(s2);
-	slashtype.push_back(s3);
-	slashtype.push_back(s4);
+	//弾をオフセット分移動させる
+	//左向いてるなら
+	if (islookleft)
+	{
+		position.x -= bulletType.offsetX;
+	}
+	//右向いてるなら
+	else if (!islookleft)
+	{
+		position.x += bulletType.offsetX;
+	}
+	circleColid = CircleColid(Vector2D(0, 0), bulletType.rad);
+}
+
+bool Bullet::CheckNoLife()
+{
+	float dt = GetDeltaTime();
+	if (bulletType.life > 0)
+	{
+		bulletType.life -= dt;
+		//ライフがないなら弾を消してtrueを返す
+		if (bulletType.life <= 0)
+		{
+			DestroyMe();
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Bullet::HitWall()
+{
+	Stage* s = FindGameObject<Stage>();
+	//右壁の判定
+	int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
+	int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+	int d = max(d1, d2);
+	if (d > 0)
+	{
+		return true;
+	}
+	//左壁の判定
+	d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+	d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+	d = max(d1, d2);
+	if (d > 0)
+	{
+		return true;
+	}
+	//床との判定
+	/*d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
+	d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+	d = max(d1, d2);
+	if (d > 0)
+	{
+		return true;
+	}*/
+	//天井との判定
+	/*d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));
+	d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
+	d = max(d1, d2);
+	if (d > 0)
+	{
+		return true;
+	}*/
+
+	return false;
+}
+
+Slash::Slash(const Vector2D& pos, SlashNumber slashNum,bool lookleft,ObjectTag tag)
+{
 	slashNum_ = slashNum;
+	position = pos;
 	islookleft = lookleft;
-	//斬撃の出現位置の指定
+	objtag = tag;
 	switch (slashNum_) {
-	case slash01:
-		if (islookleft == false)
-		{
-			position = Math2D::Add(pos, Vector2D(SLASH01_POS, 0.0f));
-		}
-		else 
-		{
-			position = Math2D::Sub(pos, Vector2D(SLASH01_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), SLASH01_RADIUS);
+	case SlashNumber::BASE:
+		slashType = BASE_S;
 		break;
-	case slash02:
-		if (islookleft == false) 
-		{
-			position = Math2D::Add(pos, Vector2D(SLASH02_POS, 0.0f));
-		}
-		else
-		{
-			position = Math2D::Sub(pos, Vector2D(SLASH02_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), SLASH02_RADIUS);
+	case SlashNumber::MAGE:
+		slashType = MAGE_S;
 		break;
-	case slash03:
-		if (islookleft == false) 
-		{
-			position = Math2D::Add(pos, Vector2D(SLASH03_POS, 0.0f));
-		}
-		else 
-		{
-			position = Math2D::Sub(pos, Vector2D(SLASH03_POS, 0.0f));
-		}
-		circleColid = CircleColid(Vector2D(0, 0), SLASH03_RADIUS);
+	case SlashNumber::KNIGHT:
+		slashType = KNIGHT_S;
 		break;
-	case BOMBER_SLASH:
-		position = pos;
-		circleColid = CircleColid(Vector2D(0, 0), SLASH03_RADIUS);
+	case SlashNumber::KURIBOH:
+		slashType = KURIBOH_S;
+	case SlashNumber::BOMBER:
+		slashType = BOMBER_S;
 		break;
 	}
-	objtag = tag;
+	//位置を調整
+	SetOffsetPosition();
+	//向きの設定
+	CheckDirection();
+	//速度を計算
+	CalculateVelocity();
 }
 
 Slash::~Slash()
@@ -393,86 +265,60 @@ Slash::~Slash()
 
 void Slash::Update()
 {
-	float dt = GetDeltaTime();
-	switch (slashNum_){
-		//斬撃によってモーション変化（これはもしかしたら複数ないかもだが）
-	case slash01:
-		if (slashtype[slash01].life > 0)
-		{
-			slashtype[slash01].life -= dt;//斬撃の表示されている時間を減らす
-			if (slashtype[slash01].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-			//左を向いているかどうかを確認する
-			if (islookleft == true) 
-			{
-				position.x -= slashtype[slash01].speed * dt;//時間まで左に進む
-			}
-			else
-			{
-				position.x += slashtype[slash01].speed * dt;//時間まで右に進む
-			}
-		}
-		break;
-	case slash02:
-		if (slashtype[slash02].life > 0) 
-		{
-			slashtype[slash02].life -= dt;
-			if (slashtype[slash02].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-			if (islookleft == true) 
-			{
-				
-				position.x -= slashtype[bullet02].speed * dt;
-			}
-			else 
-			{
-				
-				position.x += slashtype[bullet02].speed * dt;
-			}
-		}
-		break;
-	case slash03:
-		if (slashtype[slash03].life > 0) 
-		{
-			slashtype[slash03].life -= dt;
-			if (slashtype[slash03].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-			if (islookleft == true)
-			{
-				position.x -= slashtype[slash03].speed * dt;//時間まで左に進む
-			}
-			else 
-			{
-				position.x += slashtype[slash03].speed * dt;//時間まで右に進む
-			}
-		}
-		break;
-	case BOMBER_SLASH:
-		if (slashtype[BOMBER_SLASH].life > 0)
-		{
-			slashtype[BOMBER_SLASH].life -= dt;
-			if (slashtype[BOMBER_SLASH].life <= 0)
-			{
-				DestroyMe();
-				break;
-			}
-		}
+	//ライフがないなら処理をしない
+	if (CheckNoLife())
+	{
+		return;
 	}
+	//ポジションの更新
+	float dt = GetDeltaTime();
+	position.x += Velocity.x * dt;
+	position.y += Velocity.y * dt;
 }
 
 void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
 	float posY = position.y - Stage::GetScrollY();
-	DrawCircle(int(posX+16), int(posY+16), (int)slashtype[slashNum_].size, GetColor(255, 255, 255),TRUE);
+	DrawCircle(int(posX+16), int(posY+16), (int)slashType.rad, GetColor(255, 255, 255),TRUE);
 
+}
+
+void Slash::CalculateVelocity()
+{
+	Velocity = Math2D::Mul(dir, slashType.vel);
+	/*float dt = GetDeltaTime();
+	Velocity = Math2D::Mul(Velocity, dt);*/
+}
+
+void Slash::SetOffsetPosition()
+{
+	//弾をオフセット分移動させる
+	//左向いてるなら
+	if (islookleft)
+	{
+		position.x -= slashType.offsetX;
+	}
+	//右向いてるなら
+	else if (!islookleft)
+	{
+		position.x += slashType.offsetX;
+	}
+	circleColid = CircleColid(Vector2D(0, 0), slashType.rad);
+}
+
+bool Slash::CheckNoLife()
+{
+	float dt = GetDeltaTime();
+	if (slashType.life > 0)
+	{
+		slashType.life -= dt;
+		//ライフがないなら弾を消してtrueを返す
+		if (slashType.life <= 0)
+		{
+			DestroyMe();
+			return true;
+		}
+	}
+	return false;
 }
