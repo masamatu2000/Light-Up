@@ -4,6 +4,10 @@
 #include"Stage.h"
 #include"Enemy.h"
 #include"AttackType.h"
+/// <summary>
+/// とりあえず移動の関数、SetTimerの関数も作った。Attack関数も作ろうかなと思ったけど、せっかくEnemyAttackがあるのにまた別のところで呼び出したら
+/// EnemyAttackの意味がなくなってしまうと思ったので、EnemyAttackの中で呼び出すようにした。まあ、頼むわ＾＾
+/// </summary
 namespace {
 	const float GRAVITY = 9.8f * 60 * 2;
 	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
@@ -34,36 +38,17 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
-	auto e=FindGameObjects<Enemy>();
 	Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(ppos, epos);
-	float dx = distance.x;
-	distance.x = abs(distance.x);
-	distance.y = abs(distance.y);
-	distance.x = abs(distance.x);
-	distance.y = abs(distance.y);
-	bool IsAttack = false;
 	float dt = GetDeltaTime();
 	Stage* stage = FindGameObject<Stage>();
-	if (distance.x < TRACE_DISTANCE) {
-		float speed = abs(vel.x);
-		float dt = GetDeltaTime();
-		// ★ 向きだけ決める
-		float dir = (dx > 0) ? 1.0f : -1.0f;
-		epos.x += dir * speed*dt;
-	}
-	else {
-		epos.x += vel.x * dt;
-		if (vel.x > 0) {
-			int d1 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1),int( pos.y + IMAGE_SCALE - 1));
-			int d2 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1),int( pos.y));
-
-			int d = max(d1, d2);
-			if (d > 0)
-			{
-				evel.x *= -1;
-			}
+	Move(epos, evel, Enemy01);
+	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {//攻撃
+		new Slash(pos, SLASH_NUMBER::slash01 , (distance.x < 0), OBJECT_TAG::ENEMY);
+		AttackReset(Enemy01,nullptr);
+	}	
+}
 
 			epos.x -= max(d1, d2);
 		}
@@ -95,7 +80,7 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 
 	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {
 		IsAttack = true;
-		new Slash(pos, SlashNumber::BASE , (dx < 0), ObjectTag::ENEMY);
+		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
 		
 	}
 	for (auto enemy : e) {
@@ -114,74 +99,21 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
-	Player* pl = FindGameObject<Player>();
-	auto e = FindGameObjects<Enemy>();
-	static float t = 0.0f;
-	epos.y = epos.y +1.0f * sinf(15.0f * t);//上下に動くやつ
-	t = t + gDeltaTime;
 	float dt = GetDeltaTime();
-	Stage* stage = FindGameObject<Stage>();
-	epos.x += evel.x * dt;
-	bool IsAttack = false;
+	Player* pl = FindGameObject<Player>();
 	Vector2D ppos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(ppos, epos);
-	distance.x = abs(distance.x);
-	distance.y = abs(distance.y);
-	float dx = abs(ppos.x - epos.x);
-	if (evel.x > 0) {
-		int d1 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1),int( epos.y + IMAGE_SCALE - 1));
-		int d2 = stage->HitWallRight(int(epos.x + IMAGE_SCALE - 1), int(epos.y));
-
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			evel.x *= -1;
-		}
-
-		epos.x -= max(d1, d2);
-	}
-	else if (evel.x < 0)
-	{
-		int d1 = stage->HitWallLeft(int(epos.x + 0), int(epos.y + IMAGE_SCALE - 1));
-		int d2 = stage->HitWallLeft(int(epos.x + 0), int(epos.y));
-
-		int d = max(d1, d2);
-		if (d > 0)
-		{
-			evel.x *= -1;
-		}
-
-		epos.x += max(d1, d2);
-	}
-	int d1 = stage->HitFloor(int(epos.x + 0), int(epos.y + IMAGE_SCALE));
-	int d2 = stage->HitFloor(int(epos.x + IMAGE_SCALE - 1), int(epos.y + IMAGE_SCALE));
-
-	int d = max(d1, d2);
-
-	if (d > 0) {
-		epos.y -= (d - 1);
-		evel.y = 0;
-	}
-	if (timer > ENEMY_BULLET_COOLTIME&&distance.x<= ENEMY2_ATTACK_DISTANCE&&distance.y<= ENEMY2_ATTACK_DISTANCE) {
-		IsAttack = true;
-		Player* pl = FindGameObject<Player>();
-		Vector2D distance = Math2D::Sub(pl->GetPosition(), epos);
+	//↓移動と壁のヒットチェック
+	Move(epos, evel,Enemy02);
+	if (timer > ENEMY_BULLET_COOLTIME && distance.x <= ENEMY2_ATTACK_DISTANCE && distance.y <= ENEMY2_ATTACK_DISTANCE) {//攻撃
 		Vector2D dir = Math2D::Normalize(distance);
 		float Rad = 30 * (DX_PI_F / 180.0f);
 		Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };//(dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad))
 		Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
-		new Bullet(pos, BulletNumber::FAIRY,dir,ObjectTag::ENEMY);
-		new Bullet(pos, BulletNumber::FAIRY,Rotation, ObjectTag::ENEMY);
-		new Bullet(pos, BulletNumber::FAIRY,Rotation2 , ObjectTag::ENEMY);
-	}
-	for (auto enemy : e) {
-		if (enemy->GetEnum() == Enemy02) {
-			enemy->SetPosition(epos);
-			enemy->SetVel(evel);
-			if (IsAttack) {
-				enemy->SetTimer(0);
-			}
-		}
+		new Bullet(pos, BULLET_NUMBER::bullet04,dir,OBJECT_TAG::ENEMY);
+		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation, OBJECT_TAG::ENEMY);
+		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation2 , OBJECT_TAG::ENEMY);
+		AttackReset(Enemy02, nullptr);
 	}
 	
 }
@@ -205,12 +137,7 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 	{
 		isAttack = true;
 		dir = Math2D::Normalize(Math2D::Sub(pPos, ePos));
-		auto e = FindGameObjects<Enemy>();
-		for (auto enemy : e) {
-			if (enemy->GetEnum() == ENEMY_NUMBER::TURRET) {
-				enemy->SetTimer(0);
-			}
-		}
+		AttackReset(TURRET, nullptr);
 	}
 
 	if (isAttack)
@@ -265,60 +192,144 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 		if (timer > Bomber::COOLTIME)
 		{
 			isAttack = true;
-			bomber->SetTimer(0);
+			AttackReset(BOMBER, bomber);
 		}
 	}
 	else {
-		//X座標の更新
-		ePos.x += eVel.x * dt;
-		if (eVel.x > 0) {
-			int d1 = s->HitWallRight(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y + IMAGE_SCALE - 1));
-			int d2 = s->HitWallRight(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y));
-
-			int d = max(d1, d2);
-			if (d > 0)
-			{
-				eVel.x *= -1;
-			}
-
-			ePos.x -= max(d1, d2);
-		}
-		else if (eVel.x < 0)
-		{
-			int d1 = s->HitWallLeft(int(ePos.x + 0), int(ePos.y + IMAGE_SCALE - 1));
-			int d2 = s->HitWallLeft(int(ePos.x + 0), int(ePos.y));
-
-			int d = max(d1, d2);
-			if (d > 0)
-			{
-				eVel.x *= -1;
-			}
-
-			ePos.x += max(d1, d2);
-		}
+		Move(ePos, eVel, BOMBER);
 	}
-	//重力処理
-	eVel.y += GRAVITY * dt;
-	//Y座標の更新
-	ePos.y += eVel.y * dt;
-	int d1 = s->HitFloor(int(ePos.x + 0), int(ePos.y + IMAGE_SCALE));
-	int d2 = s->HitFloor(int(ePos.x + IMAGE_SCALE - 1), int(ePos.y + IMAGE_SCALE));
-
-	int d = max(d1, d2);
-
-	if (d > 0) {
-		ePos.y -= (d - 1);
-		eVel.y = 0;
-	}
-
-	//座標と速度をセット
-	bomber->SetPosition(ePos);
-	bomber->SetVel(eVel);
-	
 	if (isAttack)
 	{
 		//放物線を描くバレットを生成
-		new Bullet(ePos, dis, BulletNumber::BOMBER, ObjectTag::ENEMY);
+		new Bullet(ePos, dis, BULLET_NUMBER::BOMBER_BULLET, OBJECT_TAG::ENEMY);
+		
 		isAttack = false;
+	}
+}
+
+void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum)
+{
+
+	Stage* stage = FindGameObject<Stage>();
+	float dt = GetDeltaTime();
+	auto e = FindGameObjects<Enemy>();
+	//↓Enemy01の変数（swicth文の中で宣言できないので）
+	Player* pl = FindGameObject<Player>();
+	Vector2D ppos = pl->GetPosition();
+	Vector2D distance = Math2D::Sub(ppos, pos);
+	float dx = distance.x;
+	distance.x = abs(distance.x);
+	distance.y = abs(distance.y);
+	float dir = (dx > 0) ? 1.0f : -1.0f;
+	bool IsTrace = false;
+	//↓Enemy02の変数
+	static float t = 0.0f;
+	switch (Enum)
+	{
+	case Enemy01:
+		if (distance.x< TRACE_DISTANCE) {//プレイヤーを追跡する
+			pos.x += dir * abs(vel.x) * dt;
+			IsTrace = true;
+			break;
+		}
+		pos.x += vel.x * dt;
+		break;
+	case Enemy02:
+		pos.y = pos.y + 1.0f * sinf(15.0f * t);//上下に動くやつ
+		t = t + gDeltaTime;
+		pos.x += vel.x * dt;
+		break;
+	case TURRET:
+		break;
+	case GUNDAM:
+		break;
+	case BOMBER:
+		pos.x += vel.x * dt;
+		break;
+	case CREEPER:
+		break;
+	case DOKUTARO:
+		break;
+	case DEBUFFER:
+		break;
+	case LANCER:
+		break;
+	case BERSERKER:
+		break;
+	}
+	if (!IsTrace) {
+		if (vel.x > 0) {
+			int d1 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE - 1));
+			int d2 = stage->HitWallRight(int(pos.x + IMAGE_SCALE - 1), int(pos.y));
+
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				vel.x *= -1;
+			}
+			pos.x -= max(d1, d2);
+		}
+		else if (vel.x < 0)
+		{
+			int d1 = stage->HitWallLeft(int(pos.x + 0), int(pos.y + IMAGE_SCALE - 1));
+			int d2 = stage->HitWallLeft(int(pos.x + 0), int(pos.y));
+			int d = max(d1, d2);
+			if (d > 0)
+			{
+				vel.x *= -1;
+			}
+			pos.x += max(d1, d2);
+		}
+	}
+	if (Enum != Enemy02) {
+		vel.y += GRAVITY * dt;
+		pos.y += vel.y * dt;
+		int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
+		int d2 = stage->HitFloor(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE));
+
+		int d = max(d1, d2);
+
+		if (d > 0) {
+			pos.y -= (d - 1);
+			vel.y = 0;
+		}
+	}
+	for (auto enemy : e) {
+		if (enemy->GetEnum() == Enum) {
+			enemy->SetPosition(pos);
+			enemy->SetVel(vel);
+		}
+	}
+}
+
+void AttackReset(ENEMY_NUMBER Enum,Enemy* enemy=nullptr)
+{
+	auto e = FindGameObjects<Enemy>();
+	switch (Enum)
+	{
+	case Enemy01:
+	case Enemy02:
+	case TURRET:
+		for (auto enemy : e) {
+			if (enemy->GetEnum() == Enum) {
+				enemy->SetTimer(0);
+			}
+		}
+		return;
+	case GUNDAM:
+		break;
+	case BOMBER:
+		enemy->SetTimer(0);
+		break;
+	case CREEPER:
+		break;
+	case DOKUTARO:
+		break;
+	case DEBUFFER:
+		break;
+	case LANCER:
+		break;
+	case BERSERKER:
+		break;
 	}
 }
