@@ -10,7 +10,7 @@
 /// </summary
 namespace {
 	const float GRAVITY = 9.8f * 60 * 2;
-	const float TRACE_DISTANCE =IMAGE_SCALE * 10;
+	const float TRACE_DISTANCE = IMAGE_SCALE * 10;
 	const float ENEMY_BULLET_COOLTIME = 2.0f;
 	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;
 	const float ENEMY2_ATTACK_DISTANCE = IMAGE_SCALE * 10;
@@ -34,7 +34,7 @@ namespace Bomber
 	const float ATTACK_DISTANCE = IMAGE_SCALE * 5;
 }
 
-void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const int &timer)
+void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
@@ -44,58 +44,13 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel,const in
 	float dt = GetDeltaTime();
 	Stage* stage = FindGameObject<Stage>();
 	Move(epos, evel, Enemy01);
-	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {//攻撃
-		new Slash(pos, SLASH_NUMBER::slash01 , (distance.x < 0), OBJECT_TAG::ENEMY);
-		AttackReset(Enemy01,nullptr);
-	}	
+	if (timer > ENEMY_BULLET_COOLTIME && distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {//攻撃
+		new Slash(pos, SlashNumber::BASE, (distance.x < 0), ObjectTag::ENEMY);
+		AttackReset(Enemy01, nullptr);
+	}
 }
 
-			epos.x -= max(d1, d2);
-		}
-		else if (vel.x < 0)
-		{
-			int d1 = stage->HitWallLeft(int(pos.x + 0), int(pos.y + IMAGE_SCALE - 1));
-			int d2 = stage->HitWallLeft(int(pos.x + 0), int(pos.y));
-
-			int d = max(d1, d2);
-			if (d > 0)
-			{
-				evel.x *= -1;
-			}
-
-			epos.x += max(d1, d2);
-		}
-	}
-	evel.y += GRAVITY * dt;
-	epos.y += evel.y * dt;
-	int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
-	int d2 = stage->HitFloor(int(pos.x + IMAGE_SCALE - 1), int(pos.y + IMAGE_SCALE));
-
-	int d = max(d1, d2);
-
-	if (d > 0) {
-		epos.y -= (d - 1);
-		evel.y = 0;
-	}
-
-	if (timer > ENEMY_BULLET_COOLTIME&&distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {
-		IsAttack = true;
-		new Slash(pos, SLASH_NUMBER::slash01 , (dx < 0), OBJECT_TAG::ENEMY);
-		
-	}
-	for (auto enemy : e) {
-		if (enemy->GetEnum() == Enemy01) {
-			enemy->SetPosition(epos);
-			enemy->SetVel(evel);
-			if (IsAttack) {
-				enemy->SetTimer(0);
-			}
-		}
-	}
-	
-}
-
-void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const int &timer)
+void EnemyAttack::Enemy2Attack(const Vector2D& pos, const Vector2D& vel, const int& timer)
 {
 	Vector2D epos = pos;
 	Vector2D evel = vel;
@@ -104,18 +59,18 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos,const Vector2D & vel,const in
 	Vector2D ppos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(ppos, epos);
 	//↓移動と壁のヒットチェック
-	Move(epos, evel,Enemy02);
+	Move(epos, evel, Enemy02);
 	if (timer > ENEMY_BULLET_COOLTIME && distance.x <= ENEMY2_ATTACK_DISTANCE && distance.y <= ENEMY2_ATTACK_DISTANCE) {//攻撃
 		Vector2D dir = Math2D::Normalize(distance);
 		float Rad = 30 * (DX_PI_F / 180.0f);
 		Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };//(dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad))
 		Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
-		new Bullet(pos, BULLET_NUMBER::bullet04,dir,OBJECT_TAG::ENEMY);
-		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation, OBJECT_TAG::ENEMY);
-		new Bullet(pos, BULLET_NUMBER::bullet04,Rotation2 , OBJECT_TAG::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY, dir, ObjectTag::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY, Rotation, ObjectTag::ENEMY);
+		new Bullet(pos, BulletNumber::FAIRY, Rotation2, ObjectTag::ENEMY);
 		AttackReset(Enemy02, nullptr);
 	}
-	
+
 }
 
 void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
@@ -201,13 +156,13 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 	if (isAttack)
 	{
 		//放物線を描くバレットを生成
-		new Bullet(ePos, dis, BULLET_NUMBER::BOMBER_BULLET, OBJECT_TAG::ENEMY);
-		
+		new Bullet(ePos, dis, BulletNumber::BOMBER, ObjectTag::ENEMY);
+
 		isAttack = false;
 	}
 }
 
-void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum)
+void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
 {
 
 	Stage* stage = FindGameObject<Stage>();
@@ -227,7 +182,7 @@ void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum)
 	switch (Enum)
 	{
 	case Enemy01:
-		if (distance.x< TRACE_DISTANCE) {//プレイヤーを追跡する
+		if (distance.x < TRACE_DISTANCE) {//プレイヤーを追跡する
 			pos.x += dir * abs(vel.x) * dt;
 			IsTrace = true;
 			break;
@@ -302,7 +257,7 @@ void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum)
 	}
 }
 
-void AttackReset(ENEMY_NUMBER Enum,Enemy* enemy=nullptr)
+void AttackReset(ENEMY_NUMBER Enum, Enemy* enemy = nullptr)
 {
 	auto e = FindGameObjects<Enemy>();
 	switch (Enum)

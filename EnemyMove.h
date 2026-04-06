@@ -28,11 +28,11 @@ namespace EnemyTypeNum
 	const float BOMBER_VELOCITY_X = IMAGE_SCALE;
 }
 namespace EnemyAttack {
-	
-	void Enemy1Attack(const Vector2D& pos,const Vector2D& vel,const int &timer);
-	void Enemy2Attack(const Vector2D& pos,const Vector2D& vel, const int& timer);
+
+	void Enemy1Attack(const Vector2D& pos, const Vector2D& vel, const int& timer);
+	void Enemy2Attack(const Vector2D& pos, const Vector2D& vel, const int& timer);
 	void TurretAttack(const Vector2D& pos, const int& timer);
 	void BomberAttack(const Vector2D& pos, const Vector2D& vel, const int& timer);
 }
-void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum);
-void AttackReset(ENEMY_NUMBER Enum,Enemy*enemy);
+void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum);
+void AttackReset(ENEMY_NUMBER Enum, Enemy* enemy);
