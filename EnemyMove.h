@@ -34,3 +34,5 @@ namespace EnemyAttack {
 	void TurretAttack(const Vector2D& pos, const int& timer);
 	void BomberAttack(const Vector2D& pos, const Vector2D& vel, const int& timer);
 }
+void Move(Vector2D& pos, Vector2D& vel,ENEMY_NUMBER Enum);
+void AttackReset(ENEMY_NUMBER Enum,Enemy*enemy);
