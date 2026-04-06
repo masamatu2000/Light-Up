@@ -720,36 +720,45 @@ void Player::SetCamera()
 {
 	static float timer = 0;
 	static float startY = 0;
+	//前回の目的地を保存
+	static int lastOffsetY = 0;
 	int offsetY = 0;
-	//押したとき、離したときに初期化
-	if (Input::IsKeyDown(KEY_INPUT_S) || (Input::IsKeepPadDown(Pad::DOWN) && (!Input::IsPadDown(Pad::LEFT) && !Input::IsPadDown(Pad::RIGHT))) ||
-		Input::IsKeyUP(KEY_INPUT_S) || (Input::IsPadUp(Pad::DOWN) && (!Input::IsPadUp(Pad::LEFT) && !Input::IsPadUp(Pad::RIGHT))))
-	{
-		startY = cameraY;
-		timer = 0.0f;
-	}
 
-	if (Input::IsKeepKeyDown(KEY_INPUT_S) || (Input::IsKeepPadDown(Pad::DOWN) && (Input::IsKeepPadDown(Pad::LEFT) == 0 && Input::IsKeepPadDown(Pad::RIGHT) == 0)))
+	bool isPressDown = Input::IsKeepKeyDown(KEY_INPUT_S) ||
+		(Input::IsKeepPadDown(Pad::DOWN) && (Input::IsKeepPadDown(Pad::LEFT) == 0 && Input::IsKeepPadDown(Pad::RIGHT) == 0));
+	
+	if (isPressDown)
 	{
 		offsetY = CAMERA_OFFSET;
-		
+
 		if (offsetY + Stage::scrollY > Stage::mapBottom)
 		{
 			offsetY = Stage::mapBottom - Stage::scrollY;
 		}
-		
 	}
-	
+
+	//地面にいてかつ、目的地が変わった時に初期化
+	if (CanJump)
+	{
+		if (offsetY != lastOffsetY)
+		{
+			startY = cameraY;
+			timer = 0.0f;
+			lastOffsetY = offsetY;
+		}
+	}
+
 
 	//カメラの移動
-	timer += gDeltaTime;
+	float dt = GetDeltaTime();
+	timer += dt;
 	if (timer > CAMERA_MOVE_TIME)
 	{
 		timer = CAMERA_MOVE_TIME;
 	}
 	float rate = timer / CAMERA_MOVE_TIME;
 
-	cameraY = startY + (offsetY - startY) * rate;
+	cameraY = startY + (lastOffsetY - startY) * rate;
 }
 
 void Player::Interact()
