@@ -1,5 +1,6 @@
 #include "PlayerTYpe.h"
-#include"AttackType.h"
+#include"Bullet.h"
+#include"Slashs.h"
 
 void PlayerAttack::Player1MainAttack(const Vector2D& pos,bool lookleft)
 {

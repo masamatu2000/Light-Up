@@ -8,36 +8,44 @@
 /// M.Shoji
 /// </summary>
 namespace {
-	const float TRACE_DISTANCE = 32*4;
-	const Vector2D ENEMY_SPEED = Vector2D(15, 0);
+	//敵のステータス構造体		　 HP　X速度
+	const EnemyStatus KURIBOH   = { 2, 15.0f };
+	const EnemyStatus FAIRY     = { 2, 15.0f };
+	const EnemyStatus TURRET    = { 3,  0.0f };
+	const EnemyStatus GUNDAM    = { 1,  1.0f };
+	const EnemyStatus BOMBER    = { 1, 30.0f };
+	const EnemyStatus CREEPER   = { 1,  1.0f };
+	const EnemyStatus DOKUTARO  = { 1,  1.0f };
+	const EnemyStatus DEBUFFER  = { 1,  1.0f };
+	const EnemyStatus LANCER    = { 1,  1.0f };
+	const EnemyStatus BERSERKER = { 1,  1.0f };
 }
 Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(const Vector2D& pos, ENEMY_NUMBER ENum)
+Enemy::Enemy(const Vector2D& pos, EnemyNumber ENum)
 {
 	position = pos;
 	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
-	EnemyNumber = ENum;
-	Velocity = ENEMY_SPEED;
-	switch (EnemyNumber) {
-	case Enemy01:
-		Hp =(unsigned int) EnemyTypeNum::ENEMY_01_HP;
+	enemyNumber = ENum;
+	switch (enemyNumber) {
+	case EnemyNumber::KURIBOH:
+		enemyStatus = KURIBOH;
 		break;
-	case Enemy02:
-		Hp = (unsigned int)EnemyTypeNum::ENEMY_02_HP;
+	case EnemyNumber::FAIRY:
+		enemyStatus = FAIRY;
 		break;
-	case TURRET:
-		Hp = (unsigned int)EnemyTypeNum::TURRET_HP;
+	case EnemyNumber::TURRET:
+		enemyStatus = TURRET;
 		break;
-	case BOMBER:
-		Hp = (unsigned int)EnemyTypeNum::BOMBER_HP;
-		Velocity.x = EnemyTypeNum::BOMBER_VELOCITY_X;
+	case EnemyNumber::BOMBER:
+		enemyStatus = BOMBER;
 		break;
 	}
 	timer = 0;
 	invincibilityTimeCounter = 0;//無敵時間
+	SetStatus();
 }
 
 Enemy::~Enemy()
@@ -48,30 +56,27 @@ void Enemy::Update()
 {
 	if (Hp <= 0)
 	{
-		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Enemy", EnemyNumber);
+		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Enemy", (int)enemyNumber);
 		DestroyMe();
 	}
-	/*Player* pl = FindGameObject<Player>();
-	Vector2D ppos = pl->GetPosition();
-	Vector2D Distance = Math2D::Sub(ppos, position);
-	float dist = Math2D::Length(Distance);*/
 
 	timer += gDeltaTime;
-	switch (EnemyNumber) {
-	case Enemy01:
+	invincibilityTimeCounter--;
+
+	switch (enemyNumber) {
+	case EnemyNumber::KURIBOH:
 		EnemyAttack::Enemy1Attack(position,Velocity,timer);
 		break;
-	case Enemy02:
+	case EnemyNumber::FAIRY:
 		EnemyAttack::Enemy2Attack(position, Velocity,timer);
 		break;
-	case TURRET:
+	case EnemyNumber::TURRET:
 		EnemyAttack::TurretAttack(position,timer);
 		break;
-	case BOMBER:
+	case EnemyNumber::BOMBER:
 		EnemyAttack::BomberAttack(position,Velocity, timer);
 		break;
 	}
-	invincibilityTimeCounter--;
 }
 
 void Enemy::Draw()
@@ -81,5 +86,19 @@ void Enemy::Draw()
 
 	DrawBoxAA(positionx,positiony,positionx +IMAGE_SCALE,positiony +IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
 	DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//変数を出力する
+}
+
+void Enemy::Attack()
+{
+}
+
+void Enemy::Move()
+{
+}
+
+void Enemy::SetStatus()
+{
+	Hp = enemyStatus.hp;
+	Velocity.x = enemyStatus.velocityX;
 }
 

@@ -1,34 +1,19 @@
 #include "AttackType.h"
 #include "Stage.h"
 #include"Player.h"
-/// <summary>
-/// プレイヤーの攻撃方法を管理する
-/// M.Shoji
-/// 修正
-/// H.suginuma
-/// </summary>
 
 //全体に共通する定数
-namespace 
+namespace
 {
 	//弾の構造体定数			　　速度　サイズ　寿命　 位置
 	//プレイヤー
-	const BulletType BASE_B   = { 300.0f,  15.0f, 3.0f, 10.0f }; //基本プレイヤー
-	const BulletType MAGE_B   = { 500.0f,   2.0f, 3.0f, 10.0f }; //メイジ
+	const BulletType BASE_B = { 300.0f,  15.0f, 3.0f, 10.0f }; //基本プレイヤー
+	const BulletType MAGE_B = { 500.0f,   2.0f, 3.0f, 10.0f }; //メイジ
 	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f }; //騎士
 	//敵
-	const BulletType FAIRY_B  = { 100.0f,  10.0f, 3.0f, 10.0f }; //妖精
+	const BulletType FAIRY_B = { 100.0f,  10.0f, 3.0f, 10.0f }; //妖精
 	const BulletType TURRET_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //タレット
 	const BulletType BOMBER_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //爆弾魔
-
-	//斬撃の構造体定数				速度　サイズ　寿命　 位置
-	//プレイヤー
-	const SlashType BASE_S    = { 200.0f,  40.0f, 0.1f, 10.0f }; //基本プレイヤー
-	const SlashType MAGE_S    = { 300.0f,  20.0f, 0.1f, 20.0f }; //メイジ
-	const SlashType KNIGHT_S  = { 200.0f,  40.0f, 0.1f, 20.0f }; //騎士
-	//敵
-	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 10.0f }; //クリボー
-	const SlashType BOMBER_S  = {   0.0f,  30.0f, 0.1f,  0.0f }; //爆弾魔
 }
 
 //爆弾魔用定数
@@ -40,7 +25,7 @@ namespace Bomber
 	const float MAX_TIME = 1.0f;
 }
 
-Bullet::Bullet(const Vector2D &pos,BulletNumber bulletNum,bool lookleft,ObjectTag tag)
+Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, ObjectTag tag)
 {
 	bulletNumber = bulletNum;
 	position = pos;
@@ -75,18 +60,18 @@ Bullet::Bullet(const Vector2D &pos,BulletNumber bulletNum,bool lookleft,ObjectTa
 }
 
 Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, Vector2D direction, ObjectTag tag)
-	:Bullet(pos,bulletNum,false,tag)
+	:Bullet(pos, bulletNum, false, tag)
 {
 	//向き、速度の上書き
 	dir = direction;
 	CalculateVelocity();
 }
 
-Bullet::Bullet(const Vector2D& pos,Vector2D distance, BulletNumber bulletNum, ObjectTag tag)
+Bullet::Bullet(const Vector2D& pos, Vector2D distance, BulletNumber bulletNum, ObjectTag tag)
 	:Bullet(pos, bulletNum, false, tag)
 {
-	dis = distance; 
- 	CalculateGravity();
+	dis = distance;
+	CalculateGravity();
 }
 
 Bullet::~Bullet()
@@ -135,9 +120,9 @@ void Bullet::UpdateBomber()
 
 void Bullet::Draw()
 {
-	float posX = position.x-Stage::scrollX;
+	float posX = position.x - Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
-	DrawCircle((int)posX+16,(int) posY+16,(int) bulletType.rad, GetColor(255, 255, 255), TRUE);
+	DrawCircle((int)posX + 16, (int)posY + 16, (int)bulletType.rad, GetColor(255, 255, 255), TRUE);
 }
 
 void Bullet::CalculateVelocity()
@@ -227,99 +212,5 @@ bool Bullet::HitWall()
 		return true;
 	}*/
 
-	return false;
-}
-
-Slash::Slash(const Vector2D& pos, SlashNumber slashNum,bool lookleft,ObjectTag tag)
-{
-	slashNum_ = slashNum;
-	position = pos;
-	islookleft = lookleft;
-	objtag = tag;
-	switch (slashNum_) {
-	case SlashNumber::BASE:
-		slashType = BASE_S;
-		break;
-	case SlashNumber::MAGE:
-		slashType = MAGE_S;
-		break;
-	case SlashNumber::KNIGHT:
-		slashType = KNIGHT_S;
-		break;
-	case SlashNumber::KURIBOH:
-		slashType = KURIBOH_S;
-	case SlashNumber::BOMBER:
-		slashType = BOMBER_S;
-		break;
-	}
-	//位置を調整
-	SetOffsetPosition();
-	//向きの設定
-	CheckDirection();
-	//速度を計算
-	CalculateVelocity();
-}
-
-Slash::~Slash()
-{
-}
-
-void Slash::Update()
-{
-	//ライフがないなら処理をしない
-	if (CheckNoLife())
-	{
-		return;
-	}
-	//ポジションの更新
-	float dt = GetDeltaTime();
-	position.x += Velocity.x * dt;
-	position.y += Velocity.y * dt;
-}
-
-void Slash::Draw()
-{
-	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
-	float posY = position.y - Stage::GetScrollY();
-	DrawCircle(int(posX+16), int(posY+16), (int)slashType.rad, GetColor(255, 255, 255),TRUE);
-
-}
-
-void Slash::CalculateVelocity()
-{
-	Velocity = Math2D::Mul(dir, slashType.vel);
-	/*float dt = GetDeltaTime();
-	Velocity = Math2D::Mul(Velocity, dt);*/
-}
-
-void Slash::SetOffsetPosition()
-{
-	//弾をオフセット分移動させる
-	//左向いてるなら
-	if (islookleft)
-	{
-		position.x -= slashType.offsetX;
-	}
-	//右向いてるなら
-	else if (!islookleft)
-	{
-		position.x += slashType.offsetX;
-	}
-	circleColid = CircleColid(Vector2D(0, 0), slashType.rad);
-}
-
-bool Slash::CheckNoLife()
-{
-	float dt = GetDeltaTime();
-	if (slashType.life > 0)
-	{
-		slashType.life -= dt;
-		//ライフがないなら弾を消してtrueを返す
-		if (slashType.life <= 0)
-		{
-			DestroyMe();
-			return true;
-		}
-	}
 	return false;
 }

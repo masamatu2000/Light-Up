@@ -55,8 +55,8 @@ private:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
-	
-	void Mova();
+	void Move() override;
+
 	void jamp();
 	void MainAttack();
 	void SubAttack();

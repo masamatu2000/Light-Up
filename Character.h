@@ -5,7 +5,8 @@ class Character : public Object
 public:
 	Character();
 	~Character();
-	virtual void Attack();
+	virtual void Attack() {}
+	virtual void Move() {}
 	void SetVel(Vector2D vel) { Velocity = vel; }
 	Vector2D GetVel() { return Velocity; }	
 protected:

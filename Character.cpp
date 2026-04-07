@@ -7,7 +7,3 @@ Character::Character()
 Character::~Character()
 {
 }
-
-void Character::Attack()
-{
-}

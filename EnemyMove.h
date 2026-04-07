@@ -5,10 +5,10 @@
 #include"Math2D.h"
 #include<vector>
 
-enum ENEMY_NUMBER
+enum class EnemyNumber
 {
-	Enemy01,
-	Enemy02,
+	KURIBOH,
+	FAIRY,
 	TURRET,
 	GUNDAM,
 	BOMBER,
@@ -34,5 +34,5 @@ namespace EnemyAttack {
 	void TurretAttack(const Vector2D& pos, const int& timer);
 	void BomberAttack(const Vector2D& pos, const Vector2D& vel, const int& timer);
 }
-void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum);
-void AttackReset(ENEMY_NUMBER Enum, Enemy* enemy);
+void Move(Vector2D& pos, Vector2D& vel, EnemyNumber Enum);
+void AttackReset(EnemyNumber Enum, class Enemy* enemy);

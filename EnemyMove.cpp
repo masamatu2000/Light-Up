@@ -3,7 +3,9 @@
 #include"Player.h"
 #include"Stage.h"
 #include"Enemy.h"
-#include"AttackType.h"
+#include"Bullet.h"
+#include"Slashs.h"
+
 /// <summary>
 /// とりあえず移動の関数、SetTimerの関数も作った。Attack関数も作ろうかなと思ったけど、せっかくEnemyAttackがあるのにまた別のところで呼び出したら
 /// EnemyAttackの意味がなくなってしまうと思ったので、EnemyAttackの中で呼び出すようにした。まあ、頼むわ＾＾
@@ -43,10 +45,10 @@ void EnemyAttack::Enemy1Attack(const Vector2D& pos, const Vector2D& vel, const i
 	Vector2D distance = Math2D::Sub(ppos, epos);
 	float dt = GetDeltaTime();
 	Stage* stage = FindGameObject<Stage>();
-	Move(epos, evel, Enemy01);
+	Move(epos, evel, EnemyNumber::KURIBOH);
 	if (timer > ENEMY_BULLET_COOLTIME && distance.x <= ENEMY1_ATTACK_DISTANCE && distance.y <= ENEMY1_ATTACK_DISTANCE) {//攻撃
 		new Slash(pos, SlashNumber::BASE, (distance.x < 0), ObjectTag::ENEMY);
-		AttackReset(Enemy01, nullptr);
+		AttackReset(EnemyNumber::KURIBOH, nullptr);
 	}
 }
 
@@ -59,7 +61,7 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos, const Vector2D& vel, const i
 	Vector2D ppos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(ppos, epos);
 	//↓移動と壁のヒットチェック
-	Move(epos, evel, Enemy02);
+	Move(epos, evel, EnemyNumber::FAIRY);
 	if (timer > ENEMY_BULLET_COOLTIME && distance.x <= ENEMY2_ATTACK_DISTANCE && distance.y <= ENEMY2_ATTACK_DISTANCE) {//攻撃
 		Vector2D dir = Math2D::Normalize(distance);
 		float Rad = 30 * (DX_PI_F / 180.0f);
@@ -68,7 +70,7 @@ void EnemyAttack::Enemy2Attack(const Vector2D& pos, const Vector2D& vel, const i
 		new Bullet(pos, BulletNumber::FAIRY, dir, ObjectTag::ENEMY);
 		new Bullet(pos, BulletNumber::FAIRY, Rotation, ObjectTag::ENEMY);
 		new Bullet(pos, BulletNumber::FAIRY, Rotation2, ObjectTag::ENEMY);
-		AttackReset(Enemy02, nullptr);
+		AttackReset(EnemyNumber::FAIRY, nullptr);
 	}
 
 }
@@ -92,7 +94,7 @@ void EnemyAttack::TurretAttack(const Vector2D& pos, const int& timer)
 	{
 		isAttack = true;
 		dir = Math2D::Normalize(Math2D::Sub(pPos, ePos));
-		AttackReset(TURRET, nullptr);
+		AttackReset(EnemyNumber::TURRET, nullptr);
 	}
 
 	if (isAttack)
@@ -131,7 +133,7 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 	Enemy* bomber = nullptr;
 	for (auto enemy : e)
 	{
-		if (enemy->GetEnum() == ENEMY_NUMBER::BOMBER)
+		if (enemy->GetEnum() == EnemyNumber::BOMBER)
 		{
 			bomber = enemy;
 			break;
@@ -147,11 +149,11 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 		if (timer > Bomber::COOLTIME)
 		{
 			isAttack = true;
-			AttackReset(BOMBER, bomber);
+			AttackReset(EnemyNumber::BOMBER, bomber);
 		}
 	}
 	else {
-		Move(ePos, eVel, BOMBER);
+		Move(ePos, eVel, EnemyNumber::BOMBER);
 	}
 	if (isAttack)
 	{
@@ -162,7 +164,7 @@ void EnemyAttack::BomberAttack(const Vector2D& pos, const Vector2D& vel, const i
 	}
 }
 
-void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
+void Move(Vector2D& pos, Vector2D& vel, EnemyNumber Enum)
 {
 
 	Stage* stage = FindGameObject<Stage>();
@@ -181,7 +183,7 @@ void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
 	static float t = 0.0f;
 	switch (Enum)
 	{
-	case Enemy01:
+	case EnemyNumber::KURIBOH:
 		if (distance.x < TRACE_DISTANCE) {//プレイヤーを追跡する
 			pos.x += dir * abs(vel.x) * dt;
 			IsTrace = true;
@@ -189,27 +191,27 @@ void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
 		}
 		pos.x += vel.x * dt;
 		break;
-	case Enemy02:
+	case EnemyNumber::FAIRY:
 		pos.y = pos.y + 1.0f * sinf(15.0f * t);//上下に動くやつ
 		t = t + gDeltaTime;
 		pos.x += vel.x * dt;
 		break;
-	case TURRET:
+	case EnemyNumber::TURRET:
 		break;
-	case GUNDAM:
+	case EnemyNumber::GUNDAM:
 		break;
-	case BOMBER:
+	case EnemyNumber::BOMBER:
 		pos.x += vel.x * dt;
 		break;
-	case CREEPER:
+	case EnemyNumber::CREEPER:
 		break;
-	case DOKUTARO:
+	case EnemyNumber::DOKUTARO:
 		break;
-	case DEBUFFER:
+	case EnemyNumber::DEBUFFER:
 		break;
-	case LANCER:
+	case EnemyNumber::LANCER:
 		break;
-	case BERSERKER:
+	case EnemyNumber::BERSERKER:
 		break;
 	}
 	if (!IsTrace) {
@@ -236,7 +238,7 @@ void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
 			pos.x += max(d1, d2);
 		}
 	}
-	if (Enum != Enemy02) {
+	if (Enum != EnemyNumber::FAIRY) {
 		vel.y += GRAVITY * dt;
 		pos.y += vel.y * dt;
 		int d1 = stage->HitFloor(int(pos.x + 0), int(pos.y + IMAGE_SCALE));
@@ -257,34 +259,34 @@ void Move(Vector2D& pos, Vector2D& vel, ENEMY_NUMBER Enum)
 	}
 }
 
-void AttackReset(ENEMY_NUMBER Enum, Enemy* enemy = nullptr)
+void AttackReset(EnemyNumber Enum, Enemy* enemy = nullptr)
 {
 	auto e = FindGameObjects<Enemy>();
 	switch (Enum)
 	{
-	case Enemy01:
-	case Enemy02:
-	case TURRET:
+	case EnemyNumber::KURIBOH:
+	case EnemyNumber::FAIRY:
+	case EnemyNumber::TURRET:
 		for (auto enemy : e) {
 			if (enemy->GetEnum() == Enum) {
 				enemy->SetTimer(0);
 			}
 		}
 		return;
-	case GUNDAM:
+	case EnemyNumber::GUNDAM:
 		break;
-	case BOMBER:
+	case EnemyNumber::BOMBER:
 		enemy->SetTimer(0);
 		break;
-	case CREEPER:
+	case EnemyNumber::CREEPER:
 		break;
-	case DOKUTARO:
+	case EnemyNumber::DOKUTARO:
 		break;
-	case DEBUFFER:
+	case EnemyNumber::DEBUFFER:
 		break;
-	case LANCER:
+	case EnemyNumber::LANCER:
 		break;
-	case BERSERKER:
+	case EnemyNumber::BERSERKER:
 		break;
 	}
 }

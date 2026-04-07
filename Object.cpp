@@ -2,7 +2,8 @@
 #include "Enemy.h"
 #include "Player.h"
 #include"Boss.h"
-#include "AttackType.h"
+#include"Bullet.h"
+#include"Slashs.h"
 #include <vector>
 
 

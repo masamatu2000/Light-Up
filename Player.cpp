@@ -134,7 +134,7 @@ void Player::StartUpdate()
 
 void Player::PlayUpdate()
 {
-	Mova();
+	Move();
 
 	Interact();
 
@@ -346,7 +346,7 @@ void Player::Attack()
 	}
 }
 
-void Player::Mova()
+void Player::Move()
 {
 	Stage* s = FindGameObject<Stage>();
 	float dt = GetDeltaTime();
