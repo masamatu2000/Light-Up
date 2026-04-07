@@ -11,7 +11,7 @@
 /// EnemyAttackの意味がなくなってしまうと思ったので、EnemyAttackの中で呼び出すようにした。まあ、頼むわ＾＾
 /// </summary
 namespace {
-	const float GRAVITY = 9.8f * 60 * 2;
+	//const float GRAVITY = 9.8f * 60 * 2;
 	const float TRACE_DISTANCE = IMAGE_SCALE * 10;
 	const float ENEMY_BULLET_COOLTIME = 2.0f;
 	const float ENEMY1_ATTACK_DISTANCE = IMAGE_SCALE * 2;

@@ -9,6 +9,9 @@ const int WIN_HEIGHT = 1080;
 const int SCREEN_ZOOM = 4;
 const char IMAGE_SCALE = 32;
 
+//d—Í
+const float GRAVITY = 9.8f * 60 * 2;
+
 extern float gDeltaTime; // ƒtƒŒ[ƒ€ŠÔ‚ÌŠÔ·
 
 inline float GetDeltaTime()

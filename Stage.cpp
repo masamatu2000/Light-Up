@@ -6,6 +6,8 @@
 #include"CsvReader.h"
 #include "Player.h"
 #include "Enemy.h"
+#include"Kuriboh.h"
+#include"Fairy.h"
 #include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
@@ -20,8 +22,8 @@ namespace {
 	const int NEXTPORTAL_CSV_NUM = 3;
 	const int PREVIOUSPORTAL_CSV_NUM = 4;
 	const int PLAYERSPAWN_CSV_NUM = 5;
-	const int ENEMY01_CSV_NUM = 10;
-	const int ENEMY02_CSV_NUM = 11;
+	const int KURIBOH_CSV_NUM = 10;
+	const int FAIRY_CSV_NUM = 11;
 	const int TURRET_CSV_NUM = 12;
 	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
@@ -444,20 +446,18 @@ void Stage::SetEnemy_Boss()
 {
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			if (map[y][x] == ENEMY01_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)),EnemyNumber::KURIBOH);
+			if (map[y][x] == KURIBOH_CSV_NUM) {
+				new Kuriboh(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
 				break;
 			}
-			if (map[y][x] == ENEMY02_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::FAIRY);
+			if (map[y][x] == FAIRY_CSV_NUM) {
+				new Fairy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == TURRET_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::TURRET);
 				break;
 			}
 			if (map[y][x] == BOMBER_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::BOMBER);
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)

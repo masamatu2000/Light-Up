@@ -1,5 +1,9 @@
 #pragma once
 #include "Character.h"
+/// <summary>
+/// UŒ‚‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+/// </summary>
+/// <author>H.suginunma</author>
 
 enum class AttackType
 {

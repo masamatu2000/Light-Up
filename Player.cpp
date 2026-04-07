@@ -13,8 +13,6 @@
 /// </summary>
 namespace
 {
-	//どのくらいの割合で重力を与えるか
-	const float GRAVITY = 9.8f * 60 * 2;//重力 （定数）
 	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
 	const float accel = 20.0f;//加速率
 	const float decal = 15.0f;//減衰率

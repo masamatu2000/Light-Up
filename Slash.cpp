@@ -2,6 +2,11 @@
 #include "Stage.h"
 #include"Player.h"
 
+/// <summary>
+/// スラッシュを管理するクラス
+/// </summary>
+/// <author>H.suginunma</author>
+
 //全体に共通する定数
 namespace
 {
@@ -33,6 +38,7 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 		break;
 	case SlashNumber::KURIBOH:
 		slashType = KURIBOH_S;
+		break;
 	case SlashNumber::BOMBER:
 		slashType = BOMBER_S;
 		break;

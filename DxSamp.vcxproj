@@ -154,10 +154,11 @@
     <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyMove.cpp" />
+    <ClCompile Include="Fairy.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Kuriboh.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -185,13 +186,14 @@
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyMove.h" />
+    <ClInclude Include="Fairy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="GimmickType.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Kuriboh.h" />
     <ClInclude Include="Math2D.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Character.h" />
@@ -204,7 +206,7 @@
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SelectScene.h" />
-    <ClInclude Include="Slashs.h" />
+    <ClInclude Include="Slash.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageGraphic.h" />

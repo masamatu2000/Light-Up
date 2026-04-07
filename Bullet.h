@@ -2,6 +2,11 @@
 #include"AttackObject.h"
 #include<vector>
 
+/// <summary>
+/// バレットを管理するクラス
+/// </summary>
+/// <author>H.suginunma</author>
+
 struct BulletType {
 	float vel;
 	float rad;

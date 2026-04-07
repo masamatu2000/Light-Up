@@ -2,6 +2,11 @@
 #include "Stage.h"
 #include"Player.h"
 
+/// <summary>
+/// バレットを管理するクラス
+/// </summary>
+/// <author>H.suginunma</author>
+
 //全体に共通する定数
 namespace
 {
