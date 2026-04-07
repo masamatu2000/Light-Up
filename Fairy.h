@@ -2,15 +2,15 @@
 #include"Enemy.h"
 
 /// <summary>
-/// クリボーを管理するクラス
+/// 妖精を管理するクラス
 /// </summary>
 /// <author>H.suginunma</author>
 
-class Kuriboh : public Enemy
+class Fairy : public Enemy
 {
 public:
-	Kuriboh(const Vector2D& pos);
-	~Kuriboh();
+	Fairy(const Vector2D& pos);
+	~Fairy();
 private:
 	void Update() override;
 	void Draw() override;

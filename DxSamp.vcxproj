@@ -155,6 +155,7 @@
     <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fairy.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fairy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="GimmickType.h" />
@@ -204,7 +206,7 @@
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SelectScene.h" />
-    <ClInclude Include="Slashs.h" />
+    <ClInclude Include="Slash.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageGraphic.h" />

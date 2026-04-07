@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include"Bullet.h"
-#include"Slashs.h"
+#include"Slash.h"
 #include "Stage.h"
 
 Vector2D BossMove::PhysicsCalculation(const Vector2D& position, const Vector2D& Velocity)

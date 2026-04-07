@@ -129,6 +129,9 @@
     <ClCompile Include="Kuriboh.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Fairy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -212,7 +215,7 @@
     <ClInclude Include="SelectScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Slashs.h">
+    <ClInclude Include="Slash.h">
       <Filter>Attack</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
@@ -231,6 +234,9 @@
       <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="Kuriboh.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Fairy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>

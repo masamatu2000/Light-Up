@@ -2,6 +2,11 @@
 #include"AttackObject.h"
 #include<vector>
 
+/// <summary>
+/// スラッシュを管理するクラス
+/// </summary>
+/// <author>H.suginunma</author>
+
 struct SlashType {
 	float vel;
 	float rad;

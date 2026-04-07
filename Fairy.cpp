@@ -1,29 +1,29 @@
-#include "Kuriboh.h"
+#include "Fairy.h"
 #include"Player.h"
 #include"Stage.h"
 #include"Gimmick.h"
-#include"Slash.h"
+#include"Bullet.h"
 
 /// <summary>
-/// クリボーを管理するクラス
+/// 妖精を管理するクラス
 /// </summary>
 /// <author>H.suginunma</author>
 
-Kuriboh::Kuriboh(const Vector2D& pos)
+Fairy::Fairy(const Vector2D& pos)
 {
 	position = pos;
 	timer = 0.0f;
 	invincibilityTimeCounter = 0.0f;
-	enemyNumber = EnemyNumber::KURIBOH;
+	enemyNumber = EnemyNumber::FAIRY;
 	enemyStatus = GetEnemyStatus(enemyNumber);
 	SetStatus();
 }
 
-Kuriboh::~Kuriboh()
+Fairy::~Fairy()
 {
 }
 
-void Kuriboh::Update()
+void Fairy::Update()
 {
 	Enemy::Update();
 
@@ -31,40 +31,23 @@ void Kuriboh::Update()
 	Attack();
 }
 
-void Kuriboh::Draw()
+void Fairy::Draw()
 {
 	Enemy::Draw();
 }
 
-void Kuriboh::Move()
+void Fairy::Move()
 {
 	Stage* s = FindGameObject<Stage>();
-	Player* pl = FindGameObject<Player>();
 	float dt = GetDeltaTime();
+	//Y軸移動の制御タイマー
+	static float t = 0.0f;
 
-	Vector2D pPos = pl->GetPosition();
-	//X軸方向の距離
-	float distance = pPos.x - position.x;
-	//トレース中に向かう方向
-	//初期右
-	float dir = 1.0f;
-	//プレイヤーが左にいるなら左に
-	if (distance < 0)
-	{
-		dir = -1.0f;
-	}
-	//追跡範囲内かどうか
-	bool isTrace = (abs(distance) < enemyStatus.traceDistance);
-	
-	//追跡中の移動
-	if (isTrace)
-	{
-		position.x += dir * abs(Velocity.x) * dt;
-	}
-	else
-	{
-		position.x += Velocity.x * dt;
-	}
+	//Y軸方向の移動
+	position.y = position.y + 1.0f * sinf(15.0f * t);
+	t = t + gDeltaTime;
+	//X軸方向の移動
+	position.x += Velocity.x * dt;
 
 	//壁の判定
 	//右に進んでいるとき
@@ -89,19 +72,10 @@ void Kuriboh::Move()
 		}
 	}
 
-	//重力の適応
-	Velocity.y += GRAVITY * dt;
-	position.y += Velocity.y * dt;
 
-	float d = CheckHitWall("DOWN");
-	if (d > 0)
-	{
-		position.y -= (d - 1);
-		Velocity.y = 0;
-	}
 }
 
-void Kuriboh::Attack()
+void Fairy::Attack()
 {
 	Player* pl = FindGameObject<Player>();
 	Vector2D pPos = pl->GetPosition();
@@ -111,7 +85,13 @@ void Kuriboh::Attack()
 	{
 		if (Math2D::Length(distance) <= enemyStatus.attackDistance)
 		{
-			new Slash(position, SlashNumber::KURIBOH, (distance.x < 0), ObjectTag::ENEMY);
+			Vector2D dir = Math2D::Normalize(distance);
+			float Rad = 30 * (DX_PI_F / 180.0f);
+			Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };
+			Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
+			new Bullet(position, BulletNumber::FAIRY, dir, ObjectTag::ENEMY);
+			new Bullet(position, BulletNumber::FAIRY, Rotation, ObjectTag::ENEMY);
+			new Bullet(position, BulletNumber::FAIRY, Rotation2, ObjectTag::ENEMY);
 			SetTimer(0);
 		}
 	}

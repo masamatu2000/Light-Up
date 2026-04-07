@@ -3,7 +3,7 @@
 #include "Player.h"
 #include"Boss.h"
 #include"Bullet.h"
-#include"Slashs.h"
+#include"Slash.h"
 #include <vector>
 
 
