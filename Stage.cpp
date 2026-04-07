@@ -5,9 +5,13 @@
 #include "Stage.h"
 #include"CsvReader.h"
 #include "Player.h"
+//敵用のクラスインクルード
 #include "Enemy.h"
 #include"Kuriboh.h"
 #include"Fairy.h"
+#include"Turret.h"
+#include"Bomber.h"
+//ボス用のクラスインクルード
 #include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
@@ -453,9 +457,11 @@ void Stage::SetEnemy_Boss()
 				break;
 			}
 			if (map[y][x] == TURRET_CSV_NUM) {
+				new Turret(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == BOMBER_CSV_NUM) {
+				new Bomber(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
