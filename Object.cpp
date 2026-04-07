@@ -113,12 +113,8 @@ void ObjectProcess::HitObject()
 				float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
-					if (bs->GetInvincibilityTime() < 0)
-					{
-						bs->DownHp(Damage);
-						bullet->DestroyMe();
-						bs->SetInvincibilityTime();
-					}
+					bs->DownHp(Damage);
+					bullet->DestroyMe();
 				}
 			}
 		}
@@ -208,11 +204,8 @@ void ObjectProcess::HitObject()
 				float collisiondist = bs->GetCollisionRadius() + slash->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
-					if (bs->GetInvincibilityTime() < 0) {
-						bs->DownHp(Damage);
-						slash->DestroyMe();
-						bs->SetInvincibilityTime();
-					}
+					bs->DownHp(Damage);
+					slash->DestroyMe();
 				}
 			}
 		}

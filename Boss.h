@@ -1,29 +1,26 @@
 #pragma once
 #include "Character.h"
-#include "BossMove.h"
+
+enum BossNumber
+{
+	BOSS01,
+	BOSS02,
+	BOSS03,
+	BOSS04,
+	BOSS05,
+};
 
 class Boss : public Character
 {
 public:
 	Boss();
-	Boss(const Vector2D& pos, BossNumber bNum);
 	~Boss();
-	BossNumber GetEnum() { return bossNumber; }
-	int GetInvincibilityTime() { return invincibilityTimeCounter; }
-	void SetInvincibilityTime(int timer) { invincibilityTimeCounter = timer; }
-	void SetInvincibilityTime()
-	{
-		invincibilityTimeCounter = INVINCIBILITU_TIME;
-	}
-	bool GetCanJamp() { return canJamp; }
-	void SetCanJamp(bool can) { canJamp = can; }
-	int GetAttackCounter() { return attackCounter; }
-	void SetAttackCounter(int can) { attackCounter = can; }
 private:
 	void Update() override;
 	void Draw() override;
-	void Mova();
-private:
+	void Move() override;
+	void Attack()override;
+protected:
 	BossNumber bossNumber;
 	float speed;
 	int invincibilityTimeCounter;

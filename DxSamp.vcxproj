@@ -148,7 +148,6 @@
     <ClCompile Include="AttackObject.cpp" />
     <ClCompile Include="BootScene.cpp" />
     <ClCompile Include="Boss.cpp" />
-    <ClCompile Include="BossMove.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CsvReader.cpp" />
@@ -164,6 +163,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerType.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Santana.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SelectScene.cpp" />
@@ -180,7 +180,6 @@
     <ClInclude Include="AttackObject.h" />
     <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
-    <ClInclude Include="BossMove.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CsvReader.h" />
     <ClInclude Include="DataHolder.h" />
@@ -200,6 +199,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerType.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Santana.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
