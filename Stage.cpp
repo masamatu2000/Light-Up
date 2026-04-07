@@ -135,10 +135,10 @@ void Stage::Update()
 		isBossSection = false;
 		//スクロール、上限値を設定
 		SetScroll();
-		//プレイヤーの位置を新しいマップの初期位置に移動
-		SetPlayerPosition();
 		//敵とボスを生成
 		SetEnemy_Boss();
+		//プレイヤーの位置を新しいマップの初期位置に移動
+		SetPlayerPosition();
 	}
 }
 
@@ -420,7 +420,7 @@ void Stage::SetPlayer()
 void Stage::SetPlayerPosition()
 {
 	int findNum;
-	if (direction == Direction::NEXT && isStartSection == true)
+	if (direction == Direction::NEXT && (isStartSection || isBossSection))
 	{
 		findNum = PLAYERSPAWN_CSV_NUM;
 	}
