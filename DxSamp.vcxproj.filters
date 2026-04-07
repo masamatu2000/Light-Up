@@ -132,6 +132,12 @@
     <ClCompile Include="Fairy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomber.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -237,6 +243,12 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Fairy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomber.h">
       <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>

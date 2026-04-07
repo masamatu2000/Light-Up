@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AttackObject.cpp" />
+    <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="BootScene.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -174,11 +175,13 @@
     <ClCompile Include="StageGraphic.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="Turret.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AttackObject.h" />
+    <ClInclude Include="Bomber.h" />
     <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
@@ -211,6 +214,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageGraphic.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Turret.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
