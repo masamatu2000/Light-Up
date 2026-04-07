@@ -145,9 +145,24 @@ void BossMove::Boss01mova02()
 	float dx = pPos.x - bPos.x;
 
 	float distance = Math2D::Length(Math2D::Sub(bPos, pPos));
-	if (attackCounter % 10 == 0)
+	if (distance < IMAGE_SCALE * 2)
 	{
-		new Slash(bPos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
+		if (attackCounter % 10 == 0)
+		{
+			new Slash(bPos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
+		}
+	}
+	else
+	{
+		if (attackCounter % 1 == 0)
+		{
+			Vector2D direction;
+			int baseAngle = 300 * (DX_PI / 180);
+			direction = Vector2D(cos(baseAngle) + cos(baseAngle + (DX_PI / 2))* (sin(attackCounter * 0.5) * tan(40 * (DX_PI / 180))), 
+				sin(baseAngle) + sin(baseAngle + (DX_PI / 2)) * (sin(attackCounter * 0.5) * tan(40 * (DX_PI / 180))));
+			direction = Math2D::Normalize(direction);
+			new Bullet(bPos, BulletNumber::FAIRY, direction, ObjectTag::ENEMY);
+		}
 	}
 	attackCounter++;
 	bPos.y += vel.y * -1;
