@@ -16,6 +16,8 @@
 #include<assert.h>
 #include"DataHolder.h"
 #include"Gimmick.h"
+#include "Santana.h"
+
 namespace {
 	//チュートリアル、裏ステ含めた６ステージ
 	const int STAGE_MAX = 6;
@@ -466,7 +468,8 @@ void Stage::SetEnemy_Boss()
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
-				new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BossNumber::BOSS01);
+				new Santana(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				//new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BossNumber::BOSS01);
 				//ボスがいるかどうかをtrueに
 				isBossSection = true;
 				break;
