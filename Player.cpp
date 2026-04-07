@@ -279,8 +279,8 @@ void Player::PlayDraw()
 		break;
 	}
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
-	//DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
-	DrawRectGraph((int)x - IMAGE_SCALE/2, (int)y - IMAGE_SCALE, IMAGE_SCALE * 2 * patX, IMAGE_SCALE * 2 * patY, IMAGE_SCALE * 2, IMAGE_SCALE * 2, hImage, TRUE);
+	DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
+	//DrawRectGraph((int)x - IMAGE_SCALE/2, (int)y - IMAGE_SCALE, IMAGE_SCALE * 2 * patX, IMAGE_SCALE * 2 * patY, IMAGE_SCALE * 2, IMAGE_SCALE * 2, hImage, TRUE);
 
 	//DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
 	//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
@@ -830,8 +830,8 @@ void Player::AnimationEnd()
 void Player::Scroll()
 {
 	// スクロール処理
-	if (position.x >= 200) {
-		Stage::scrollX = (int)(position.x - 200);
+	if (position.x >= (WIN_WIDTH / SCREEN_ZOOM) / 2) {
+		Stage::scrollX = (int)(position.x - (WIN_WIDTH / SCREEN_ZOOM) / 2);
 	}
 
 	if (position.y - Stage::scrollY <= 100) {
