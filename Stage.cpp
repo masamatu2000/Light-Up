@@ -6,6 +6,7 @@
 #include"CsvReader.h"
 #include "Player.h"
 #include "Enemy.h"
+#include"Kuriboh.h"
 #include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
@@ -443,19 +444,16 @@ void Stage::SetEnemy_Boss()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == ENEMY01_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)),EnemyNumber::KURIBOH);
+				new Kuriboh(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == ENEMY02_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::FAIRY);
 				break;
 			}
 			if (map[y][x] == TURRET_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::TURRET);
 				break;
 			}
 			if (map[y][x] == BOMBER_CSV_NUM) {
-				new Enemy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), EnemyNumber::BOMBER);
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)

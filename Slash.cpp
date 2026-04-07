@@ -33,6 +33,7 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 		break;
 	case SlashNumber::KURIBOH:
 		slashType = KURIBOH_S;
+		break;
 	case SlashNumber::BOMBER:
 		slashType = BOMBER_S;
 		break;

@@ -1,8 +1,5 @@
 #include "Gimmick.h"
-namespace {
-	const float GRAVITY = 9.8f * 60 * 2;//d—Í i’è”j
-	
-}
+
 Gimmick::Gimmick(const Vector2D& pos, const GIMMICK_TYPE& gt)
 {
 	position = pos;
