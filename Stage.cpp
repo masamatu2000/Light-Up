@@ -387,6 +387,31 @@ Vector2D Stage::GetAnimationPos()
 	return Vector2D(0,0);
 }
 
+Vector2D Stage::CalculateLaserEnd(Vector2D start, Vector2D dir, int length)
+{
+	//•Ô‚·’l‚ğ•Û‘¶‚·‚é•Ï”
+	Vector2D current = start;
+	//’·‚³•ª1px–ˆ‚ÉŒŸõ
+	for (int i = 0; i < length; i++)
+	{
+		current = Math2D::Add(current, dir);
+		//•Ç‚Æ‚Ì”»’è
+		int mapX = (int)current.x / IMAGE_SCALE;
+		int mapY = (int)current.y / IMAGE_SCALE;
+		if (IsInWall((int)current.x, (int)current.y))
+		{
+			//•Ç‚É­‚µ‚ß‚è‚Ü‚¹‚é
+			current = Math2D::Add(current, Math2D::Mul(dir, 10));
+			return current;
+		}
+	}
+
+	//•Ç‚É“–‚½‚ç‚È‚©‚Á‚½‚ç’·‚³•ª•Ô‚·
+	return current;
+
+	return Vector2D();
+}
+
 void Stage::SetScroll()
 {
 	Stage::mapBottom = (int)(map.size() * IMAGE_SCALE - (WIN_HEIGHT / SCREEN_ZOOM));

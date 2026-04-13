@@ -2,7 +2,7 @@
 #include"Player.h"
 #include"Stage.h"
 #include"Gimmick.h"
-#include"Bullet.h"
+#include"Laser.h"
 
 /// <summary>
 /// タレットを管理するクラス
@@ -14,6 +14,8 @@ namespace TurretData
 {
 	//タレットの継続時間
 	const float SHOT_TIME = 1.0f;
+	//レーザーの長さ
+	const int LASER_LENGTH = 1000;
 }
 
 Turret::Turret(const Vector2D& pos)
@@ -48,8 +50,6 @@ void Turret::Attack()
 	Vector2D pPos = pl->GetPosition();
 	//プレイヤーとの距離
 	float distance = Math2D::Length(Math2D::Sub(pPos, position));
-	//レーザーの方向ベクトル 攻撃可能になった時にだけ設定する
-	static Vector2D dir = { 0,0 };
 	//攻撃が可能かどうか
 	static bool isAttack = false;
 	//攻撃時間（1秒間）を管理する用のタイマー
@@ -61,23 +61,14 @@ void Turret::Attack()
 		if (distance <= enemyStatus.attackDistance)
 		{
 			isAttack = true;
-			dir = Math2D::Normalize(Math2D::Sub(pPos, position));
 			SetTimer(0);
 		}
 	}
 
 	if (isAttack)
 	{
-		if (shotTimer < TurretData::SHOT_TIME)
-		{
-			shotTimer += gDeltaTime;
-			new Bullet(position, BulletNumber::TURRET, dir, ObjectTag::ENEMY);
-			if (shotTimer >= TurretData::SHOT_TIME)
-			{
-				shotTimer = 0.0f;
-				dir = { 0,0 };
-				isAttack = false;
-			}
-		}
+		//レーザーの生成
+		new Laser(position, pPos, LaserNumber::TURRET,false, ObjectTag::ENEMY);
+		isAttack = false;
 	}
 }

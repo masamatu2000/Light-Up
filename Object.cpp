@@ -4,7 +4,9 @@
 #include"Boss.h"
 #include"Bullet.h"
 #include"Slash.h"
+#include"Laser.h"
 #include <vector>
+#include<cmath>
 
 
 Object::Object()
@@ -28,6 +30,8 @@ void ObjectProcess::HitObject()
 	auto aliveBullets = FindGameObjects<Bullet>();
 
 	auto aliveSlashes = FindGameObjects<Slash>();
+
+	auto aliveLaseres = FindGameObjects<Laser>();
 
 	Boss* bs = FindGameObject<Boss>();
 
@@ -258,4 +262,58 @@ void ObjectProcess::HitObject()
 
 	}
 
+	//レーザーとのヒットチェック
+	for (auto& laser : aliveLaseres)
+	{
+		//プレイヤーとの判定
+		if (laser->Gettag() == ObjectTag::ENEMY) {
+			float dist = laser->GetDist(laser->GetLineStart(), laser->GetLineEnd(), pl->GetPosition());
+			float collisiondist = pl->GetCollisionRadius() + laser->GetCollisionLineRadius();
+
+			if (dist < collisiondist)
+			{
+				if (pl->GetInvincibilityTime() < 0)
+				{
+					pl->UpCurseLowerLimit(20.0f);
+					if (pl->GetCurse() < pl->GetCurseLowerLimit())
+					{
+						pl->SetCurse(pl->GetCurseLowerLimit());
+					}
+					if (pl->GetCurse() >= 100.0f)
+					{
+						pl->SetHp(0);
+					}
+					pl->SetInvincibilityTime();
+				}
+				break;
+			}
+		}
+	}
+}
+
+float Object::GetDist(Vector2D start,Vector2D end, Vector2D target)
+{
+	//線分のベクトル
+	Vector2D line = Math2D::Sub(end, start);
+	//線分の長さの２条
+	float lineLengthSq = Math2D::LengthSq(line);
+
+	//最短距離の計算
+	//最短地点が線分のどこか（比率）
+	float t = ((target.x - start.x) * line.x + (target.y - start.y) * line.y) / lineLengthSq;
+	//tを制限
+	if (t < 0.0f)
+	{
+		t = 0.0f;
+	}
+	if (t > 1.0f)
+	{
+		t = 1.0f;
+	}
+
+	//線分の最短座標を計算
+	Vector2D nearPos = Math2D::Add(start, Math2D::Mul(line, t));
+	//距離を計算
+	Vector2D dist = Math2D::Sub(target, nearPos);
+	return sqrt(dist.x * dist.x + dist.y * dist.y);
 }

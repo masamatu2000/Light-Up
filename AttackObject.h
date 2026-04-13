@@ -8,7 +8,8 @@
 enum class AttackType
 {
 	BULLET,
-	SLASH
+	SLASH,
+	LASER
 };
 enum class ObjectTag 
 {
@@ -32,6 +33,10 @@ enum class SlashNumber
 	KNIGHT,
 	KURIBOH,
 	BOMBER
+};
+enum class LaserNumber
+{
+	TURRET
 };
 class AttackObject : public Character
 {

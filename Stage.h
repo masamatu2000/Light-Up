@@ -40,6 +40,8 @@ public:
 	int GetNextNum() { return nextNum; };
 	//アニメーションの開始位置を返す関数
 	Vector2D GetAnimationPos();
+	//レーザーの終点を計算する関数
+	Vector2D CalculateLaserEnd(Vector2D start, Vector2D dir,int length);
 
 	//スクロール用変数
 	static int scrollX;

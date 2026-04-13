@@ -35,6 +35,20 @@ struct BoxColid
     {
     }
 };
+struct LineColid
+{
+    Vector2D start;
+    Vector2D end;
+    float radius;
+    LineColid()
+        :start{ 0,0 }, end{ 0,0 }, radius(0.0f)
+    {
+    }
+    LineColid(Vector2D s, Vector2D e, float rad)
+        :start(s), end(e), radius(rad)
+    {
+    }
+};
 class Object :public GameObject
 {
 public:
@@ -43,10 +57,15 @@ public:
     Vector2D GetPosition() { return position; }
     void SetPosition(Vector2D pos) { position = pos; }
     float GetCollisionRadius() { return circleColid.Radius; }
+    float GetCollisionLineRadius() { return lineColid.radius; }
+    Vector2D GetLineStart() { return lineColid.start; }
+    Vector2D GetLineEnd() { return lineColid.end; }
+    float GetDist(Vector2D start, Vector2D end, Vector2D target);
 protected:
     Vector2D position;
     Vector2D radius;
     CircleColid circleColid;
+    LineColid lineColid;
 };
 
 namespace ObjectProcess
