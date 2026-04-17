@@ -13,6 +13,7 @@ namespace {
 
 StageGraphic::StageGraphic()
 {
+	SetDrawOrder(-1000000);
 	hImage = LoadGraph("data/Image/stage/stageGraph/stageTexture.png");
 	assert(hImage > 0);
 
