@@ -81,9 +81,6 @@
     <ClCompile Include="BootScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="BossMove.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Attack</Filter>
     </ClCompile>
@@ -138,6 +135,12 @@
     <ClCompile Include="Bomber.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Laser.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Santana.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -189,9 +192,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="BossMove.h">
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
@@ -250,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="Bomber.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Laser.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Santana.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
