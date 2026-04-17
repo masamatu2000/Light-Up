@@ -57,7 +57,7 @@ void Laser::Update()
 void Laser::Draw()
 {
 	//•`‰æ—p‚Ì•Ï”
-	int sX, sY, eX, eY;
+	float sX, sY, eX, eY;
 	sX = startPos.x - Stage::scrollX;
 	sY = startPos.y - Stage::GetScrollY();
 	eX = endPos.x - Stage::scrollX;

@@ -43,7 +43,7 @@ public:
 	Enemy();
 	~Enemy();
 	EnemyNumber GetEnum() { return enemyNumber; }
-	void SetTimer(int time) { timer = time; }//攻撃用のタイマーセッター
+	void SetTimer(float time) { timer = time; }//攻撃用のタイマーセッター
 	int GetInvincibilityTime() { return invincibilityTimeCounter; }
 	void SetInvincibilityTime(int timer) { invincibilityTimeCounter = timer; }
 	void SetInvincibilityTime()

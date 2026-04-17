@@ -110,25 +110,25 @@ float Enemy::CheckHitWall(std::string wall)
 	{
 		int d1 = s->HitWallRight(int(position.x + IMAGE_SCALE - 1), int(position.y + IMAGE_SCALE - 1));
 		int d2 = s->HitWallRight(int(position.x + IMAGE_SCALE - 1), int(position.y));
-		return max(d1, d2);
+		return (float)max(d1, d2);
 	}
 	else if (wall == "LEFT")
 	{
 		int d1 = s->HitWallLeft(int(position.x + 0), int(position.y + IMAGE_SCALE - 1));
 		int d2 = s->HitWallLeft(int(position.x + 0), int(position.y));
-		return max(d1, d2);
+		return (float)max(d1, d2);
 	}
 	else if (wall == "DOWN")
 	{
 		int d1 = s->HitFloor(int(position.x + 0), int(position.y + IMAGE_SCALE));
 		int d2 = s->HitFloor(int(position.x + IMAGE_SCALE - 1), int(position.y + IMAGE_SCALE));
-		return max(d1, d2);
+		return (float)max(d1, d2);
 	}
 	else if (wall == "UP")
 	{
 		int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));
 		int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
-		return max(d1, d2);
+		return (float)max(d1, d2);
 	}
 	return 0.0f;
 }

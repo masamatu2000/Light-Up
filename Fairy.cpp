@@ -13,7 +13,7 @@ Fairy::Fairy(const Vector2D& pos)
 {
 	position = pos;
 	timer = 0.0f;
-	invincibilityTimeCounter = 0.0f;
+	invincibilityTimeCounter = 0;
 	enemyNumber = EnemyNumber::FAIRY;
 	enemyStatus = GetEnemyStatus(enemyNumber);
 	SetStatus();

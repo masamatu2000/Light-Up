@@ -13,7 +13,7 @@ Kuriboh::Kuriboh(const Vector2D& pos)
 {
 	position = pos;
 	timer = 0.0f;
-	invincibilityTimeCounter = 0.0f;
+	invincibilityTimeCounter = 0;
 	enemyNumber = EnemyNumber::KURIBOH;
 	enemyStatus = GetEnemyStatus(enemyNumber);
 	SetStatus();

@@ -8,7 +8,7 @@ namespace
 {
 	const float TRACE_DISTANCE = 32 * 4;
 	const Vector2D BOSS_SPEED = Vector2D(15, 0);
-	const float HP = 10.0f;
+	const int HP = 10;
 }
 
 Santana::Santana()
@@ -232,10 +232,11 @@ void Santana::mova02()
 	{
 		if (attackCounter % 1 == 0)
 		{
+			float Pi = (float)DX_PI;
 			Vector2D direction;
-			int baseAngle = 300 * (DX_PI / 180);
-			direction = Vector2D(cos(baseAngle) + cos(baseAngle + (DX_PI / 2)) * (sin(attackCounter * 0.5) * tan(40 * (DX_PI / 180))),
-				sin(baseAngle) + sin(baseAngle + (DX_PI / 2)) * (sin(attackCounter * 0.5) * tan(40 * (DX_PI / 180))));
+			float baseAngle = 300 * (Pi / 180);
+			direction = Vector2D((float)cos(baseAngle) + (float)cos(baseAngle + (Pi / 2)) * ((float)sin(attackCounter * 0.5) * (float)tan(40 * (Pi / 180))),
+				(float)sin(baseAngle) + (float)sin(baseAngle + (Pi / 2)) * ((float)sin(attackCounter * 0.5) * (float)tan(40 * (Pi / 180))));
 			direction = Math2D::Normalize(direction);
 			new Bullet(position, BulletNumber::FAIRY, direction, ObjectTag::ENEMY);
 		}
