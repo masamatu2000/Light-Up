@@ -54,6 +54,8 @@ void Turret::Attack()
 	static bool isAttack = false;
 	//攻撃時間（1秒間）を管理する用のタイマー
 	static float shotTimer = 0.0f;
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
 	if (timer > enemyStatus.coolTime)
@@ -68,7 +70,7 @@ void Turret::Attack()
 	if (isAttack)
 	{
 		//レーザーの生成
-		new Laser(position, pPos, LaserNumber::TURRET,false, ObjectTag::ENEMY);
+		new Laser(Apos, pPos, LaserNumber::TURRET,false, ObjectTag::ENEMY);
 		isAttack = false;
 	}
 }

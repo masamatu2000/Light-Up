@@ -12,11 +12,11 @@ namespace
 {
 	//斬撃の構造体定数				速度　サイズ　寿命　 位置
 	//プレイヤー
-	const SlashType BASE_S = { 200.0f,  40.0f, 0.1f, 10.0f }; //基本プレイヤー
-	const SlashType MAGE_S = { 300.0f,  20.0f, 0.1f, 20.0f }; //メイジ
-	const SlashType KNIGHT_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //騎士
+	const SlashType BASE_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //基本プレイヤー
+	const SlashType MAGE_S = { 300.0f,  20.0f, 0.1f, 40.0f }; //メイジ
+	const SlashType KNIGHT_S = { 200.0f,  40.0f, 0.1f, 40.0f }; //騎士
 	//敵
-	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 10.0f }; //クリボー
+	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //クリボー
 	const SlashType BOMBER_S = { 0.0f,  30.0f, 0.1f,  0.0f }; //爆弾魔
 }
 
@@ -72,7 +72,7 @@ void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
 	float posY = position.y - Stage::GetScrollY();
-	DrawCircle(int(posX + 16), int(posY + 16), (int)slashType.rad, GetColor(255, 255, 255), TRUE);
+	DrawCircle((int)posX, (int)posY, (int)slashType.rad, GetColor(255, 255, 255), TRUE);
 
 }
 

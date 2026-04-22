@@ -7,6 +7,8 @@
 #include"Boss.h"
 #include"Gimmick.h"
 #include"Animation.h"
+#include"Bullet.h"
+#include"Slash.h"
 
 /// <summary>
 /// M.Shoji
@@ -62,7 +64,7 @@ Player::Player(int x, int y)
 {
 	position = Vector2D((float)x, (float)y);
 	Velocity = Vector2D(0.0f,0.0f);
-	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
+	circleColid = CircleColid(Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2), CHARACTER_IMAGE_SCALE / 2);
 	
 	CanJump = true;
 	canPrevious = false;
@@ -237,18 +239,18 @@ void Player::PlayDraw()
 	float y = position.y - Stage::GetScrollY();
 	if (invincibilityTimeCounter > 0)
 	{
-		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(100, 100, 100), true);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(100, 100, 100), true);
 	}
 	switch (playerType)
 	{
 	case(Name1):
-		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 0, 0), false);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 0, 0), false);
 		break;
 	case(Name2):
-		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 255, 0), false);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 255, 0), false);
 		break;
 	case(Name3):
-		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(0, 0, 255), false);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), false);
 		break;
 	default:
 		break;
@@ -279,7 +281,7 @@ void Player::PlayDraw()
 		break;
 	}
 	//DrawBox(x, y, x+IMAGE_SCALE, y+IMAGE_SCALE, GetColor(255, 0, 0), TRUE);
-	DrawRectGraph((int)x, (int)y, IMAGE_SCALE * patX, IMAGE_SCALE * patY, IMAGE_SCALE, IMAGE_SCALE, hImage, TRUE);
+	DrawRectGraph((int)x, (int)y, CHARACTER_IMAGE_SCALE * patX, CHARACTER_IMAGE_SCALE * patY, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
 	//DrawRectGraph((int)x - IMAGE_SCALE/2, (int)y - IMAGE_SCALE, IMAGE_SCALE * 2 * patX, IMAGE_SCALE * 2 * patY, IMAGE_SCALE * 2, IMAGE_SCALE * 2, hImage, TRUE);
 
 	//DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
@@ -303,7 +305,7 @@ void Player::PlayDraw()
 	}
 	if (Hp <= 0)
 	{
-		DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), true);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 255, 255), true);
 	}
 }
 
@@ -359,7 +361,7 @@ void Player::Move()
 			for (float moved = 0; moved <= dx; moved += step) {
 				float nextX = position.x - moved;
 
-				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + IMAGE_SCALE - 1));
+				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
 				int d2 = s->HitWallLeft((int)(nextX), (int)(position.y));
 
 				if (max(d1, d2) > 0) {
@@ -377,8 +379,8 @@ void Player::Move()
 			for (float moved = 0; moved <= dx; moved += step) {
 				float nextX = position.x + moved;
 
-				int d1 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y + IMAGE_SCALE - 1));
-				int d2 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y));
+				int d1 = s->HitWallRight((int)(nextX + CHARACTER_IMAGE_SCALE), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
+				int d2 = s->HitWallRight((int)(nextX + CHARACTER_IMAGE_SCALE), (int)(position.y));
 
 				if (max(d1, d2) > 0) {
 					dx = moved - step;
@@ -403,7 +405,7 @@ void Player::Move()
 			for (float moved = 0; moved <= dx; moved += step) {
 				float nextX = position.x - moved;
 
-				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + IMAGE_SCALE - 1));
+				int d1 = s->HitWallLeft((int)(nextX), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
 				int d2 = s->HitWallLeft((int)(nextX), (int)(position.y));
 
 				if (max(d1, d2) > 0) {
@@ -420,8 +422,8 @@ void Player::Move()
 			for (float moved = 0; moved <= dx; moved += step) {
 				float nextX = position.x + moved;
 
-				int d1 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y + IMAGE_SCALE - 1));
-				int d2 = s->HitWallRight((int)(nextX + IMAGE_SCALE), (int)(position.y));
+				int d1 = s->HitWallRight((int)(nextX + CHARACTER_IMAGE_SCALE), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
+				int d2 = s->HitWallRight((int)(nextX + CHARACTER_IMAGE_SCALE), (int)(position.y));
 
 				if (max(d1, d2) > 0) {
 					dx = moved - step;
@@ -515,29 +517,31 @@ void Player::Move()
 		position.x += Velocity.x;
 
 		if (Velocity.x > 0) {
-			int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-			int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+			int d1 = s->HitWallRight((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
+			int d2 = s->HitWallRight((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE / 2));
+			int d3 = s->HitWallRight((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y));
 
-			int d = max(d1, d2);
+			int d = max(max(d1, d2), d3);
 			if (d > 0)
 			{
 				Velocity.x = 0;
 			}
 
-			position.x -= max(d1, d2);
+			position.x -= d;
 		}
 		else if (Velocity.x < 0)
 		{
-			int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
-			int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+			int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
+			int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE / 2));
+			int d3 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
 
-			int d = max(d1, d2);
+			int d = max(max(d1, d2), d3);
 			if (d > 0)
 			{
 				Velocity.x = 0;
 			}
 
-			position.x += max(d1, d2);
+			position.x += d;
 		}
 
 		if (Input::IsKeepKeyDown(KEY_INPUT_SPACE) || Input::IsKeepPadDown(Pad::A)) {
@@ -548,10 +552,11 @@ void Player::Move()
 
 		//地面との当たり判定
 		if (s != nullptr) {
-			int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
-			int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+			int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE));
+			int d2 = s->HitFloor((int)(position.x + CHARACTER_IMAGE_SCALE / 2), (int)(position.y + CHARACTER_IMAGE_SCALE));
+			int d3 = s->HitFloor((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE));
 
-			int d = max(d1, d2);
+			int d = max(max(d1, d2), d3);
 			static float timer = 0;
 
 			if (d > 0) {
@@ -585,9 +590,10 @@ void Player::Move()
 		if (s != nullptr) {
 			//天井との当たり判定
 			int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
-			int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
+			int d2 = s->HitCeiling((int)(position.x + CHARACTER_IMAGE_SCALE / 2), (int)(position.y - 1));
+			int d3 = s->HitCeiling((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y - 1));
 
-			int d = max(d1, d2);
+			int d = max(max(d1, d2), d3);
 
 			//天井に触れていないとジャンプをすることが出来ないのでCanJumpをコメントアウト
 			if (d > 0) {
@@ -614,23 +620,24 @@ void Player::jamp()
 void Player::MainAttack()
 {
 	//近接（スラッシュ攻撃）
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 	switch (playerType)
 	{
 	case(Name1):
 		if (pushM == 1)
 		{
-			PlayerAttack::Player1MainAttack(position, islookleft);
+			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 		}
 		break;
 	case(Name2):
-		PlayerAttack::Player2MainAttack(position, islookleft);
+		new Slash(Apos, SlashNumber::MAGE, islookleft, ObjectTag::PLAYER);
 		mainAttackRecast = PLAYER_02_MAIN_ATTACK_RECAST_TIME;
 		break;
 	case(Name3):
 		if (pushM == 1)
 		{
-			PlayerAttack::Player3MainAttack(position, islookleft);
+			new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_03_MAIN_ATTACK_RECAST_TIME;
 		}
 		break;
@@ -642,6 +649,7 @@ void Player::MainAttack()
 void Player::SubAttack()
 {
 	//遠隔（銃攻撃）
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 	switch (playerType)
 	{
 	case (Name1):
@@ -649,7 +657,7 @@ void Player::SubAttack()
 		{
 			if (pushB == 1)
 			{
-				PlayerAttack::Player1SubAttack(position, islookleft);
+				new Bullet(Apos, BulletNumber::BASE, islookleft, ObjectTag::PLAYER);
 				UpCurse(cursUpIsPlayer01SubAtttack);
 			}
 			subAttackRecast = PLAYER_01_SUB_ATTACK_RECAST_TIME;
@@ -658,9 +666,8 @@ void Player::SubAttack()
 	case (Name2):
 		if (curse < (curseMax - cursUpIsPlayer02SubAtttack))
 		{
-			PlayerAttack::Player1SubAttack(position, islookleft);
+			new Bullet(Apos, BulletNumber::MAGE, islookleft, ObjectTag::PLAYER);
 			UpCurse(cursUpIsPlayer02SubAtttack);
-
 			subAttackRecast = PLAYER_02_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
@@ -669,7 +676,8 @@ void Player::SubAttack()
 		{
 			if (pushB == 1)
 			{
-				PlayerAttack::Player3SubAttack(position, islookleft);
+				new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
+				new Bullet(Apos, BulletNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
 				UpCurse(cursUpIsPlayer03SubAtttack);
 			}
 			subAttackRecast = PLAYER_03_SUB_ATTACK_RECAST_TIME;

@@ -434,7 +434,8 @@ void Stage::SetPlayer()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == PLAYER_CSV_NUM) {
-				new Player(x * IMAGE_SCALE, y * IMAGE_SCALE);
+				//プレイヤーの生成の際、サイズの違いにより床に埋まるので一マス上に出現させる
+				new Player(x * IMAGE_SCALE, (y - 1) * IMAGE_SCALE);
 				break;
 			}
 
@@ -463,7 +464,8 @@ void Stage::SetPlayerPosition()
 			//階段と同じ場所に
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
-				p->SetPosition({ (float)x * IMAGE_SCALE, (float)y * IMAGE_SCALE });
+				//プレイヤーの生成の際、サイズの違いにより床に埋まるので一マス上に送る
+				p->SetPosition({ (float)x * IMAGE_SCALE, ((float)y - 1) * IMAGE_SCALE });
 				break;
 			}
 
@@ -476,24 +478,25 @@ void Stage::SetEnemy_Boss()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == KURIBOH_CSV_NUM) {
-				new Kuriboh(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				//プレイヤーの生成の際、サイズの違いにより床に埋まるので一マス上に出現させる
+				new Kuriboh(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == FAIRY_CSV_NUM) {
-				new Fairy(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				new Fairy(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == TURRET_CSV_NUM) {
-				new Turret(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				new Turret(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == BOMBER_CSV_NUM) {
-				new Bomber(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				new Bomber(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
-				new Santana(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)));
+				new Santana(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				//new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BossNumber::BOSS01);
 				//ボスがいるかどうかをtrueに
 				isBossSection = true;

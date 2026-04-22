@@ -19,7 +19,7 @@ Santana::Santana()
 Santana::Santana(const Vector2D& pos)
 {
 	position = pos;
-	circleColid = CircleColid(Vector2D(IMAGE_SCALE / 2, IMAGE_SCALE / 2), IMAGE_SCALE / 2);
+	circleColid = CircleColid(Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2), CHARACTER_IMAGE_SCALE / 2);
 	Velocity = BOSS_SPEED;
 	speed = Velocity.x;
 	Hp = HP;
@@ -51,7 +51,7 @@ void Santana::Draw()
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::GetScrollY();
 
-	DrawBoxAA(x, y, x + IMAGE_SCALE, y + IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
+	DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 255, 255), TRUE);
 	DrawFormatString(0,  180, GetColor(255, 255, 255), "%.0f:%.0f", Velocity.x,Velocity.y);
 }
 
@@ -91,8 +91,8 @@ void Santana::PhysicsCalculation()
 	float dt = GetDeltaTime();
 
 	if (s != nullptr) {
-		int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
-		int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+		int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE));
+		int d2 = s->HitFloor((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE));
 
 		int d = max(d1, d2);
 
@@ -113,7 +113,7 @@ void Santana::PhysicsCalculation()
 	if (s != nullptr) {
 		//天井との当たり判定
 		int d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));//yの方にも＋すると足元が天井判定されるのでなし
-		int d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
+		int d2 = s->HitCeiling((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y - 1));
 
 		int d = max(d1, d2);
 
@@ -123,8 +123,8 @@ void Santana::PhysicsCalculation()
 		}
 	}
 	if (Velocity.x > 0) {
-		int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-		int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+		int d1 = s->HitWallRight((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
+		int d2 = s->HitWallRight((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y));
 
 		int d = max(d1, d2);
 
@@ -132,7 +132,7 @@ void Santana::PhysicsCalculation()
 	}
 	else if (Velocity.x < 0)
 	{
-		int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
+		int d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE - 1));
 		int d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
 
 		int d = max(d1, d2);
@@ -154,6 +154,8 @@ void Santana::mova01()
 {
 	Player* player = FindGameObject<Player>();
 	Vector2D pPos = player->GetPosition();
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	float dx = pPos.x - position.x;
 
@@ -162,7 +164,7 @@ void Santana::mova01()
 	{
 		if (attackCounter % 10 == 0 && attackCounter < 30)
 		{
-			new Slash(position, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
+			new Slash(Apos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 		}
 	}
 	else
@@ -217,6 +219,8 @@ void Santana::mova02()
 {
 	Player* player = FindGameObject<Player>();
 	Vector2D pPos = player->GetPosition();
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	float dx = pPos.x - position.x;
 
@@ -225,7 +229,7 @@ void Santana::mova02()
 	{
 		if (attackCounter % 10 == 0)
 		{
-			new Slash(position, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
+			new Slash(Apos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 		}
 	}
 	else
@@ -238,7 +242,7 @@ void Santana::mova02()
 			direction = Vector2D((float)cos(baseAngle) + (float)cos(baseAngle + (Pi / 2)) * ((float)sin(attackCounter * 0.5) * (float)tan(40 * (Pi / 180))),
 				(float)sin(baseAngle) + (float)sin(baseAngle + (Pi / 2)) * ((float)sin(attackCounter * 0.5) * (float)tan(40 * (Pi / 180))));
 			direction = Math2D::Normalize(direction);
-			new Bullet(position, BulletNumber::FAIRY, direction, ObjectTag::ENEMY);
+			new Bullet(Apos, BulletNumber::FAIRY, direction, ObjectTag::ENEMY);
 		}
 	}
 }
@@ -247,6 +251,8 @@ void Santana::mova03()
 {
 	Player* player = FindGameObject<Player>();
 	Vector2D pPos = player->GetPosition();
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	float dx = pPos.x - position.x;
 
@@ -255,7 +261,7 @@ void Santana::mova03()
 	{
 		if (attackCounter % 10 == 0 && attackCounter < 30)
 		{
-			new Slash(position, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
+			new Slash(Apos, SlashNumber::BASE, (dx < 0), ObjectTag::ENEMY);
 		}
 	}
 	else

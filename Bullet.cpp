@@ -12,13 +12,13 @@ namespace
 {
 	//弾の構造体定数			　　速度　サイズ　寿命　 位置
 	//プレイヤー
-	const BulletType BASE_B = { 300.0f,  15.0f, 3.0f, 10.0f }; //基本プレイヤー
-	const BulletType MAGE_B = { 500.0f,   2.0f, 3.0f, 10.0f }; //メイジ
+	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f }; //基本プレイヤー
+	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f }; //メイジ
 	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f }; //騎士
 	//敵
-	const BulletType FAIRY_B = { 100.0f,  10.0f, 3.0f, 10.0f }; //妖精
-	const BulletType TURRET_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //タレット
-	const BulletType BOMBER_B = { 300.0f,  10.0f, 7.0f, 10.0f }; //爆弾魔
+	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f }; //妖精
+	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f }; //タレット
+	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f }; //爆弾魔
 }
 
 //爆弾魔用定数
@@ -127,7 +127,7 @@ void Bullet::Draw()
 {
 	float posX = position.x - Stage::scrollX;
 	float posY = position.y - Stage::scrollY;
-	DrawCircle((int)posX + 16, (int)posY + 16, (int)bulletType.rad, GetColor(255, 255, 255), TRUE);
+	DrawCircle((int)posX, (int)posY, (int)bulletType.rad, GetColor(255, 255, 255), TRUE);
 }
 
 void Bullet::CalculateVelocity()

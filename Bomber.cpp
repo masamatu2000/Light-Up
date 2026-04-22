@@ -109,6 +109,8 @@ void Bomber::Attack()
 	float distance = Math2D::Length(dis);
 	//攻撃が可能かどうか
 	static bool isAttack = false;
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
 	//この間は移動しない
@@ -123,7 +125,7 @@ void Bomber::Attack()
 	if (isAttack)
 	{
 		//放物線を描くバレットを生成
-		new Bullet(position, dis, BulletNumber::BOMBER, ObjectTag::ENEMY);
+		new Bullet(Apos, dis, BulletNumber::BOMBER, ObjectTag::ENEMY);
 
 		isAttack = false;
 	}

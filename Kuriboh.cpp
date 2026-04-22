@@ -106,12 +106,14 @@ void Kuriboh::Attack()
 	Player* pl = FindGameObject<Player>();
 	Vector2D pPos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(pPos, position);
+	//Ž©g‚Ì’†S‚ÌˆÊ’u
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	if (timer > enemyStatus.coolTime)
 	{
 		if (Math2D::Length(distance) <= enemyStatus.attackDistance)
 		{
-			new Slash(position, SlashNumber::KURIBOH, (distance.x < 0), ObjectTag::ENEMY);
+			new Slash(Apos, SlashNumber::KURIBOH, (distance.x < 0), ObjectTag::ENEMY);
 			SetTimer(0);
 		}
 	}

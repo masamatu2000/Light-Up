@@ -60,6 +60,7 @@ public:
     float GetCollisionLineRadius() { return lineColid.radius; }
     Vector2D GetLineStart() { return lineColid.start; }
     Vector2D GetLineEnd() { return lineColid.end; }
+    Vector2D GetCollisionCenterPosition() { return circleColid.CenterPosition; }
     float GetDist(Vector2D start, Vector2D end, Vector2D target);
 protected:
     Vector2D position;

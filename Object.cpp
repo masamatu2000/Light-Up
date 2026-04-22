@@ -7,6 +7,7 @@
 #include"Laser.h"
 #include <vector>
 #include<cmath>
+#include "Stage.h"
 
 
 Object::Object()
@@ -41,53 +42,53 @@ void ObjectProcess::HitObject()
 		return;
 	}
 
-	//敵と自機のヒットチェック
-	for (auto& enemy:aliveEnemies)
-	{
-		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
-		float collisiondist = pl->GetCollisionRadius() + enemy->GetCollisionRadius();
+	////敵と自機のヒットチェック
+	//for (auto& enemy:aliveEnemies)
+	//{
+	//	float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), enemy->GetPosition()));
+	//	float collisiondist = pl->GetCollisionRadius() + enemy->GetCollisionRadius();
 
-		if (dist < collisiondist)
-		{
-			if (pl->GetInvincibilityTime() < 0)
-			{
-				pl->UpCurseLowerLimit(20.0f);
-				if (pl->GetCurse() < pl->GetCurseLowerLimit())
-				{
-					pl->SetCurse(pl->GetCurseLowerLimit());
-				}
-				if (pl->GetCurse() >= 100.0f)
-				{
-					pl->SetHp(0);
-				}
-				pl->SetInvincibilityTime();
-			}
-			break;
-		}
-	}
+	//	if (dist < collisiondist)
+	//	{
+	//		if (pl->GetInvincibilityTime() < 0)
+	//		{
+	//			pl->UpCurseLowerLimit(20.0f);
+	//			if (pl->GetCurse() < pl->GetCurseLowerLimit())
+	//			{
+	//				pl->SetCurse(pl->GetCurseLowerLimit());
+	//			}
+	//			if (pl->GetCurse() >= 100.0f)
+	//			{
+	//				pl->SetHp(0);
+	//			}
+	//			pl->SetInvincibilityTime();
+	//		}
+	//		break;
+	//	}
+	//}
 
-	//ボスと自機のヒットチェック
-	if (bs != nullptr) {
-		float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), bs->GetPosition()));
-		float collisiondist = pl->GetCollisionRadius() + bs->GetCollisionRadius();
+	////ボスと自機のヒットチェック
+	//if (bs != nullptr) {
+	//	float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), bs->GetPosition()));
+	//	float collisiondist = pl->GetCollisionRadius() + bs->GetCollisionRadius();
 
-		if (dist < collisiondist)
-		{
-			if (pl->GetInvincibilityTime() < 0)
-			{
-				pl->UpCurseLowerLimit(20.0f);
-				if (pl->GetCurse() < pl->GetCurseLowerLimit())
-				{
-					pl->SetCurse(pl->GetCurseLowerLimit());
-				}
-				if (pl->GetCurse() >= 100.0f)
-				{
-					pl->SetHp(0);
-				}
-				pl->SetInvincibilityTime();
-			}
-		}
-	}
+	//	if (dist < collisiondist)
+	//	{
+	//		if (pl->GetInvincibilityTime() < 0)
+	//		{
+	//			pl->UpCurseLowerLimit(20.0f);
+	//			if (pl->GetCurse() < pl->GetCurseLowerLimit())
+	//			{
+	//				pl->SetCurse(pl->GetCurseLowerLimit());
+	//			}
+	//			if (pl->GetCurse() >= 100.0f)
+	//			{
+	//				pl->SetHp(0);
+	//			}
+	//			pl->SetInvincibilityTime();
+	//		}
+	//	}
+	//}
 
 	//敵と弾のヒットチェック
 	for (auto& bullet : aliveBullets)
@@ -96,7 +97,7 @@ void ObjectProcess::HitObject()
 		for (auto& enemy : aliveEnemies)
 		{
 			if (bullet->Gettag() == ObjectTag::PLAYER) {
-				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), bullet->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(enemy->GetPosition(),enemy->GetCollisionCenterPosition()), bullet->GetPosition()));
 				float collisiondist = enemy->GetCollisionRadius() + bullet->GetCollisionRadius();
 
 				if (dist < collisiondist)
@@ -113,7 +114,7 @@ void ObjectProcess::HitObject()
 		//ボスとの判定
 		if (bs != nullptr) {
 			if (bullet->Gettag() == ObjectTag::PLAYER) {
-				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), bullet->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(bs->GetPosition(), bs->GetCollisionCenterPosition()), bullet->GetPosition()));
 				float collisiondist = bs->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
@@ -128,7 +129,7 @@ void ObjectProcess::HitObject()
 	{
 		//通常の敵との判定
 			if (bullet->Gettag() == ObjectTag::ENEMY) {
-				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), bullet->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()), bullet->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
 
 				if (dist < collisiondist)
@@ -159,7 +160,7 @@ void ObjectProcess::HitObject()
 		//ボスとの判定
 		if (bs != nullptr) {
 			if (bullet->Gettag() == ObjectTag::BOSS) {
-				float dist = Math2D::Length(Math2D::Sub(pl ->GetPosition(), bullet->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()), bullet->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + bullet->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
@@ -188,7 +189,7 @@ void ObjectProcess::HitObject()
 		for (auto& enemy : aliveEnemies)
 		{
 			if (slash->Gettag() == ObjectTag::PLAYER) {
-				float dist = Math2D::Length(Math2D::Sub(enemy->GetPosition(), slash->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(enemy->GetPosition(), enemy->GetCollisionCenterPosition()), slash->GetPosition()));
 				float collisiondist = enemy->GetCollisionRadius() + slash->GetCollisionRadius();
 
 				if (dist < collisiondist)
@@ -204,7 +205,7 @@ void ObjectProcess::HitObject()
 		//ボスとの判定
 		if (bs != nullptr) {
 			if (slash->Gettag() == ObjectTag::PLAYER) {
-				float dist = Math2D::Length(Math2D::Sub(bs->GetPosition(), slash->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(bs->GetPosition(), bs->GetCollisionCenterPosition()), slash->GetPosition()));
 				float collisiondist = bs->GetCollisionRadius() + slash->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
@@ -214,7 +215,7 @@ void ObjectProcess::HitObject()
 			}
 		}
 		if (slash->Gettag() == ObjectTag::ENEMY) {
-			float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
+			float dist = Math2D::Length(Math2D::Sub(Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()), slash->GetPosition()));
 			float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
 
 			if (dist < collisiondist)
@@ -238,7 +239,7 @@ void ObjectProcess::HitObject()
 		//ボスとの判定
 		if (bs != nullptr) {
 			if (slash->Gettag() == ObjectTag::BOSS) {
-				float dist = Math2D::Length(Math2D::Sub(pl->GetPosition(), slash->GetPosition()));
+				float dist = Math2D::Length(Math2D::Sub(Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()), slash->GetPosition()));
 				float collisiondist = pl->GetCollisionRadius() + slash->GetCollisionRadius();
 				if (dist < collisiondist)
 				{
@@ -267,7 +268,7 @@ void ObjectProcess::HitObject()
 	{
 		//プレイヤーとの判定
 		if (laser->Gettag() == ObjectTag::ENEMY) {
-			float dist = laser->GetDist(laser->GetLineStart(), laser->GetLineEnd(), pl->GetPosition());
+			float dist = laser->GetDist(laser->GetLineStart(), laser->GetLineEnd(), Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()));
 			float collisiondist = pl->GetCollisionRadius() + laser->GetCollisionLineRadius();
 
 			if (dist < collisiondist)

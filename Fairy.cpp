@@ -80,6 +80,8 @@ void Fairy::Attack()
 	Player* pl = FindGameObject<Player>();
 	Vector2D pPos = pl->GetPosition();
 	Vector2D distance = Math2D::Sub(pPos, position);
+	//Ž©g‚Ì’†S‚ÌˆÊ’u
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
 
 	if (timer > enemyStatus.coolTime)
 	{
@@ -89,9 +91,9 @@ void Fairy::Attack()
 			float Rad = 30 * (DX_PI_F / 180.0f);
 			Vector2D Rotation = { (dir.x * cosf(Rad) - dir.y * sinf(Rad)),(dir.x * sinf(Rad) + dir.y * cosf(Rad)) };
 			Vector2D Rotation2 = { (dir.x * cosf(-Rad) - dir.y * sinf(-Rad)),(dir.x * sinf(-Rad) + dir.y * cosf(-Rad)) };
-			new Bullet(position, BulletNumber::FAIRY, dir, ObjectTag::ENEMY);
-			new Bullet(position, BulletNumber::FAIRY, Rotation, ObjectTag::ENEMY);
-			new Bullet(position, BulletNumber::FAIRY, Rotation2, ObjectTag::ENEMY);
+			new Bullet(Apos, BulletNumber::FAIRY, dir, ObjectTag::ENEMY);
+			new Bullet(Apos, BulletNumber::FAIRY, Rotation, ObjectTag::ENEMY);
+			new Bullet(Apos, BulletNumber::FAIRY, Rotation2, ObjectTag::ENEMY);
 			SetTimer(0);
 		}
 	}

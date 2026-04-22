@@ -27,8 +27,8 @@ void Gimmick::Update()
 	Stage* s = FindGameObject<Stage>();
 	float dt = GetDeltaTime();
 	fall();
-	int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
-	int d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
+	int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE));
+	int d2 = s->HitFloor((int)(position.x + CHARACTER_IMAGE_SCALE - 1), (int)(position.y + CHARACTER_IMAGE_SCALE));
 	int d = max(d1, d2);
 	if (d > 0) {
 		position.y -= (d - 1);
@@ -41,7 +41,7 @@ void Gimmick::Draw()
 {
 	switch (gimmicType) {
 	case GIMMICK_TYPE::Corpse:
-		DrawBoxAA(position.x - Stage::scrollX, position.y - Stage::GetScrollY(), position.x + IMAGE_SCALE - Stage::scrollX, position.y + IMAGE_SCALE - Stage::GetScrollY(), GetColor(255, 0, 0), TRUE);
+		DrawBoxAA(position.x - Stage::scrollX, position.y - Stage::GetScrollY(), position.x + CHARACTER_IMAGE_SCALE - Stage::scrollX, position.y + CHARACTER_IMAGE_SCALE - Stage::GetScrollY(), GetColor(255, 0, 0), TRUE);
 		break;
 	}
 }
