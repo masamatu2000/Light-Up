@@ -16,7 +16,7 @@
 /// </summary>
 namespace
 {
-	const float JUMP_HEIGHT = 4.0f*IMAGE_SCALE;
+	const float JUMP_HEIGHT = 5.0f*IMAGE_SCALE;
 	const float accel = 20.0f;//â¡ë¨ó¶
 	const float decal = 15.0f;//å∏êäó¶
 	const float maxSpeed = 8.0f;//ç≈çÇë¨ìx
