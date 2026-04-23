@@ -35,7 +35,7 @@ Santana::~Santana()
 
 void Santana::Update()
 {
-	Move();
+	  Move();
 
 	if (Hp <= 0)
 	{
