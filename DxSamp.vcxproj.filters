@@ -37,15 +37,15 @@
     <Filter Include="Effect">
       <UniqueIdentifier>{4fa55c0e-ed0c-4a7a-8f2e-80b7a2518aaa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gimmick">
+      <UniqueIdentifier>{9e29967e-6123-4683-ad31-c338095b2eaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Gimmick.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
@@ -135,11 +135,17 @@
     <ClCompile Include="Bomber.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Santana.cpp">
       <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Gimmick.cpp">
+      <Filter>Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Laser.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Corpse.cpp">
+      <Filter>Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="GameOver.cpp">
       <Filter>ソース ファイル</Filter>
@@ -165,12 +171,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Gimmick.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GimmickType.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
@@ -260,11 +260,17 @@
     <ClInclude Include="Bomber.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Santana.h">
       <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Gimmick.h">
+      <Filter>Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Corpse.h">
+      <Filter>Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Laser.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="GameOver.h">
       <Filter>ヘッダー ファイル</Filter>

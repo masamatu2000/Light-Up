@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include"Boss.h"
 #include"Gimmick.h"
+#include"Corpse.h"
 #include"Animation.h"
 #include"Bullet.h"
 #include"Slash.h"
@@ -821,24 +822,22 @@ void Player::Interact()
 
 void Player::CorpseInteract()
 {
-	auto gmmick = FindGameObjects<Gimmick>();
-	for (auto gm : gmmick)
+	auto corpse = FindGameObjects<Corpse>();
+	for (auto cp : corpse)
 	{
-		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
+		
+		Vector2D cpos = cp->GetPosition();
+		float dist = Math2D::Length(Math2D::Sub(cpos, position));
+		if (dist <= IMAGE_SCALE && cp->GetCorpseKind() == "Enemy")
 		{
-			Vector2D gpos = gm->GetPosition();
-			float dist = Math2D::Length(Math2D::Sub(gpos, position));
-			if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Enemy")
-			{
-				CurseRecovery();
-				gm->DestroyMe();
-				break;
-			}
-			else if (dist <= IMAGE_SCALE && gm->GetCorpseKind() == "Boss")
-			{
-				ClearAnimation();
-				playState = PlayState::CLEAR;
-			}
+			CurseRecovery();
+			cp->DestroyMe();
+			break;
+		}
+		else if (dist <= IMAGE_SCALE && cp->GetCorpseKind() == "Boss")
+		{
+			ClearAnimation();
+			playState = PlayState::CLEAR;
 		}
 	}
 }

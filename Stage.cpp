@@ -512,10 +512,7 @@ void Stage::DeleteObjects()
 	auto gmmick = FindGameObjects<Gimmick>();
 	for (auto gm : gmmick)
 	{
-		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-		{
-			gm->DestroyMe();
-		}
+		gm->DestroyMe();
 	}
 	auto enemy = FindGameObjects<Enemy>();
 	for (auto e : enemy) {
