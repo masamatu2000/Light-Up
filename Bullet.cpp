@@ -126,7 +126,7 @@ void Bullet::UpdateBomber()
 void Bullet::Draw()
 {
 	float posX = position.x - Stage::scrollX;
-	float posY = position.y - Stage::scrollY;
+	float posY = position.y - Stage::GetScrollY();
 	DrawCircle((int)posX, (int)posY, (int)bulletType.rad, GetColor(255, 255, 255), TRUE);
 }
 
@@ -185,16 +185,16 @@ bool Bullet::HitWall()
 {
 	Stage* s = FindGameObject<Stage>();
 	//‰E•Ç‚Ì”»’è
-	int d1 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE - 1));
-	int d2 = s->HitWallRight((int)(position.x + IMAGE_SCALE - 1), (int)(position.y));
+	int d1 = s->HitWallRight((int)(position.x + bulletType.rad - 1), (int)(position.y + bulletType.rad - 1));
+	int d2 = s->HitWallRight((int)(position.x + bulletType.rad - 1), (int)(position.y - bulletType.rad + 1));
 	int d = max(d1, d2);
 	if (d > 0)
 	{
 		return true;
 	}
 	//¶•Ç‚Ì”»’è
-	d1 = s->HitWallLeft((int)(position.x + 0), (int)(position.y + IMAGE_SCALE - 1));
-	d2 = s->HitWallLeft((int)(position.x + 0), (int)(position.y));
+	d1 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y + bulletType.rad - 1));
+	d2 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y - bulletType.rad + 1));
 	d = max(d1, d2);
 	if (d > 0)
 	{

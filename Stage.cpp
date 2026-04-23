@@ -140,6 +140,10 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
 	}
+	if (((Input::IsKeyDown(KEY_INPUT_O)) || (Input::IsPadDown(Pad::OPTION))))
+	{
+		NextSection();
+	}
 }
 
 void Stage::Draw()
