@@ -59,6 +59,7 @@ protected:
 	void SetStatus();
 	//EnemyNumberからステータスを取得する
 	EnemyStatus GetEnemyStatus(EnemyNumber eNum);
+	//壁との判定
 	float CheckHitWall(std::string wall);
 protected:
 	EnemyNumber enemyNumber;

@@ -1,6 +1,7 @@
 #include "Santana.h"
 #include "Stage.h"
 #include"Gimmick.h"
+#include"Corpse.h"
 #include "Player.h"
 #include "AttackType.h"
 
@@ -38,7 +39,7 @@ void Santana::Update()
 
 	if (Hp <= 0)
 	{
-		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Boss", BossNumber::BOSS01);
+		new  Corpse(position, GimmickType::CORPSE, "Boss", BossNumber::BOSS01);
 		Stage* s = FindGameObject<Stage>();
 		s->DefeatedBoss();
 		DestroyMe();

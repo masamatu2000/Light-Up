@@ -151,6 +151,7 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Corpse.cpp" />
     <ClCompile Include="CsvReader.cpp" />
     <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Corpse.h" />
     <ClInclude Include="CsvReader.h" />
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="EffectManager.h" />
@@ -193,7 +195,6 @@
     <ClInclude Include="Fairy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gimmick.h" />
-    <ClInclude Include="GimmickType.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
