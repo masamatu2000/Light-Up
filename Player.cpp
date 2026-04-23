@@ -26,7 +26,10 @@ namespace
 	const float cursUpIsPlayer02SubAtttack = 1.0f;
 	const float cursUpIsPlayer03SubAtttack = 10.0f;
 	const float BOX_TIME = 10%60;
-
+	//ÉfÉoÉtä÷åWÇÃíËêî
+	const float PLAYER_SPEED_DEBUFF = 0.5f;
+	const float DEBUFF_CURSE_UP = 0.5f;
+	const float DEBUFF_TIME = 60*5;
 	const int PLAYER_01_MAIN_ATTACK_RECAST_TIME = 20;
 	const int PLAYER_02_MAIN_ATTACK_RECAST_TIME = 10;
 	const int PLAYER_03_MAIN_ATTACK_RECAST_TIME = 30;
@@ -102,6 +105,12 @@ Player::Player(int x, int y)
 	pushM = 0;
 	pushB = 0;
 	pushV = 0;
+
+	isDebuff = false;
+	isAlreadyDebuff = false;
+	DebuffCounter = 0;
+
+	isMaxCurse = false;
 }
 
 Player::~Player()
@@ -192,14 +201,32 @@ void Player::PlayUpdate()
 	if (curse > curseMax)
 	{
 		curse = curseMax;
+		isMaxCurse = true;
 	}
 
+	if (isDebuff) {
+		if (!isAlreadyDebuff) {
+			Velocity = { Velocity.x * PLAYER_SPEED_DEBUFF,Velocity.y * PLAYER_SPEED_DEBUFF };
+			UpCurse(DEBUFF_CURSE_UP);
+			isAlreadyDebuff = true;
+		}
+		else {
+			DebuffCounter++;
+			if (DebuffCounter >= DEBUFF_TIME) {
+				isDebuff = false;
+				isAlreadyDebuff = false;
+				DebuffCounter = 0;
+			}
+		}
+	}
+	
 	//ñ≥ìGéûä‘ÇÃå∏è≠
 	invincibilityTimeCounter--;
 }
 
 void Player::OverUpdate()
 {
+	SceneManager::ChangeScene(SCENE_NAME::GAMEOVER_SCENE);
 }
 
 void Player::ClearUpdate()

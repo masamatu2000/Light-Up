@@ -151,11 +151,13 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="CsvReader.cpp" />
     <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fairy.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerType.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Santana.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -186,12 +189,14 @@
     <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="ClearScene.h" />
     <ClInclude Include="CsvReader.h" />
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fairy.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="GimmickType.h" />
     <ClInclude Include="globals.h" />
@@ -206,6 +211,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerType.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Santana.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneFactory.h" />

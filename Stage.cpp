@@ -328,7 +328,7 @@ void Stage::NextStage()
 	//ステージが最終ステージならタイトルに
 	if (currentStage == 5)
 	{
-		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		SceneManager::ChangeScene(SCENE_NAME::CLEAR_SCENE);
 	}
 	//それ以外のボスなら次のステージに
 	else if (currentStage != 5)
