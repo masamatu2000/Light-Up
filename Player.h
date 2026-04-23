@@ -49,6 +49,9 @@ public:
 	{
 		return cameraY;
 	}
+	void ApplyedDebuff() {//敵からのデバフを受けたとき、isDebuffをtrueにする
+		isDebuff = true;
+	}
 	//アニメーションの終了を知らせる関数
 	void AnimationEnd();
 private:
@@ -85,6 +88,7 @@ private:
 	bool IsCorpse;
 	float curse; //呪い
 	float curseLowerLimit;
+	bool isMaxCurse;
 	const int curseRecoveryArea = 100;
 	int invincibilityTimeCounter;
 	const int INVINCIBILITU_TIME = 120;
@@ -103,7 +107,11 @@ private:
 	int supportRecast;
 	int rushCounter;
 	int blinkCounter;
-
+	//デバフ食らってるかのフラグ
+	bool isDebuff;
+	//既にデバフ食らっているからさらにデバフ食らわないようにするためのフラグ
+	bool isAlreadyDebuff;
+	int DebuffCounter;
 	//カメラ移動用の変数
 	float cameraY;
 

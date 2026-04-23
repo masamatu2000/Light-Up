@@ -1,7 +1,8 @@
 #include "Enemy.h"
 #include "Stage.h"
 #include "Player.h"
-#include"Gimmick.h"
+#include "Gimmick.h"
+#include"Corpse.h"
 /// <summary>
 /// “G‚ğŠÇ—‚·‚é
 /// M.Shoji
@@ -30,7 +31,7 @@ void Enemy::Update()
 {
 	if (Hp <= 0)
 	{
-		new  Gimmick(position, GIMMICK_TYPE::Corpse, "Enemy", (int)enemyNumber);
+		new Corpse(position, GimmickType::CORPSE, "Enemy", (int)enemyNumber);
 		DestroyMe();
 	}
 

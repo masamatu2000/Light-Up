@@ -11,7 +11,9 @@
 #include "TitleScene.h"
 #include "PlayScene.h"
 #include"SelectScene.h"
-
+#include "ResultScene.h"
+#include"GameOver.h"
+#include"ClearScene.h"
 SceneBase* SceneFactory::Create(SCENE_NAME sceneName)
 {
 	switch (sceneName)
@@ -27,6 +29,15 @@ SceneBase* SceneFactory::Create(SCENE_NAME sceneName)
 		break;
 	case SCENE_NAME::PLAY_SCENE:
 		return new PlayScene();
+		break;
+	case SCENE_NAME::RESULT_SCENE:
+		return new ResultScene();
+		break;
+	case SCENE_NAME::GAMEOVER_SCENE:
+		return new GameOver();
+		break;
+	case SCENE_NAME::CLEAR_SCENE:
+		return new ClearScene();
 		break;
 	}
 	MessageBox(NULL, ("éüÇÃÉVÅ[ÉìÇÕÇ†ÇËÇ‹ÇπÇÒ\n"), "SceneFactory", MB_ICONERROR | MB_OK);

@@ -332,7 +332,7 @@ void Stage::NextStage()
 	//ステージが最終ステージならタイトルに
 	if (currentStage == 5)
 	{
-		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		SceneManager::ChangeScene(SCENE_NAME::CLEAR_SCENE);
 	}
 	//それ以外のボスなら次のステージに
 	else if (currentStage != 5)
@@ -516,10 +516,7 @@ void Stage::DeleteObjects()
 	auto gmmick = FindGameObjects<Gimmick>();
 	for (auto gm : gmmick)
 	{
-		if (gm->GetGimmicType() == GIMMICK_TYPE::Corpse)
-		{
-			gm->DestroyMe();
-		}
+		gm->DestroyMe();
 	}
 	auto enemy = FindGameObjects<Enemy>();
 	for (auto e : enemy) {
