@@ -333,7 +333,7 @@ void Player::PlayDraw()
 	}
 	if (Hp <= 0)
 	{
-		playState = OVER;
+		//playState = OVER;
 		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 255, 255), true);
 	}
 }
