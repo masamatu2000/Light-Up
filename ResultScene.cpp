@@ -22,7 +22,7 @@ void ResultScene::Update()
 
 void ResultScene::Draw()
 {
-	float size = GetFontSize();
+	int size = GetFontSize();
 	SetFontSize(80);
 	DrawString(100, 100, "Result", GetColor(255, 255, 255));
 	SetFontSize(size);

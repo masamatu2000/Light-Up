@@ -22,7 +22,7 @@ void GameOver::Update()
 
 void GameOver::Draw()
 {
-	float size = GetFontSize();
+	int size = GetFontSize();
 	SetFontSize(80);
 	DrawString(100, 100, "Game Over",GetColor(255,0,0));
 	SetFontSize(size);
