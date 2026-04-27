@@ -83,4 +83,5 @@ private:
 	Direction direction; //i‚Ş‚©–ß‚é‚©
 
 	std::vector<bool> isBossDefeated; //ƒ{ƒX‚ğŒ‚”j‚µ‚½‚©‚Ç‚¤‚©
+	std::vector<int> BgImage;
 };
