@@ -47,12 +47,12 @@ Stage::Stage()
 
 	//ステージ背景の描画の為の画像読み込み
 	BgImage.clear();
-	BgImage[0] = LoadGraph("data/Image/stage/BG/BG_slum.png");
-	BgImage[1] = LoadGraph("data/Image/stage/BG/BG_slum.png");
-	BgImage[2] = LoadGraph("data/Image/stage/BG/BG_slum.png");
-	BgImage[3] = LoadGraph("data/Image/stage/BG/BG_slum.png");
-	BgImage[4] = LoadGraph("data/Image/stage/BG/BG_slum.png");
-	BgImage[5] = LoadGraph("data/Image/stage/BG/BG_slum.png");
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_library.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
