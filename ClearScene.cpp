@@ -22,7 +22,7 @@ void ClearScene::Update()
 
 void ClearScene::Draw()
 {
-	float size = GetFontSize();
+	int size = GetFontSize();
 	SetFontSize(80);
 	DrawString(100, 100, "Clear", GetColor(255, 255, 255));
 	SetFontSize(size);

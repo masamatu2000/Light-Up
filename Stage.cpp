@@ -46,7 +46,13 @@ Stage::Stage()
 	//assert(hImage > 0);
 
 	//ステージ背景の描画の為の画像読み込み
-	hImage = LoadGraph("data/Image/stage/BG/BG.png");
+	BgImage.clear();
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_library.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
+	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
 
 	//マップの名前の読み込み
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
@@ -148,8 +154,31 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	//ステージの背景の描画(仮)
-	DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), hImage, true);
+	//ステージの背景の描画
+	if (currentNum <= 4)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[0], true);
+	}
+	else if(currentNum <= 10)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[1], true);
+	}
+	else if (currentNum <= 16)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[2], true);
+	}
+	else if (currentNum <= 22)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[3], true);
+	}
+	else if (currentNum <= 28)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[4], true);
+	}
+	else if (currentNum <= 34)
+	{
+		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[5], true);
+	}
 
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
