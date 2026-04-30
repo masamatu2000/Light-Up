@@ -17,6 +17,7 @@
 #include"DataHolder.h"
 #include"Gimmick.h"
 #include "Santana.h"
+#include "SoundManager.h"
 
 namespace {
 	//チュートリアル、裏ステ含めた６ステージ
@@ -31,6 +32,9 @@ namespace {
 	const int TURRET_CSV_NUM = 12;
 	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
+
+	//サウンド再生用に仮でおいておく
+	Sound* s = nullptr;
 }
 
 int Stage::scrollX = 0;
@@ -125,6 +129,7 @@ Stage::Stage()
 	isBossSection = false;
 	direction = Direction::NEXT;
 
+	s = new Sound();
 }
 
 Stage::~Stage()
@@ -155,11 +160,11 @@ void Stage::Update()
 void Stage::Draw()
 {
 	//ステージの背景の描画
-	if (currentNum <= 4)
+	if (currentNum <= 3)
 	{
 		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[0], true);
 	}
-	else if(currentNum <= 10)
+	else if(currentNum <= 8)
 	{
 		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[1], true);
 	}
@@ -178,6 +183,16 @@ void Stage::Draw()
 	else if (currentNum <= 34)
 	{
 		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[5], true);
+	}
+
+	//BGMの再生
+	if (currentNum <= 2)
+	{
+		s->BgmPlay("starSleep");
+	}
+	else
+	{
+		s->BgmPlay("neverEndsNight");
 	}
 
 	for (int y = 0; y < map.size(); y++) {
@@ -323,6 +338,9 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextSection()
 {
+	//サウンドの再生を止める関数
+	s->SoundStop();
+
 	direction = Direction::NEXT;
 	isStartSection = false;
 	//ボスがいなければ次のセクションに
@@ -377,6 +395,8 @@ void Stage::NextStage()
 			dh->stageNum = 1;
 		}
 	}
+
+	
 }
 
 void Stage::PreviousSection()

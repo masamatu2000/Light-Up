@@ -5,6 +5,7 @@
 #include"ImageManager.h"
 #include "UserInterface.h"
 #include "Animation.h"
+#include "SoundManager.h"
 
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é
@@ -24,6 +25,7 @@ PlayScene::PlayScene()
 	time = 0;
 	new StageGraphic();
 	new UserInterface();
+	new Sound();
 }
 
 PlayScene::~PlayScene()

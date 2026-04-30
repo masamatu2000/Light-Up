@@ -10,6 +10,7 @@
 #include"Animation.h"
 #include"Bullet.h"
 #include"Slash.h"
+#include "SoundManager.h"
 
 /// <summary>
 /// M.Shoji
@@ -48,6 +49,9 @@ namespace
 	//カメラの移動する上限値
 	const int CAMERA_OFFSET = 60;
 	const float CAMERA_MOVE_TIME = 0.1f;
+
+	//サウンド再生用に仮でおいておく
+	Sound* s = nullptr;
 }
 Player::Player()
 {
@@ -112,6 +116,8 @@ Player::Player(int x, int y)
 	DebuffCounter = 0;
 
 	isMaxCurse = false;
+
+	s = new Sound();
 }
 
 Player::~Player()
@@ -657,6 +663,8 @@ void Player::MainAttack()
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
+			
+			s->EffectSoundPlay("slash");
 		}
 		break;
 	case(Name2):
