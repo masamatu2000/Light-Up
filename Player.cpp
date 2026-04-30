@@ -10,6 +10,7 @@
 #include"Animation.h"
 #include"Bullet.h"
 #include"Slash.h"
+#include "EffectManager.h"
 
 /// <summary>
 /// M.Shoji
@@ -656,8 +657,10 @@ void Player::MainAttack()
 		if (pushM == 1)
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
+			new Effect(Apos.x,Apos.y);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 		}
+
 		break;
 	case(Name2):
 		new Slash(Apos, SlashNumber::MAGE, islookleft, ObjectTag::PLAYER);

@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include"Player.h"
 
+
 /// <summary>
 /// スラッシュを管理するクラス
 /// </summary>
