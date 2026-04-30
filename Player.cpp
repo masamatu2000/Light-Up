@@ -159,7 +159,6 @@ void Player::PlayUpdate()
 	Scroll();
 
 	Attack();
-	ObjectProcess::HitObject();
 
 	//“G‚É‹ß‚Ã‚¢‚½‚Ìô‚¢‚ÌŒ¸­
 	auto aliveEnemies = FindGameObjects<Enemy>();
@@ -662,10 +661,12 @@ void Player::MainAttack()
 		if (pushM == 1)
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
+			new Effect(Apos.x,Apos.y);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 			
 			s->EffectSoundPlay("slash");
 		}
+
 		break;
 	case(Name2):
 		new Slash(Apos, SlashNumber::MAGE, islookleft, ObjectTag::PLAYER);
