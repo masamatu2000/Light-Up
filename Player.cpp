@@ -11,6 +11,7 @@
 #include"Bullet.h"
 #include"Slash.h"
 #include "SoundManager.h"
+#include "EffectManager.h"
 
 /// <summary>
 /// M.Shoji
