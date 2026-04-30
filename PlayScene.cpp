@@ -11,11 +11,6 @@
 /// </summary>
 /// <author>H.suginuma</author>
 
-namespace
-{
-	float dt = GetDeltaTime();
-}
-
 PlayScene::PlayScene()
 {
 	new Image();
@@ -75,6 +70,7 @@ void PlayScene::Draw()
 void PlayScene::UpdateStart()
 {
 	if (time < 1.0f) {
+		float dt = GetDeltaTime();
 		time += dt;
 		if (time >= 1.0f) {
 			//1ïbÇΩÇ¡ÇΩÇÁPLAYÇ…à⁄çs
@@ -86,6 +82,7 @@ void PlayScene::UpdateStart()
 
 void PlayScene::UpdatePlay()
 {
+	ObjectProcess::HitObject();
 }
 
 void PlayScene::UpdateClear()
