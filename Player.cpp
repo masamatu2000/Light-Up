@@ -51,8 +51,6 @@ namespace
 	const int CAMERA_OFFSET = 60;
 	const float CAMERA_MOVE_TIME = 0.1f;
 
-	//サウンド再生用に仮でおいておく
-	Sound* s = nullptr;
 }
 Player::Player()
 {
@@ -118,7 +116,6 @@ Player::Player(int x, int y)
 
 	isMaxCurse = false;
 
-	s = new Sound();
 }
 
 Player::~Player()
@@ -665,7 +662,7 @@ void Player::MainAttack()
 			new Effect(Apos.x,Apos.y);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 			
-			s->EffectSoundPlay("slash");
+			FindGameObject<Sound>()->EffectSoundPlay("slash");
 		}
 
 		break;

@@ -33,8 +33,6 @@ namespace {
 	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
 
-	//サウンド再生用に仮でおいておく
-	Sound* s = nullptr;
 }
 
 int Stage::scrollX = 0;
@@ -129,7 +127,6 @@ Stage::Stage()
 	isBossSection = false;
 	direction = Direction::NEXT;
 
-	s = new Sound();
 }
 
 Stage::~Stage()
@@ -188,11 +185,11 @@ void Stage::Draw()
 	//BGMの再生
 	if (currentNum <= 2)
 	{
-		s->BgmPlay("starSleep");
+		FindGameObject<Sound>()->BgmPlay("starSleep");
 	}
 	else
 	{
-		s->BgmPlay("neverEndsNight");
+		FindGameObject<Sound>()->BgmPlay("neverEndsNight");
 	}
 
 	for (int y = 0; y < map.size(); y++) {

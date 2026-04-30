@@ -8,7 +8,7 @@
 
 //Stageでnewしてるよ
 
-class Sound : GameObject
+class Sound : public GameObject
 {
 public:
 	Sound();
