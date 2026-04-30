@@ -336,7 +336,7 @@ void Stage::SetStage(std::string sName)
 void Stage::NextSection()
 {
 	//ƒTƒEƒ“ƒh‚ÌÄ¶‚ðŽ~‚ß‚éŠÖ”
-	s->SoundStop();
+	FindGameObject<Sound>()->SoundStop();
 
 	direction = Direction::NEXT;
 	isStartSection = false;
