@@ -154,7 +154,6 @@ void Player::PlayUpdate()
 	Scroll();
 
 	Attack();
-	ObjectProcess::HitObject();
 
 	//“G‚É‹ß‚Ã‚¢‚½‚Ìô‚¢‚ÌŒ¸­
 	auto aliveEnemies = FindGameObjects<Enemy>();
