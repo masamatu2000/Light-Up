@@ -71,15 +71,16 @@ void PlayScene::Draw()
 
 void PlayScene::UpdateStart()
 {
-	if (time < 1.0f) {
-		float dt = GetDeltaTime();
-		time += dt;
-		if (time >= 1.0f) {
-			//1ïbÇΩÇ¡ÇΩÇÁPLAYÇ…à⁄çs
-			state = State::PLAY;
-			time = 0;
-		}
-	}
+	//if (time < 1.0f) {
+	//	float dt = GetDeltaTime();
+	//	time += dt;
+	//	if (time >= 1.0f) {
+	//		//1ïbÇΩÇ¡ÇΩÇÁPLAYÇ…à⁄çs
+	//		state = State::PLAY;
+	//		time = 0;
+	//	}
+	//}
+	state = State::PLAY;
 }
 
 void PlayScene::UpdatePlay()

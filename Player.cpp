@@ -659,7 +659,6 @@ void Player::MainAttack()
 		if (pushM == 1)
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
-			new Effect(Apos.x,Apos.y);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
 			
 			FindGameObject<Sound>()->EffectSoundPlay("slash");

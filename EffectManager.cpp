@@ -18,9 +18,9 @@ Effect::Effect()
 {
 }
 
-Effect::Effect(int x, int y)
+Effect::Effect(Vector2D pos)
 {
-
+	SetDrawOrder(-10000000);
 	CsvReader* csv = new CsvReader("data/Image/effect/Effect.csv");
 	int lines = csv->GetLines();//エフェクト用の行数を取得
 	images.clear();
@@ -45,7 +45,7 @@ Effect::Effect(int x, int y)
 	}
 	delete csv;
 
-	position = Vector2D((float)x, (float)y-18);
+	position = Vector2D(pos.x,pos.y-18);
 	patX = 0;
 	patY = 0;
 	patCounter = 0;

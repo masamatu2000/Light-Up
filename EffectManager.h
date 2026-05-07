@@ -6,13 +6,12 @@ class Effect : Object
 {
 public:
 	Effect();
-	Effect(int x, int y);
+	Effect(Vector2D pos);
 	~Effect();
 
 	void Update()override;
 	void Draw()override;
 
-	void CheckDirection();
 
 private:
 	int patX;//c‚É‰½ŒÂ–ÚH

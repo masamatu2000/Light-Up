@@ -8,6 +8,7 @@
 #include <vector>
 #include<cmath>
 #include "Stage.h"
+#include "EffectManager.h"
 
 namespace
 {
@@ -36,6 +37,9 @@ void ObjectProcess::HitObject()
 	//発動している攻撃のポインタ
 	auto triggerAttackes = FindGameObjects<AttackObject>();
 
+	//エフェクト用のポインタ
+	auto ef = FindGameObjects<Effect>();
+
 	//当たり判定用の変数
 	float dist;
 	float collisionDist;
@@ -60,11 +64,14 @@ void ObjectProcess::HitObject()
 
 				if (dist < collisionDist)
 				{
+
 					if (enemy->GetInvincibilityTime() < 0)
 					{
 						enemy->DownHp(DAMAGE);
 						attack->DestroyMe();
 						enemy->SetInvincibilityTime();
+						new Effect(attack->GetPosition());
+
 					}
 				}
 			}
