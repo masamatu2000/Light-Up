@@ -32,7 +32,6 @@ namespace {
 	const int TURRET_CSV_NUM = 12;
 	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
-
 }
 
 int Stage::scrollX = 0;
@@ -148,6 +147,9 @@ void Stage::Update()
 		//プレイヤーの位置を新しいマップの初期位置に移動
 		SetPlayerPosition();
 	}
+
+	//デバッグ用
+	//ステージを進める
 	if (((Input::IsKeyDown(KEY_INPUT_O)) || (Input::IsPadDown(Pad::OPTION))))
 	{
 		NextSection();
@@ -283,13 +285,13 @@ bool Stage::CanChangeStage(Vector2D pos, std::string direction)
 	{
 		//nextに行けるか調べる
 		//CSV上のnextポータルを表す3で検索
-		return CanInteract(pos, 3);
+		return CanInteract(pos, NEXTPORTAL_CSV_NUM);
 	}
 	else if (direction == "previous")
 	{
 		//previousに行けるか調べる
 		//CSV上のpreviousポータルを表す4で検索
-		return CanInteract(pos, 4);
+		return CanInteract(pos, PREVIOUSPORTAL_CSV_NUM);
 	}
 	return false;
 }
@@ -306,14 +308,14 @@ bool Stage::CanInteract(Vector2D pos, int findNum)
 				portalPos.y = (float)(y * IMAGE_SCALE + IMAGE_SCALE / 2);
 				break;
 			}
-		}
+		}	
 	}
 	//プレイヤーのポジションを取得、中心に設定
-	Vector2D pPos = { pos.x + IMAGE_SCALE / 2 ,pos.y + IMAGE_SCALE / 2 };
+	Vector2D pPos = { pos.x + CHARACTER_IMAGE_SCALE / 2 ,pos.y + CHARACTER_IMAGE_SCALE / 2 };
 	//２つのベクトルの距離
 	float dist = Math2D::Length(Math2D::Sub(pPos, portalPos));
 	//どのくらい離れてたらインタラクトさせるか
-	float interactLength = IMAGE_SCALE;
+	float interactLength = CHARACTER_IMAGE_SCALE;
 	if (dist <= interactLength)
 	{
 		return true;
@@ -392,8 +394,6 @@ void Stage::NextStage()
 			dh->stageNum = 1;
 		}
 	}
-
-	
 }
 
 void Stage::PreviousSection()
