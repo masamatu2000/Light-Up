@@ -23,6 +23,10 @@ namespace
 	const float decal = 15.0f;//減衰率
 	const float maxSpeed = 8.0f;//最高速度
 
+	//ノックバック関係の定数
+	const float KNOCKBACK_SPEED = 6.0f;
+	const float KNOCKBACK_HEIGHT = 1.0 * CHARACTER_IMAGE_SCALE;
+
 	const float curseMax = 100.0f;
 	const float curseDownRatio = 500.0f;
 	const float cursUpIsPlayer01SubAtttack = 5.0f;
@@ -120,6 +124,22 @@ Player::Player(int x, int y)
 
 Player::~Player()
 {
+}
+
+void Player::KnockBack()
+{
+	switch (hitDir)
+	{
+	case HitDirection::LEFT:
+		Velocity.x += KNOCKBACK_SPEED;
+		break;
+	case HitDirection::RIGHT:
+		Velocity.x -= KNOCKBACK_SPEED;
+		break;
+	}
+	float InitialVelocity = -std::sqrt(2.0f * GRAVITY * KNOCKBACK_HEIGHT);
+	Velocity.y = InitialVelocity;
+	CanJump = false;
 }
 
 void Player::Update()

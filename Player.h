@@ -2,6 +2,13 @@
 #include "Character.h"
 #include "PlayerType.h"
 
+//攻撃が当たった方向を指定する
+enum class HitDirection
+{
+	LEFT,
+	RIGHT
+};
+
 class Player : public Character
 {
 public:
@@ -54,6 +61,10 @@ public:
 	}
 	//アニメーションの終了を知らせる関数
 	void AnimationEnd();
+	//当たった方向をセットする関数
+	void SetHitDirection(HitDirection dir) { hitDir = dir; }
+	//プレイヤーをノックバックさせる関数
+	void KnockBack();
 private:
 	void Update() override;
 	void Draw() override;
@@ -114,6 +125,9 @@ private:
 	int DebuffCounter;
 	//カメラ移動用の変数
 	float cameraY;
+
+	//攻撃がどちらから当たったかどうか
+	HitDirection hitDir;
 
 	//アニメーションの状態保存
 	enum AnimeState

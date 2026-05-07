@@ -78,8 +78,4 @@ namespace ObjectProcess
     void HitObject();
     //プレイヤーにダメージを与える
     void PlayerTakeDamage();
-    //プレイヤーの攻撃の判定
-    //void AttackForPlayer(const AttackObject* attack);
-    //敵、ボスの攻撃の判定
-    //void AttackForEnemy(const AttackObject* attack);
 }
