@@ -4,8 +4,6 @@
 #include"Boss.h"
 #include"Bullet.h"
 #include"Slash.h"
-#include"Laser.h"
-#include <vector>
 #include<cmath>
 #include "Stage.h"
 #include "EffectManager.h"
@@ -54,6 +52,7 @@ void ObjectProcess::HitObject()
 	for (auto& attack : triggerAttackes)
 	{
 		//攻撃がプレイヤーによるものなら
+		//PLAYER => ENEMY,BOSS
 		if (attack->Gettag() == ObjectTag::PLAYER)
 		{
 			//通常の敵との判定
@@ -89,26 +88,45 @@ void ObjectProcess::HitObject()
 		}
 
 		//攻撃が敵、またはボスによるものなら
+		//ENEMY,BOSS => PLAYER
 		if (attack->Gettag() == ObjectTag::ENEMY || attack->Gettag() == ObjectTag::BOSS)
 		{
+			Vector2D aPos = attack->GetPosition();
+			Vector2D pPos = pl->GetPosition();
+
 			//攻撃の種類を判定
 			//斬撃、弾による攻撃なら
 			if (attack->GetCollisionRadius() != -1.0f)
 			{
-				dist = Math2D::Length(Math2D::Sub(Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()), attack->GetPosition()));
+				dist = Math2D::Length(Math2D::Sub(Math2D::Add(pPos, pl->GetCollisionCenterPosition()), aPos));
 				collisionDist = pl->GetCollisionRadius() + attack->GetCollisionRadius();
 
-				if (dist < collisionDist)
+				if (dist < collisionDist && pl->GetInvincibilityTime() < 0)
 				{
 					//弾の種類が爆弾魔のものなら
 					Bullet* bl = dynamic_cast<Bullet*>(attack);
 					if (bl != nullptr && bl->GetBulletNum() == BulletNumber::BOMBER)
 					{
-						Vector2D pos = bl->GetPosition();
-						new Slash(pos, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
+						new Slash(aPos, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
 					}
 					//他の斬撃、弾は通常の処理
 					PlayerTakeDamage();
+
+					//プレイヤーのノックバック
+					//プレイヤーのポジションを中心に
+					pPos = { pPos.x + CHARACTER_IMAGE_SCALE,pPos.y + CHARACTER_IMAGE_SCALE };
+					//攻撃がプレイヤーの右なら
+					if (pPos.x < aPos.x)
+					{
+						pl->SetHitDirection(HitDirection::RIGHT);
+					}
+					//攻撃がプレイヤーの左なら
+					else if (aPos.x <= pPos.x)
+					{
+						pl->SetHitDirection(HitDirection::LEFT);
+					}
+					pl->KnockBack();
+
 					attack->DestroyMe();
 					break;
 				}
@@ -116,12 +134,29 @@ void ObjectProcess::HitObject()
 			//レーザーによる攻撃なら
 			else if (attack->GetCollisionLineRadius() != -1.0f)
 			{
-				dist = attack->GetDist(attack->GetLineStart(), attack->GetLineEnd(), Math2D::Add(pl->GetPosition(), pl->GetCollisionCenterPosition()));
+				dist = attack->GetDist(attack->GetLineStart(), attack->GetLineEnd(), Math2D::Add(pPos, pl->GetCollisionCenterPosition()));
 				collisionDist = pl->GetCollisionRadius() + attack->GetCollisionLineRadius();
 
-				if (dist < collisionDist)
+				if (dist < collisionDist && pl->GetInvincibilityTime() < 0)
 				{
 					PlayerTakeDamage();
+
+					//プレイヤーのノックバック
+					aPos = attack->GetLineStart();
+					//プレイヤーのポジションを中心に
+					pPos = { pPos.x + CHARACTER_IMAGE_SCALE,pPos.y + CHARACTER_IMAGE_SCALE };
+					//攻撃がプレイヤーの右なら
+					if (pPos.x < aPos.x)
+					{
+						pl->SetHitDirection(HitDirection::RIGHT);
+					}
+					//攻撃がプレイヤーの左なら
+					else if (aPos.x <= pPos.x)
+					{
+						pl->SetHitDirection(HitDirection::LEFT);
+					}
+					pl->KnockBack();
+
 					break;
 				}
 			}
@@ -135,19 +170,16 @@ void ObjectProcess::PlayerTakeDamage()
 	Player* pl = FindGameObject<Player>();
 
 	//プレイヤーにダメージを与える処理
-	if (pl->GetInvincibilityTime() < 0)
+	pl->UpCurseLowerLimit(20.0f);
+	if (pl->GetCurse() < pl->GetCurseLowerLimit())
 	{
-		pl->UpCurseLowerLimit(20.0f);
-		if (pl->GetCurse() < pl->GetCurseLowerLimit())
-		{
-			pl->SetCurse(pl->GetCurseLowerLimit());
-		}
-		if (pl->GetCurse() >= 100.0f)
-		{
-			pl->SetHp(0);
-		}
-		pl->SetInvincibilityTime();
+		pl->SetCurse(pl->GetCurseLowerLimit());
 	}
+	if (pl->GetCurse() >= 100.0f)
+	{
+		pl->SetHp(0);
+	}
+	pl->SetInvincibilityTime();
 }
 
 //void ObjectProcess::AttackForPlayer(const AttackObject* attack)
@@ -204,7 +236,7 @@ float Object::GetDist(Vector2D start,Vector2D end, Vector2D target)
 	//線分の最短座標を計算
 	Vector2D nearPos = Math2D::Add(start, Math2D::Mul(line, t));
 	//距離を計算
-	Vector2D dist = Math2D::Sub(target, nearPos);
-	return sqrt(dist.x * dist.x + dist.y * dist.y);
+	float dist = Math2D::Length(Math2D::Sub(target, nearPos));
+	return dist;
 }
 

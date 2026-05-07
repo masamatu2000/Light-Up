@@ -48,6 +48,7 @@ void Turret::Attack()
 {
 	Player* pl = FindGameObject<Player>();
 	Vector2D pPos = pl->GetPosition();
+	pPos = { pPos.x + CHARACTER_IMAGE_SCALE / 2.0f , pPos.y + CHARACTER_IMAGE_SCALE / 2.0f };
 	//プレイヤーとの距離
 	float distance = Math2D::Length(Math2D::Sub(pPos, position));
 	//攻撃が可能かどうか
