@@ -1,5 +1,7 @@
 #pragma once
 #include "Object.h"
+#include "ImageManager.h"
+
 class Character : public Object
 {
 public:

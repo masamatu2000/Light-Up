@@ -12,6 +12,7 @@ struct BulletType {
 	float rad;
 	float life;
 	float offsetX;
+	std::string imageName;
 };
 
 class Bullet :public AttackObject {
@@ -35,6 +36,12 @@ private:
 	//差分ベクトル
 	Vector2D dis;
 	float gravity;
+	int animeX;
+	int animeY;
+	bool animationSwitch;
+	bool isHitWall;
+	//アニメーション用カウンター
+	int counter;
 private:
 	//速度計算用の関数
 	void CalculateVelocity() override;
@@ -44,8 +51,14 @@ private:
 	void SetOffsetPosition() override;
 	//ライフの計算、識別
 	bool CheckNoLife() override;
+	//グラフィックファイルの読み取り
+	void SetImage() override;
 	//壁との接触
-	bool HitWall();
+	void HitWall();
 	//爆弾魔用のUpdate（特殊な動作をするため）
 	void UpdateBomber();
+	//霧散
+	void Mist();
+	//爆散
+	void Explosion();
 };

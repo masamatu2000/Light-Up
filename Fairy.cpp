@@ -16,6 +16,8 @@ Fairy::Fairy(const Vector2D& pos)
 	invincibilityTimeCounter = 0;
 	enemyNumber = EnemyNumber::FAIRY;
 	enemyStatus = GetEnemyStatus(enemyNumber);
+	Image* image = FindGameObject<Image>();
+	hImage = image->ReturnImage(enemyStatus.imageName);
 	SetStatus();
 }
 
@@ -33,7 +35,11 @@ void Fairy::Update()
 
 void Fairy::Draw()
 {
+	Object::Draw();
 	Enemy::Draw();
+	float positionx = position.x - Stage::scrollX;
+	float positiony = position.y - Stage::GetScrollY();
+	DrawRectGraph((int)positionx, (int)positiony, CHARACTER_IMAGE_SCALE * 0, CHARACTER_IMAGE_SCALE * 0, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
 }
 
 void Fairy::Move()

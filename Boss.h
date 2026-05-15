@@ -15,7 +15,6 @@ class Boss : public Character
 public:
 	Boss();
 	~Boss();
-private:
 	void Update() override;
 	void Draw() override;
 	void Move() override;

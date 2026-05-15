@@ -35,6 +35,8 @@ struct EnemyStatus
 	float attackDistance;
 	//トレースし始める距離
 	float traceDistance;
+	//トレースし始める距離
+	std::string imageName;
 };
 
 class Enemy : public Character

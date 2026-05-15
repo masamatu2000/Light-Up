@@ -24,6 +24,20 @@ Object::~Object()
 {
 }
 
+void Object::Draw()
+{
+	if (isDebug)
+	{
+		if (circleColid.Radius > 0)
+		{
+			int posX = position.x + circleColid.CenterPosition.x - Stage::scrollX;
+			int posY = position.y + circleColid.CenterPosition.y - Stage::GetScrollY();
+			DrawCircle(posX, posY, circleColid.Radius, GetColor(255, 0, 0), FALSE);
+
+		}
+	}
+}
+
 void ObjectProcess::HitObject()
 {
 	//プレイヤーのポインタ

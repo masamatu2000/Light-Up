@@ -1,6 +1,7 @@
-#include "AttackType.h"
+#include "Bullet.h"
 #include "Stage.h"
 #include"Player.h"
+#include "Slash.h"
 
 /// <summary>
 /// バレットを管理するクラス
@@ -10,15 +11,15 @@
 //全体に共通する定数
 namespace
 {
-	//弾の構造体定数			　　速度　サイズ　寿命　 位置
+	//弾の構造体定数			　　速度　サイズ　寿命　 位置  グラフィックファイル名
 	//プレイヤー
-	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f }; //基本プレイヤー
-	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f }; //メイジ
-	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f }; //騎士
+	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f , "fairyBullet"}; //基本プレイヤー
+	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f , "LiteUp_Bullet" }; //メイジ
+	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f , "LiteUp_Bullet" }; //騎士
 	//敵
-	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f }; //妖精
-	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f }; //タレット
-	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f }; //爆弾魔
+	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f , "fairyBullet" }; //妖精
+	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f , "LiteUp_Bullet" }; //タレット
+	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "LiteUp_Bullet" }; //爆弾魔
 }
 
 //爆弾魔用定数
@@ -36,6 +37,9 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	position = pos;
 	islookleft = lookleft;
 	objtag = tag;
+	isHitWall = false;
+	animationSwitch = false;
+	counter = 0;
 	switch (bulletNumber) {
 	case BulletNumber::BASE:
 		bulletType = BASE_B;
@@ -62,6 +66,8 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	CheckDirection();
 	//速度を計算
 	CalculateVelocity();
+	//グラフィックファイルの読み取り
+	SetImage();
 }
 
 Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, Vector2D direction, ObjectTag tag)
@@ -85,24 +91,41 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
+	//アニメーションのFPSが低い問題が発生中 26:05:15
+	counter++;
+
+
 	if (bulletNumber == BulletNumber::BOMBER)
 	{
 		UpdateBomber();
 		return;
 	}
-	//ライフがないなら処理をしない
-	if (CheckNoLife())
+	
+	HitWall();
+	if (isHitWall)
 	{
+		Explosion();
 		return;
+		//DestroyMe();
 	}
+
 	//ポジションの更新
 	float dt = GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
-
-	if (HitWall())
+	
+	//ライフがない
+	if (CheckNoLife())
 	{
-		DestroyMe();
+		Mist();
+		return;
+	}
+
+	//アニメーション用の処理
+	if (counter % 10 == 0)
+	{
+		animeX++;
+		animeX = animeX % 6;
 	}
 }
 
@@ -115,10 +138,47 @@ void Bullet::UpdateBomber()
 	Velocity.y += gravity * dt;
 
 	//何かにあったたら爆発（斬撃で代用）
-	if (HitWall())
+	if (isHitWall)
 	{
 		new Slash(position, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
 		DestroyMe();
+	}
+}
+
+void Bullet::Mist()
+{
+	if (!animationSwitch)
+	{
+		animationSwitch = true;
+		animeY = 1;
+		animeX = 0;
+	}
+	if (counter % 10 == 0)
+	{
+		animeX++;
+		if (animeX > 6)
+		{
+			DestroyMe();
+		}
+	}
+}
+
+void Bullet::Explosion()
+{
+	if (!animationSwitch)
+	{
+		animationSwitch = true;
+		animeY = 2;
+		animeX = 0;
+	}
+	
+	if (counter % 10 == 0)
+	{
+		animeX++;
+		if (animeX > 6)
+		{
+			DestroyMe();
+		}
 	}
 }
 
@@ -127,7 +187,12 @@ void Bullet::Draw()
 {
 	float posX = position.x - Stage::scrollX;
 	float posY = position.y - Stage::GetScrollY();
-	DrawCircle((int)posX, (int)posY, (int)bulletType.rad, GetColor(255, 255, 255), TRUE);
+	if (isDebug)
+	{
+		DrawCircle((int)posX, (int)posY, (int)bulletType.rad, GetColor(255, 255, 255), FALSE);
+	}
+
+	DrawRectGraph((int)posX - CHARACTER_IMAGE_SCALE / 2, (int)posY - CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE * animeX, CHARACTER_IMAGE_SCALE * animeY, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
 }
 
 void Bullet::CalculateVelocity()
@@ -174,14 +239,22 @@ bool Bullet::CheckNoLife()
 		//ライフがないなら弾を消してtrueを返す
 		if (bulletType.life <= 0)
 		{
-			DestroyMe();
+			//DestroyMe();
 			return true;
 		}
 	}
 	return false;
 }
 
-bool Bullet::HitWall()
+void Bullet::SetImage()
+{
+	Image* image = FindGameObject<Image>();
+	hImage = image->ReturnImage(bulletType.imageName);
+	animeX = 0;
+	animeY = 0;
+}
+
+void Bullet::HitWall()
 {
 	Stage* s = FindGameObject<Stage>();
 	//右壁の判定
@@ -190,7 +263,7 @@ bool Bullet::HitWall()
 	int d = max(d1, d2);
 	if (d > 0)
 	{
-		return true;
+		isHitWall = true;
 	}
 	//左壁の判定
 	d1 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y + bulletType.rad - 1));
@@ -198,7 +271,7 @@ bool Bullet::HitWall()
 	d = max(d1, d2);
 	if (d > 0)
 	{
-		return true;
+		isHitWall = true;
 	}
 	//床との判定
 	/*d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
@@ -216,6 +289,4 @@ bool Bullet::HitWall()
 	{
 		return true;
 	}*/
-
-	return false;
 }
