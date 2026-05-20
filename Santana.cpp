@@ -3,7 +3,8 @@
 #include"Gimmick.h"
 #include"Corpse.h"
 #include "Player.h"
-#include "AttackType.h"
+#include "Bullet.h"
+#include "Slash.h"
 
 namespace
 {

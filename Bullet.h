@@ -40,6 +40,7 @@ private:
 	int animeY;
 	bool animationSwitch;
 	bool isHitWall;
+	bool isDed;
 	//アニメーション用カウンター
 	int counter;
 private:

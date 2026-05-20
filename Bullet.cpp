@@ -14,12 +14,12 @@ namespace
 	//弾の構造体定数			　　速度　サイズ　寿命　 位置  グラフィックファイル名
 	//プレイヤー
 	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f , "fairyBullet"}; //基本プレイヤー
-	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f , "LiteUp_Bullet" }; //メイジ
-	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f , "LiteUp_Bullet" }; //騎士
+	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f , "fairyBullet" }; //メイジ
+	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f , "fairyBullet" }; //騎士
 	//敵
 	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f , "fairyBullet" }; //妖精
-	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f , "LiteUp_Bullet" }; //タレット
-	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "LiteUp_Bullet" }; //爆弾魔
+	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //タレット
+	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //爆弾魔
 }
 
 //爆弾魔用定数
@@ -38,6 +38,7 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	islookleft = lookleft;
 	objtag = tag;
 	isHitWall = false;
+	isDed = false;
 	animationSwitch = false;
 	counter = 0;
 	switch (bulletNumber) {
@@ -115,7 +116,8 @@ void Bullet::Update()
 	position.y += Velocity.y * dt;
 	
 	//ライフがない
-	if (CheckNoLife())
+	CheckNoLife();
+	if (isDed)
 	{
 		Mist();
 		return;
@@ -240,6 +242,7 @@ bool Bullet::CheckNoLife()
 		if (bulletType.life <= 0)
 		{
 			//DestroyMe();
+			isDed = true;
 			return true;
 		}
 	}
