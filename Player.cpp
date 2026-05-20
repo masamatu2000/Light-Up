@@ -900,13 +900,13 @@ void Player::Scroll()
 		Stage::scrollX = (int)(position.x - (WIN_WIDTH / SCREEN_ZOOM) / 2);
 	}
 
-	if (position.y - Stage::scrollY <= 100) {
-		Stage::scrollY = (int)(position.y - 100);
+	if (position.y - Stage::scrollY <= 150) {
+		Stage::scrollY = (int)(position.y - 150);
 	}
 
 	//より自然？なスクロール
-	if (position.y - Stage::scrollY >= 150) {
-		Stage::scrollY = (int)(position.y - 150);
+	if (position.y - Stage::scrollY >= 200) {
+		Stage::scrollY = (int)(position.y - 200);
 	}
 
 	//スクロールの制限
