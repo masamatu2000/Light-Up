@@ -69,6 +69,7 @@ void PlayScene::Draw()
 	if (isDebug)
 	{
 		DrawString(100, 0, "PlayScene", 0xffffff);
+		DrawString(100, 20, "Push [U]Key To Pose", 0xffffff);
 	}
 	if (ObjectManager::PoseNow())
 	{
