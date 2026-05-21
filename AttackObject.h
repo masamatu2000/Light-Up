@@ -66,4 +66,6 @@ protected:
 	{
 		return false;
 	}
+	//グラフィックファイルの読み取り
+	virtual void SetImage() {}
 };

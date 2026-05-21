@@ -1,4 +1,4 @@
-#include "AttackType.h"
+#include "Slash.h"
 #include "Stage.h"
 #include"Player.h"
 
@@ -73,8 +73,10 @@ void Slash::Draw()
 {
 	float posX = position.x - Stage::scrollX;//これでスクロールでも表示されるはず
 	float posY = position.y - Stage::GetScrollY();
-	DrawCircle((int)posX, (int)posY, (int)slashType.rad, GetColor(255, 255, 255), TRUE);
-
+	if (isDebug)
+	{
+		DrawCircle((int)posX, (int)posY, (int)slashType.rad, GetColor(255, 255, 255), FALSE);
+	}
 }
 
 void Slash::CalculateVelocity()
@@ -115,3 +117,5 @@ bool Slash::CheckNoLife()
 	}
 	return false;
 }
+
+

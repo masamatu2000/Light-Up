@@ -288,23 +288,38 @@ void Player::PlayDraw()
 {
 	float x = position.x - Stage::scrollX;
 	float y = position.y - Stage::GetScrollY();
-	if (invincibilityTimeCounter > 0)
+
+	Object::Draw();
+
+	if (isDebug)
 	{
-		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(100, 100, 100), true);
-	}
-	switch (playerType)
-	{
-	case(Name1):
-		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 0, 0), false);
-		break;
-	case(Name2):
-		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 255, 0), false);
-		break;
-	case(Name3):
-		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), false);
-		break;
-	default:
-		break;
+		if (invincibilityTimeCounter > 0)
+		{
+			DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(100, 100, 100), true);
+		}
+		switch (playerType)
+		{
+		case(Name1):
+			DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 0, 0), false);
+			break;
+		case(Name2):
+			DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 255, 0), false);
+			break;
+		case(Name3):
+			DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), false);
+			break;
+		default:
+			break;
+		}
+		//DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
+		//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
+		DrawFormatString(0, 150, 0xffffff, "M：%d S：%d SP: %d", mainAttackRecast, subAttackRecast, supportRecast);
+		//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
+		//DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
+
+		/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+		DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
+		DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
 	}
 
 	if (islookleft)
@@ -335,16 +350,6 @@ void Player::PlayDraw()
 	DrawRectGraph((int)x, (int)y, CHARACTER_IMAGE_SCALE * patX, CHARACTER_IMAGE_SCALE * patY, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
 	//DrawRectGraph((int)x - IMAGE_SCALE/2, (int)y - IMAGE_SCALE, IMAGE_SCALE * 2 * patX, IMAGE_SCALE * 2 * patY, IMAGE_SCALE * 2, IMAGE_SCALE * 2, hImage, TRUE);
 
-	//DrawFormatString(0, 80, 0xffffff, "次：%d 前：%d", canNext, canPrevious);
-	//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f",x,y);
-	DrawFormatString(0, 150, 0xffffff, "M：%d S：%d SP: %d", mainAttackRecast, subAttackRecast,supportRecast);
-	//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
-	//DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
-
-	/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
-	DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
-	DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
-
 	patCounter++;
 	if (patCounter % 10 == 0)
 	{
@@ -357,7 +362,7 @@ void Player::PlayDraw()
 	if (Hp <= 0)
 	{
 		//playState = OVER;
-		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 255, 255), true);
+		DrawBoxAA(x, y, x + CHARACTER_IMAGE_SCALE, y + CHARACTER_IMAGE_SCALE, GetColor(255, 255, 255), false);
 	}
 }
 
@@ -895,13 +900,13 @@ void Player::Scroll()
 		Stage::scrollX = (int)(position.x - (WIN_WIDTH / SCREEN_ZOOM) / 2);
 	}
 
-	if (position.y - Stage::scrollY <= 100) {
-		Stage::scrollY = (int)(position.y - 100);
+	if (position.y - Stage::scrollY <= 150) {
+		Stage::scrollY = (int)(position.y - 150);
 	}
 
 	//より自然？なスクロール
-	if (position.y - Stage::scrollY >= 150) {
-		Stage::scrollY = (int)(position.y - 150);
+	if (position.y - Stage::scrollY >= 200) {
+		Stage::scrollY = (int)(position.y - 200);
 	}
 
 	//スクロールの制限

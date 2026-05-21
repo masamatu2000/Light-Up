@@ -7,6 +7,11 @@ class Image : public GameObject
 public:
 	Image();
 	~Image();
+	/// <summary>
+	/// キャラクターのグラフィックデータを取り出す
+	/// </summary>
+	/// <param name="Imname">ファイルの名前</param>
+	/// <returns></returns>
 	int ReturnImage(std::string Imname);
 private:
 	std::vector<int> images;

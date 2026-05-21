@@ -56,6 +56,7 @@ public:
 	~Object();
     Vector2D GetPosition() { return position; }
     void SetPosition(Vector2D pos) { position = pos; }
+    void Draw() override;
 protected:
     Vector2D position;
     Vector2D radius;

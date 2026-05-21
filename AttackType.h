@@ -7,6 +7,7 @@ struct BulletType {
 	float rad;
 	float life;
 	float offsetX;
+	std::string imageName;
 };
 
 struct SlashType {

@@ -8,17 +8,17 @@
 /// M.Shoji
 /// </summary>
 namespace {
-	//敵のステータス構造体		　 HP　X速度　　CT　　　　　　　Rad　　　　　攻撃距離　　　 トレース距離
-	const EnemyStatus KURIBOH   = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 };
-	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 };
-	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 15,                 0 };
-	const EnemyStatus GUNDAM    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
-	const EnemyStatus BOMBER    = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE *  5,                 0 };
-	const EnemyStatus CREEPER   = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
-	const EnemyStatus DOKUTARO  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
-	const EnemyStatus DEBUFFER  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
-	const EnemyStatus LANCER    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
-	const EnemyStatus BERSERKER = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 };
+	//敵のステータス構造体		　 HP　X速度　　CT　　　　　　　Rad　　　　　攻撃距離　　　 トレース距離            グラフィックファイル名
+	const EnemyStatus KURIBOH   = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
+	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_yousei"};
+	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,""};
+	const EnemyStatus GUNDAM    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus BOMBER    = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE *  5,                 0 ,""};
+	const EnemyStatus CREEPER   = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus DOKUTARO  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus DEBUFFER  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus LANCER    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus BERSERKER = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
 }
 Enemy::Enemy()
 {
@@ -44,8 +44,11 @@ void Enemy::Draw()
 	float positionx = position.x - Stage::scrollX;
 	float positiony = position.y - Stage::GetScrollY();
 
-	DrawBoxAA(positionx,positiony,positionx + CHARACTER_IMAGE_SCALE,positiony + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), TRUE);
-	DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//変数を出力する
+	if (isDebug)
+	{
+		DrawBoxAA(positionx, positiony, positionx + CHARACTER_IMAGE_SCALE, positiony + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), FALSE);
+		DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//変数を出力する
+	}
 }
 
 void Enemy::Attack()
