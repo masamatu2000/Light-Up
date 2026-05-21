@@ -126,6 +126,8 @@ Stage::Stage()
 	isBossSection = false;
 	direction = Direction::NEXT;
 
+	DataHolder* dh = FindGameObject<DataHolder>();
+	if (dh->isTutorialSkip)SkipTutorial();
 }
 
 Stage::~Stage()
@@ -153,12 +155,6 @@ void Stage::Update()
 	if (Input::IsKeyDown(KEY_INPUT_O))
 	{
 		NextSection();
-	}
-
-	//チュートリアルスキップ
-	if (Input::IsKeyDown(KEY_INPUT_P) || Input::IsPadDown(Pad::OPTION))
-	{
-		SkipTutorial();
 	}
 }
 

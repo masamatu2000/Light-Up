@@ -73,6 +73,11 @@ void SelectScene::UpdateStage()
 	{
 		state = State::CHARACTER_SELECT;
 	}
+	
+	if (Input::IsKeyDown(KEY_INPUT_RETURN) || Input::IsPadDown(Pad::OPTION))
+	{
+		dh->isTutorialSkip = (dh->isTutorialSkip) ? false : true;
+	}
 }
 
 void SelectScene::UpdateChara()
@@ -98,6 +103,14 @@ void SelectScene::DrawStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
 	DrawFormatString(0, 0, 0xffffff, "STAGE : %d", dh->stageNum);
+	
+	Vector2D p, p2;
+	int size = 10;
+	p = { 80,0 };
+	p2 = { p.x + size,p.y + size };
+	DrawBox(p.x,p.y,p2.x,p2.y, 0xffffff, FALSE);
+	if (dh->isTutorialSkip)DrawLine(p.x, p.y, p2.x, p2.y, 0xffffff);
+	DrawString(p2.x + 5, p.y, "チュートリアルスキップ：エンターで切り替え", 0xffffff);
 }
 
 void SelectScene::DrawChara()

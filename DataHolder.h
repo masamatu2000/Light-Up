@@ -14,4 +14,6 @@ public:
 
 	int stageNum;
 	int playerNum;
+	//チュートリアルをスキップするか
+	bool isTutorialSkip;
 };

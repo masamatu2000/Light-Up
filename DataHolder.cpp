@@ -9,6 +9,7 @@ DataHolder::DataHolder()
 	DontDestroyOnSceneChange();
 	stageNum = 1;
 	playerNum = 1;
+	isTutorialSkip = false;
 }
 
 DataHolder::~DataHolder()
