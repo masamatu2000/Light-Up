@@ -60,7 +60,7 @@ void Effect::Update()
 {
 
 	//アニメーションをつける
-	timer = timer - GetDeltaTime();
+	timer = timer - Time::GetDeltaTime();
 	if (timer > 0)
 	{
 		patCounter++;

@@ -15,5 +15,16 @@ private:
 	void Update() override;
 	void Draw() override;
 	void Attack() override;
+	void ShotLaser();
+	//”­ËˆÊ’uA“–‚½‚è”»’è‚Ìİ’è
+	void SetShotPosition(const Vector2D& target);
+	void DrawPredictionLine();
+private:
+	Vector2D startPos;
+	Vector2D endPos;
+	Vector2D target;
+	Coroutine attackCoroutine;
+	//UŒ‚‚Ì—\‘ªü‚ğ•\¦‚·‚é‚©
+	bool attackPrediction;
 };
 

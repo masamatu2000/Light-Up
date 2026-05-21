@@ -414,7 +414,7 @@ void Player::Attack()
 void Player::Move()
 {
 	Stage* s = FindGameObject<Stage>();
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	//右に進む
 	if (isRush) {
 		
@@ -783,7 +783,7 @@ void Player::SupportSkill()
 void Player::fall()
 {
 	//マイナスの値になっても減速させる、Velocityの値がマイナス　＝　落下
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	Velocity.y += GRAVITY * dt;
 
 	//positionを加速度分上昇させる、位置を変える処理
@@ -825,7 +825,7 @@ void Player::SetCamera()
 
 
 	//カメラの移動
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	timer += dt;
 	if (timer > CAMERA_MOVE_TIME)
 	{

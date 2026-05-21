@@ -30,6 +30,7 @@ PlayScene::~PlayScene()
 void PlayScene::Update()
 {
 	SetFontSize(10);
+	gGameTimer.Update();
 	switch (state)
 	{
 	case START:

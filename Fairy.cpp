@@ -45,7 +45,7 @@ void Fairy::Draw()
 void Fairy::Move()
 {
 	Stage* s = FindGameObject<Stage>();
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	//Y軸移動の制御タイマー
 	static float t = 0.0f;
 
