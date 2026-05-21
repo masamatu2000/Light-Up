@@ -58,7 +58,8 @@ void PlayScene::Update()
 	}
 	if (Input::IsKeyDown(KEY_INPUT_N))
 	{
-		SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		//SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		SceneManager::ChangeScene(SCENE_NAME::RESULT_SCENE);
 	}
 	
 }
@@ -101,4 +102,5 @@ void PlayScene::UpdateOver()
 
 void PlayScene::UpdateResult()
 {
+	DrawString(200,200, "Result", 0xffffff);
 }

@@ -13,6 +13,7 @@ namespace
 	std::list<GameObject*>* objects;
 	bool needSortDraw;
 	GameObject* running;
+	bool isPose;
 };
 
 void ObjectManager::Initialize()
@@ -21,10 +22,29 @@ void ObjectManager::Initialize()
 	objects->clear();
 	needSortDraw = false;
 	running = nullptr;
+	isPose = false;
 }
 
 void ObjectManager::Update()
 {
+	if (Input::IsKeyDown(KEY_INPUT_U))
+	{
+		if (isPose)
+		{
+			isPose = false;
+			return;
+
+		}
+		if (!isPose)
+		{
+			isPose = true;
+			return;
+		}
+	}
+	if (isPose)
+	{
+		return;
+	}
 	for (auto itr = objects->begin(); itr != objects->end(); itr++)
 	{
 		GameObject* obj = *itr;
