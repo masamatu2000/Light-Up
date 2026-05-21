@@ -67,11 +67,11 @@ void Turret::Attack()
 	SetShotPosition(target);
 	//プレイヤーとの距離
 	float distance = Math2D::Length(Math2D::Sub(target, startPos));
-	attackPrediction = true;
 
 	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
 	if (distance <= enemyStatus.attackDistance)
 	{
+		attackPrediction = true;
 		attackCoroutine.Start([this] {ShotLaser(); }, 1.0f);
 	}
 }
@@ -91,7 +91,6 @@ void Turret::SetShotPosition(const Vector2D& target)
 	Vector2D dir = Math2D::Normalize(Math2D::Sub(target, startPos));
 	endPos = s->CalculateLaserEnd(startPos, dir, TurretData::LASER_LENGTH);
 
-	//lineColid = LineColid(startPos, endPos, TurretData::LASER_SIZE);
 }
 
 void Turret::DrawPredictionLine()
