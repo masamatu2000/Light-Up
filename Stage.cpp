@@ -150,9 +150,15 @@ void Stage::Update()
 
 	//デバッグ用
 	//ステージを進める
-	if (((Input::IsKeyDown(KEY_INPUT_O)) || (Input::IsPadDown(Pad::OPTION))))
+	if (Input::IsKeyDown(KEY_INPUT_O))
 	{
 		NextSection();
+	}
+
+	//チュートリアルスキップ
+	if (Input::IsKeyDown(KEY_INPUT_P) || Input::IsPadDown(Pad::OPTION))
+	{
+		SkipTutorial();
 	}
 }
 
@@ -396,6 +402,11 @@ void Stage::NextStage()
 	}
 }
 
+void Stage::SkipTutorial()
+{
+	NextStage();
+}
+
 void Stage::PreviousSection()
 {
 	direction = Direction::PREVIOUS;
@@ -413,7 +424,8 @@ void Stage::DefeatedBoss()
 bool Stage::IsBossComplete()
 {
 	//１体でも残ってたらfalseを返す
-	for (int i = 0; i < STAGE_MAX -1; i++)
+	//チュートリアルと最終ステージは除く
+	for (int i = 1; i < STAGE_MAX -1; i++)
 	{
 		if (!isBossDefeated[i])
 		{

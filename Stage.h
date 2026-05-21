@@ -69,6 +69,8 @@ private:
 	void FinalStage();
 	//次のステージに移行させる関数
 	void NextStage();
+	//チュートリアルスキップ
+	void SkipTutorial();
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用
