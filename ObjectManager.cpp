@@ -27,6 +27,7 @@ void ObjectManager::Initialize()
 
 void ObjectManager::Update()
 {
+	//ˆêŽž’âŽ~
 	if (Input::IsKeyDown(KEY_INPUT_U))
 	{
 		if (isPose)

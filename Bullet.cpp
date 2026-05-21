@@ -92,7 +92,6 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-	//アニメーションのFPSが低い問題が発生中 26:05:15
 	counter++;
 
 

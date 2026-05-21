@@ -350,8 +350,14 @@ void Player::PlayDraw()
 	case(RUN):
 		patY += 2;
 		break;
-	case(JUMP):
+	case(JUMP_UP):
 		patY += 3;
+		break;
+	case(JUMP_DOWN):
+		patY += 4;
+		break;
+	case(ATTACK):
+		patY += 5;
 		break;
 	default:
 		break;
@@ -503,7 +509,7 @@ void Player::Move()
 
 			islookleft = false;
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				animeState = WALK;
 			}
@@ -513,7 +519,7 @@ void Player::Move()
 			if (Velocity.x > maxSpeed)
 			{
 				Velocity.x = maxSpeed;
-				if (animeState != JUMP)
+				if (animeState != JUMP_DOWN)
 				{
 					animeState = RUN;
 				}
@@ -526,7 +532,7 @@ void Player::Move()
 
 			islookleft = true;
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				animeState = WALK;
 			}
@@ -536,7 +542,7 @@ void Player::Move()
 			if (Velocity.x < -maxSpeed)
 			{
 				Velocity.x = -maxSpeed;
-				if (animeState != JUMP)
+				if (animeState != JUMP_DOWN)
 				{
 					animeState = RUN;
 				}
@@ -563,7 +569,7 @@ void Player::Move()
 				}
 			}
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				if (Velocity.x == 0)
 				{
@@ -622,7 +628,7 @@ void Player::Move()
 				Velocity.y = 0;
 				CanJump = true;
 				timer = 0;
-				if (animeState == JUMP)
+				if (animeState == JUMP_DOWN)
 				{
 					if (Velocity.x == 0)
 					{
@@ -638,10 +644,11 @@ void Player::Move()
 				timer++;
 				if (timer < BOX_TIME && Velocity.y > 0) {
 					CanJump = true;
+					animeState = JUMP_DOWN;
 				}
 				else {
 					CanJump = false;
-					animeState = JUMP;
+					animeState = JUMP_UP;
 				}
 			}
 		}
@@ -686,7 +693,7 @@ void Player::MainAttack()
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
-			
+			animeState = JUMP_UP;
 			FindGameObject<Sound>()->EffectSoundPlay("slash");
 		}
 

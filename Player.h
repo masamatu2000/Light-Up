@@ -135,7 +135,9 @@ private:
 		STAND,
 		WALK,
 		RUN,
-		JUMP
+		JUMP_UP,
+		JUMP_DOWN,
+		ATTACK
 	};
 	AnimeState animeState;
 
