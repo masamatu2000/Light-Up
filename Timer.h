@@ -149,3 +149,73 @@ struct Timer
 
 //ゲーム全体のタイマー
 extern Timer gGameTimer;
+
+
+//１フレームを指定するときの定数
+const float YIELD_FRAME = -1.0f;
+
+/// <summary>
+/// コルーチンの構造体
+/// </summary>
+struct Coroutine
+{
+	float timer = 0.0f;
+	std::function<void()> callback = nullptr;
+	bool isActive = false;
+
+	/// <summary>
+	/// コルーチンの更新処理
+	/// タイマーが0になれば関数実行
+	/// </summary>
+	void Update()
+	{
+		//アクティブじゃないなら更新しない
+		if (!isActive)return;
+
+		//secが初期値のままなら１フレーム後に実行
+		if (timer == YIELD_FRAME)
+		{
+			timer = 0.0f;
+			return;
+		}
+
+		float dt = Time::GetDeltaTime();
+		timer -= dt;
+		if (timer <= 0.0f)
+		{
+			isActive = false;
+			if (callback)callback();
+		}
+	}
+	/// <summary>
+	/// コルーチンの開始
+	/// 強制的に上書き
+	/// </summary>
+	/// <param name="func">実行する関数</param>
+	/// <param name="sec">待つ時間（指定しなければ次のフレームで実行）</param>
+	void Start(std::function<void()> func, float sec = YIELD_FRAME)
+	{
+		timer = sec;
+		callback = func;
+		isActive = true;
+	}
+	/// <summary>
+	/// コルーチンの開始
+	/// 実行済みの場合は開始しない
+	/// </summary>
+	/// <param name="func"></param>
+	/// <param name="sec"></param>
+	void Request(std::function<void()> func, float sec = YIELD_FRAME)
+	{
+		if (isActive)return;
+		Start(func, sec);
+	}
+	/// <summary>
+	/// 現在実行中か
+	/// </summary>
+	/// <returns>実行中ならtrue</returns>
+	bool IsActive()
+	{
+		return isActive;
+	}
+};

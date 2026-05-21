@@ -16,7 +16,7 @@ struct LaserType {
 
 class Laser :public AttackObject {
 public:
-	Laser(const Vector2D& start, const Vector2D pPos, LaserNumber laserNum, bool lookleft, ObjectTag tag);
+	Laser(const Vector2D& start, const Vector2D end, LaserNumber laserNum, bool lookleft, ObjectTag tag);
 	~Laser();
 	void Update()override;
 	void Draw()override;
@@ -34,6 +34,4 @@ private:
 	void SetOffsetPosition() override;
 	//ライフの計算、識別
 	bool CheckNoLife() override;
-	//発射位置、当たり判定の設定
-	void SetShotPosition(const Vector2D& target);
 };

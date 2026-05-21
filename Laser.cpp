@@ -23,10 +23,11 @@ namespace Turret
 	const unsigned int COLOR = GetColor(0, 100, 255);
 }
 
-Laser::Laser(const Vector2D& start, const Vector2D target, LaserNumber laserNum, bool lookleft, ObjectTag tag)
+Laser::Laser(const Vector2D& start, const Vector2D end, LaserNumber laserNum, bool lookleft, ObjectTag tag)
 {
 	laserNumber = laserNum;
-	position = start;
+	startPos = start;
+	endPos = end;
 	islookleft = lookleft;
 	objtag = tag;
 	switch (laserNum)
@@ -37,8 +38,6 @@ Laser::Laser(const Vector2D& start, const Vector2D target, LaserNumber laserNum,
 	}
 	//位置を調整
 	SetOffsetPosition();
-	//位置の設定
-	SetShotPosition(target);
 }
 
 Laser::~Laser()
@@ -82,6 +81,8 @@ void Laser::SetOffsetPosition()
 	{
 		position.x += laserType.offsetX;
 	}
+
+	lineColid = LineColid(startPos, endPos, laserType.rad);
 }
 
 bool Laser::CheckNoLife()
@@ -98,16 +99,4 @@ bool Laser::CheckNoLife()
 		}
 	}
 	return false;
-}
-
-void Laser::SetShotPosition(const Vector2D& target)
-{
-	Stage* s = FindGameObject<Stage>();
-	//発射位置の設定
-	startPos = position;
-	//方向ベクトルから終点を計算
-	Vector2D dir = Math2D::Normalize(Math2D::Sub(target, startPos));
-	endPos = s->CalculateLaserEnd(startPos, dir, laserType.length);
-
-	lineColid = LineColid(startPos, endPos, laserType.rad);
 }
