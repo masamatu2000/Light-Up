@@ -30,7 +30,7 @@ void Corpse::Draw()
 
 void Corpse::fall()
 {
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	velocity.y += GRAVITY * dt;
 	//位置の更新
 	position.y += velocity.y * dt;

@@ -19,6 +19,7 @@ namespace
 
 
 float gDeltaTime = 0.0f; // ƒtƒŒ[ƒ€ŠÔ‚ÌŠÔ·
+Timer gGameTimer;
 
 void DxInit()
 {

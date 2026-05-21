@@ -46,7 +46,7 @@ void Kuriboh::Move()
 {
 	Stage* s = FindGameObject<Stage>();
 	Player* pl = FindGameObject<Player>();
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 
 	Vector2D pPos = pl->GetPosition();
 	//XŽ²•ûŒü‚Ì‹——£

@@ -64,7 +64,7 @@ void Slash::Update()
 		return;
 	}
 	//ポジションの更新
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
 }
@@ -104,7 +104,7 @@ void Slash::SetOffsetPosition()
 
 bool Slash::CheckNoLife()
 {
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	if (slashType.life > 0)
 	{
 		slashType.life -= dt;

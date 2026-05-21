@@ -86,7 +86,7 @@ void Santana::PhysicsCalculation()
 	const float GRAVITY = 9.8f * 60 * 2;//èdóÕ ÅiíËêîÅj	Stage* s = FindGameObject<Stage>();
 	Stage* s = FindGameObject<Stage>();
 
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 
 	if (s != nullptr) {
 		int d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + CHARACTER_IMAGE_SCALE));

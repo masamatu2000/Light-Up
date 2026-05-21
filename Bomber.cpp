@@ -65,7 +65,7 @@ void Bomber::Move()
 	{
 		return;
 	}
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	//À•W‚ÌXV
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;

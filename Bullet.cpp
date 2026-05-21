@@ -111,7 +111,7 @@ void Bullet::Update()
 	}
 
 	//ポジションの更新
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
 	
@@ -124,17 +124,13 @@ void Bullet::Update()
 	}
 
 	//アニメーション用の処理
-	if (counter % 10 == 0)
-	{
-		animeX++;
-		animeX = animeX % 6;
-	}
+	animeX = gGameTimer.LoopAnimCounter(6);
 }
 
 void Bullet::UpdateBomber()
 {
 	//ポジションの更新
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
 	Velocity.y += gravity * dt;
@@ -234,7 +230,7 @@ void Bullet::SetOffsetPosition()
 
 bool Bullet::CheckNoLife()
 {
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	if (bulletType.life > 0)
 	{
 		bulletType.life -= dt;

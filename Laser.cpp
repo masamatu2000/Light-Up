@@ -86,7 +86,7 @@ void Laser::SetOffsetPosition()
 
 bool Laser::CheckNoLife()
 {
-	float dt = GetDeltaTime();
+	float dt = Time::GetDeltaTime();
 	if (laserType.life > 0)
 	{
 		laserType.life -= dt;
