@@ -165,3 +165,8 @@ const std::list<GameObject*>& ObjectManager::GetAllObject()
 {
 	return *objects;
 }
+
+bool ObjectManager::PoseNow()
+{
+	return isPose;
+}

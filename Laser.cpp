@@ -30,6 +30,7 @@ Laser::Laser(const Vector2D& start, const Vector2D end, LaserNumber laserNum, bo
 	endPos = end;
 	islookleft = lookleft;
 	objtag = tag;
+	Hp = 1;
 	switch (laserNum)
 	{
 	case LaserNumber::TURRET:
@@ -62,6 +63,9 @@ void Laser::Draw()
 	eX = endPos.x - Stage::scrollX;
 	eY = endPos.y - Stage::GetScrollY();
 
+	//’…’e’n“_
+	DrawCircleAA(eX, eY, laserType.rad / 1.5,10, Turret::COLOR);
+	DrawCircleAA(eX, eY, laserType.rad / 4,10,GetColor(255, 255, 255));
 	//ŠO‘¤
 	DrawLineAA(sX, sY, eX, eY,Turret::COLOR, laserType.rad);
 	//“à‘¤

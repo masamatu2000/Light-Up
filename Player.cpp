@@ -327,14 +327,14 @@ void Player::PlayDraw()
 		//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
 		//DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
-		/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+		/*DrawFormatString(0, 250, 0xffffff, "curse：%.0f", curse);
 		DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
-		DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
+		//DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
 	}
 
 	if (islookleft)
 	{
-		patY = 4;
+		patY = 6;
 	}
 	else
 	{
@@ -642,13 +642,20 @@ void Player::Move()
 			}
 			else {
 				timer++;
-				if (timer < BOX_TIME && Velocity.y > 0) {
-					CanJump = true;
-					animeState = JUMP_DOWN;
-				}
-				else {
-					CanJump = false;
+				if (Velocity.y < 0)
+				{
 					animeState = JUMP_UP;
+				}
+				else
+				{
+					animeState = JUMP_DOWN;
+					if (timer < BOX_TIME) 
+					{
+						CanJump = true;
+					}
+					else {
+						CanJump = false;
+					}
 				}
 			}
 		}
@@ -677,6 +684,7 @@ void Player::jamp()
 		float InitialVelocity = -std::sqrt(2.0f * GRAVITY * JUMP_HEIGHT);
 		Velocity.y = InitialVelocity;//dtは正の値でジャンプさせるには負の値にする必要あり
 		CanJump = false;
+		patX = 0;
 	}
 
 }

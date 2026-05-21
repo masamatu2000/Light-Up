@@ -526,6 +526,7 @@ void Stage::SetPlayerPosition()
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
 				//プレイヤーの生成の際、サイズの違いにより床に埋まるので一マス上に送る
+				p->SetVel(Vector2D(0,0));
 				p->SetPosition({ (float)x * IMAGE_SCALE, ((float)y - 1) * IMAGE_SCALE });
 				break;
 			}

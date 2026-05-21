@@ -17,6 +17,12 @@ namespace ObjectManager
 	void Release(); // ŠJ•ú
 
 	/// <summary>
+	/// ˆê’â~’†‚©‚Ç‚¤‚©‚ğ•Ô‚·
+	/// </summary>
+	/// <returns></returns>
+	bool PoseNow();
+
+	/// <summary>
 	/// GameObject‚ğ’Ç‰Á‚µ‚Ü‚·
 	/// ‚±‚ê‚ğŒÄ‚Ô‚ÆAGameObject‚ÌUpdate‚ÆDraw‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚É‚È‚è‚Ü‚·
 	/// </summary>

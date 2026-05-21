@@ -29,7 +29,6 @@ PlayScene::~PlayScene()
 
 void PlayScene::Update()
 {
-	SetFontSize(10);
 	gGameTimer.Update();
 	switch (state)
 	{
@@ -57,7 +56,7 @@ void PlayScene::Update()
 		UpdateResult();
 		break;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_N))
+	if (Input::IsKeyDown(KEY_INPUT_N) && ObjectManager::PoseNow())
 	{
 		//SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
 		SceneManager::ChangeScene(SCENE_NAME::RESULT_SCENE);
@@ -70,7 +69,11 @@ void PlayScene::Draw()
 	if (isDebug)
 	{
 		DrawString(100, 0, "PlayScene", 0xffffff);
-		DrawString(100, 20, "Push [N]Key To Title", 0xffffff);
+	}
+	if (ObjectManager::PoseNow())
+	{
+		DrawString(200, 200, "NÇ≈èIóπ", 0xffffff);
+		DrawString(200, 220, "UÇ≈âèú", 0xffffff);
 	}
 }
 

@@ -12,7 +12,6 @@
 BootScene::BootScene()
 {
 	new DataHolder();
-	SetFontSize(10);
 }
 
 BootScene::~BootScene()
