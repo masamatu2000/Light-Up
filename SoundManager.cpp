@@ -8,7 +8,7 @@ Sound::Sound()
 {
 	SetEeFile();
 
-	SetBgmFile();
+	//SetBgmFile();
 
 	SetSeVolume(50);
 	SetBgmVolume(50);
@@ -51,12 +51,15 @@ void Sound::BgmPlay(std::string Imname)
 	{
 		isBgmPlay = true;
 	}
-	int size = bgmName.size();
+	/*int size = bgmName.size();
 	for (int y = 0; y < size; y++) {
 		if (Imname == bgmName[y]) {
 			PlaySoundMem(bgmFileName[y], DX_PLAYTYPE_LOOP);
 		}
-	}
+	}*/
+	std::string path = "data/sound/BGM/" + Imname + ".wav";
+	PlayMusic(path.c_str(), DX_PLAYTYPE_LOOP);
+	SetBgmVolume(50);
 }
 
 /// <summary>
@@ -88,10 +91,11 @@ void Sound::SoundStop()
 /// <param name="volume"></param>
 void Sound::SetBgmVolume(int volume)
 {
-	for (int i = 0; i < bgmName.size(); i++)
+	SetVolumeMusic(volume);
+	/*for (int i = 0; i < bgmName.size(); i++)
 	{
 		ChangeVolumeSoundMem(volume, bgmFileName[i]);
-	}
+	}*/
 }
 
 /// <summary>

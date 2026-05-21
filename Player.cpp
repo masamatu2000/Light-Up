@@ -159,6 +159,16 @@ void Player::Update()
 		ClearUpdate();
 		break;
 	}
+	//アニメーション用のカウンターを動かす
+	patCounter++;
+	if (patCounter % 10 == 0)
+	{
+		patX++;
+	}
+	if (patX > 3)
+	{
+		patX = 0;
+	}
 }
 
 void Player::StartUpdate()
@@ -350,15 +360,6 @@ void Player::PlayDraw()
 	DrawRectGraph((int)x, (int)y, CHARACTER_IMAGE_SCALE * patX, CHARACTER_IMAGE_SCALE * patY, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
 	//DrawRectGraph((int)x - IMAGE_SCALE/2, (int)y - IMAGE_SCALE, IMAGE_SCALE * 2 * patX, IMAGE_SCALE * 2 * patY, IMAGE_SCALE * 2, IMAGE_SCALE * 2, hImage, TRUE);
 
-	patCounter++;
-	if (patCounter % 10 == 0)
-	{
-		patX++;
-	}
-	if (patX > 3)
-	{
-		patX = 0;
-	}
 	if (Hp <= 0)
 	{
 		//playState = OVER;
