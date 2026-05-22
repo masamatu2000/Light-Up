@@ -13,7 +13,7 @@ const char IMAGE_SCALE = 32;
 const char CHARACTER_IMAGE_SCALE = 64;
 
 //デバッグ用の表示をするかどうか
-const bool isDebug = true;
+const bool isDebug = false;
 
 //重力
 const float GRAVITY = 9.8f * 60 * 2;
