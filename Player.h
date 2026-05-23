@@ -65,6 +65,9 @@ public:
 	void SetHitDirection(HitDirection dir) { hitDir = dir; }
 	//プレイヤーをノックバックさせる関数
 	void KnockBack();
+	int GetMainAttackRecast() {return mainAttackRecast;}
+	int GetSubAttackRecast() { return subAttackRecast; }
+	int GetSupportRecast() { return supportRecast; }
 private:
 	void Update() override;
 	void Draw() override;
