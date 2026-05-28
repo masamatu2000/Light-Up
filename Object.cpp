@@ -65,6 +65,11 @@ void ObjectProcess::HitObject()
 	//攻撃とキャラクターの当たり判定
 	for (auto& attack : triggerAttackes)
 	{
+		//攻撃が死んでたらスルーする
+		if (attack->GetHp() <= 0)
+		{
+			continue;
+		}
 		//攻撃がプレイヤーによるものなら
 		//PLAYER => ENEMY,BOSS
 		if (attack->Gettag() == ObjectTag::PLAYER)

@@ -27,6 +27,7 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 	position = pos;
 	islookleft = lookleft;
 	objtag = tag;
+	Hp = 1;
 	switch (slashNum_) {
 	case SlashNumber::BASE:
 		slashType = BASE_S;

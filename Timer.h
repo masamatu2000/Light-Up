@@ -7,6 +7,7 @@ extern float gDeltaTime;
 /// <summary>
 /// 全体の時間を管理する
 /// </summary>
+/// <author>H.suginunma</author>
 namespace Time
 {
 	/// <summary>

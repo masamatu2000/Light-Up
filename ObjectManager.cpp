@@ -27,6 +27,7 @@ void ObjectManager::Initialize()
 
 void ObjectManager::Update()
 {
+	//ˆêŽž’âŽ~
 	if (Input::IsKeyDown(KEY_INPUT_U))
 	{
 		if (isPose)
@@ -163,4 +164,9 @@ void ObjectManager::DeleteAllGameObject()
 const std::list<GameObject*>& ObjectManager::GetAllObject()
 {
 	return *objects;
+}
+
+bool ObjectManager::PoseNow()
+{
+	return isPose;
 }

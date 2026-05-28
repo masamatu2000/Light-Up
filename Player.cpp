@@ -327,14 +327,14 @@ void Player::PlayDraw()
 		//DrawFormatString(0, 100, 0xffffff, "X：%.0f　Y:%.0f", x, y);
 		//DrawFormatString(0, 150, 0xffffff, "M：%d S：%d", mainAttackRecast, subAttackRecast);
 
-		/*DrawFormatString(0, 250, 0xffffff, "curse：%f", curse);
+		/*DrawFormatString(0, 250, 0xffffff, "curse：%.0f", curse);
 		DrawFormatString(0, 270, 0xffffff, "curseLL：%.0f", curseLowerLimit);*/
-		DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
+		//DrawFormatString(0, 180, 0xffffff, "%.0f", cameraY);
 	}
 
 	if (islookleft)
 	{
-		patY = 4;
+		patY = 6;
 	}
 	else
 	{
@@ -350,8 +350,14 @@ void Player::PlayDraw()
 	case(RUN):
 		patY += 2;
 		break;
-	case(JUMP):
+	case(JUMP_UP):
 		patY += 3;
+		break;
+	case(JUMP_DOWN):
+		patY += 4;
+		break;
+	case(ATTACK):
+		patY += 5;
 		break;
 	default:
 		break;
@@ -503,7 +509,7 @@ void Player::Move()
 
 			islookleft = false;
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				animeState = WALK;
 			}
@@ -513,7 +519,7 @@ void Player::Move()
 			if (Velocity.x > maxSpeed)
 			{
 				Velocity.x = maxSpeed;
-				if (animeState != JUMP)
+				if (animeState != JUMP_DOWN)
 				{
 					animeState = RUN;
 				}
@@ -526,7 +532,7 @@ void Player::Move()
 
 			islookleft = true;
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				animeState = WALK;
 			}
@@ -536,7 +542,7 @@ void Player::Move()
 			if (Velocity.x < -maxSpeed)
 			{
 				Velocity.x = -maxSpeed;
-				if (animeState != JUMP)
+				if (animeState != JUMP_DOWN)
 				{
 					animeState = RUN;
 				}
@@ -563,7 +569,7 @@ void Player::Move()
 				}
 			}
 
-			if (animeState != JUMP)
+			if (animeState != JUMP_DOWN)
 			{
 				if (Velocity.x == 0)
 				{
@@ -622,7 +628,7 @@ void Player::Move()
 				Velocity.y = 0;
 				CanJump = true;
 				timer = 0;
-				if (animeState == JUMP)
+				if (animeState == JUMP_DOWN)
 				{
 					if (Velocity.x == 0)
 					{
@@ -636,12 +642,20 @@ void Player::Move()
 			}
 			else {
 				timer++;
-				if (timer < BOX_TIME && Velocity.y > 0) {
-					CanJump = true;
+				if (Velocity.y < 0)
+				{
+					animeState = JUMP_UP;
 				}
-				else {
-					CanJump = false;
-					animeState = JUMP;
+				else
+				{
+					animeState = JUMP_DOWN;
+					if (timer < BOX_TIME) 
+					{
+						CanJump = true;
+					}
+					else {
+						CanJump = false;
+					}
 				}
 			}
 		}
@@ -670,6 +684,7 @@ void Player::jamp()
 		float InitialVelocity = -std::sqrt(2.0f * GRAVITY * JUMP_HEIGHT);
 		Velocity.y = InitialVelocity;//dtは正の値でジャンプさせるには負の値にする必要あり
 		CanJump = false;
+		patX = 0;
 	}
 
 }
@@ -686,7 +701,7 @@ void Player::MainAttack()
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
-			
+			animeState = JUMP_UP;
 			FindGameObject<Sound>()->EffectSoundPlay("slash");
 		}
 

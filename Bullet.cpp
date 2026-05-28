@@ -41,6 +41,7 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	isDed = false;
 	animationSwitch = false;
 	counter = 0;
+	Hp = 1;
 	switch (bulletNumber) {
 	case BulletNumber::BASE:
 		bulletType = BASE_B;
@@ -92,7 +93,6 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-	//アニメーションのFPSが低い問題が発生中 26:05:15
 	counter++;
 
 
@@ -238,6 +238,7 @@ bool Bullet::CheckNoLife()
 		if (bulletType.life <= 0)
 		{
 			//DestroyMe();
+			Hp = 0;
 			isDed = true;
 			return true;
 		}
@@ -263,6 +264,7 @@ void Bullet::HitWall()
 	if (d > 0)
 	{
 		isHitWall = true;
+		Hp = 0;
 	}
 	//左壁の判定
 	d1 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y + bulletType.rad - 1));
@@ -271,6 +273,7 @@ void Bullet::HitWall()
 	if (d > 0)
 	{
 		isHitWall = true;
+		Hp = 0;
 	}
 	//床との判定
 	/*d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));

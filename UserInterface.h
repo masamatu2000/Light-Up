@@ -9,5 +9,7 @@ public:
 	void Update() override;
 	void Draw() override;
 private:
-	
+	int hImage_2;
+	int hImage_3;
+	int hImage_4;
 };
