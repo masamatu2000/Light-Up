@@ -88,7 +88,15 @@ void ObjectProcess::HitObject()
 						enemy->DownHp(DAMAGE);
 						attack->DestroyMe();
 						enemy->SetInvincibilityTime();
-						new Effect(attack->GetPosition());
+						Vector2D effectPos = Math2D::Add(
+							Math2D::Mul(
+								Math2D::Sub(
+									Math2D::Add(
+										enemy->GetPosition(),
+										enemy->GetCollisionCenterPosition()), 
+									attack->GetPosition()),0.5f), 
+							attack->GetPosition());
+						new Effect(effectPos);
 
 					}
 				}

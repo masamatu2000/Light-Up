@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 #include <DxLib.h>
+#include "ObjectManager.h"
 
 /// <summary>
 /// シーンの切り替えを管理するクラス
@@ -36,6 +37,7 @@ void SceneManager::Update()
 	{ // シーン切り替えの指定があったので
 		if (m_currentScene != nullptr)
 		{ // 今までのシーンを解放
+			ObjectManager::SetPose(false);
 			delete m_currentScene;
 			m_currentScene = nullptr;
 			ObjectManager::DeleteAllGameObject();

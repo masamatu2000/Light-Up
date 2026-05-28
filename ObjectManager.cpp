@@ -170,3 +170,8 @@ bool ObjectManager::PoseNow()
 {
 	return isPose;
 }
+
+void ObjectManager::SetPose(bool swich)
+{
+	isPose = swich;
+}
