@@ -9,7 +9,7 @@
 /// </summary>
 namespace {
 	//敵のステータス構造体		　 HP　X速度　　CT　　　　　　　Rad　　　　　攻撃距離　　　 トレース距離            グラフィックファイル名
-	const EnemyStatus KURIBOH   = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
+	const EnemyStatus KURIBOH   = { 10, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
 	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_yousei"};
 	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,""};
 	const EnemyStatus GUNDAM    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};

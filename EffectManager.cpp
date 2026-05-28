@@ -45,7 +45,7 @@ Effect::Effect(Vector2D pos)
 	}
 	delete csv;
 
-	position = Vector2D(pos.x,pos.y-18);
+	position = Vector2D(pos.x - 32,pos.y - 32);
 	patX = 0;
 	patY = 0;
 	patCounter = 0;

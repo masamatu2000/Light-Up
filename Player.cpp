@@ -55,6 +55,8 @@ namespace
 	const int CAMERA_OFFSET = 60;
 	const float CAMERA_MOVE_TIME = 0.1f;
 
+	Coroutine coroutin;
+
 }
 Player::Player()
 {
@@ -120,6 +122,8 @@ Player::Player(int x, int y)
 
 	isMaxCurse = false;
 
+	isAttack = false;
+
 }
 
 Player::~Player()
@@ -169,6 +173,7 @@ void Player::Update()
 	{
 		patX = 0;
 	}
+	coroutin.Update();
 }
 
 void Player::StartUpdate()
@@ -178,15 +183,26 @@ void Player::StartUpdate()
 
 void Player::PlayUpdate()
 {
-	Move();
+	if (!isAttack)
+	{
+		Move();
 
-	Interact();
+		Interact();
+
+		Attack();
+	}
+	else
+	{
+		if (patX >= 3)
+		{
+			isAttack = false;
+		}
+	}
 
 	SetCamera();
 
 	Scroll();
 
-	Attack();
 
 	//“G‚É‹ß‚Ã‚¢‚½‚Ìô‚¢‚ÌŒ¸­
 	auto aliveEnemies = FindGameObjects<Enemy>();
@@ -385,11 +401,19 @@ void Player::Attack()
 {
 	if (((pushM = Input::IsKeepKeyDown(KEY_INPUT_M)) || (pushM = Input::IsKeepPadDown(Pad::X))) && mainAttackRecast <= 0)
 	{
-		MainAttack();
+		coroutin.Request([this] {MainAttack(); },0.2f);
+		animeState = ATTACK;
+		patX = 0;
+		Velocity = Vector2D(0,0);
+		isAttack = true;
 	}
 	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) || (pushB =  Input::IsKeepPadDown(Pad::B))) && subAttackRecast <= 0)
 	{
-		SubAttack();
+		coroutin.Request([this] {SubAttack(); }, 0.2f);
+		animeState = ATTACK;
+		patX = 0;
+		Velocity = Vector2D(0, 0);
+		isAttack = true;
 	}
 	if (((pushV = Input::IsKeepKeyDown(KEY_INPUT_V)) || (pushV = Input::IsKeepPadDown(Pad::Y))) && supportRecast <= 0)
 	{
@@ -701,7 +725,7 @@ void Player::MainAttack()
 		{
 			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
 			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
-			animeState = JUMP_UP;
+			//animeState = JUMP_UP;
 			FindGameObject<Sound>()->EffectSoundPlay("slash");
 		}
 
