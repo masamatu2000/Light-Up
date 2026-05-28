@@ -5,6 +5,7 @@
 
 UserInterface::UserInterface()
 {
+	SetDrawOrder(-1000000);
 	Image* image = FindGameObject<Image>();
 	hImage = image->ReturnImage("Hp1");
 	hImage_2 = image->ReturnImage("Hp2");
@@ -19,6 +20,14 @@ void UserInterface::Update()
 void UserInterface::Draw()
 {
 	Player* pl = FindGameObject<Player>();
+
+	if (isDebug)
+	{
+		DrawBox(0, 0, 100, 50, GetColor(0, 0, 0), TRUE);
+		DrawFormatString(0, 0, 0xffffff, "curse：%.0f", pl->GetCurse());
+		DrawFormatString(0, 30, 0xffffff, "curseLL：%.0f", pl->GetCurseLowerLimit());
+	}
+
 	DrawGraph(10, 10, hImage_3, TRUE);
 	for (int i = 0;i < pl->GetCurse();i ++)
 	{
@@ -32,11 +41,4 @@ void UserInterface::Draw()
 	DrawFormatString(40, 90, 0xffffff, "%d", pl->GetMainAttackRecast());
 	DrawFormatString(70, 110, 0xffffff, "%d", pl->GetSubAttackRecast());
 	DrawFormatString(100, 90, 0xffffff, "%d", pl->GetSupportRecast());
-
-	if (isDebug)
-	{
-		DrawBox(0, 0, 100, 50, GetColor(0, 0, 0), TRUE);
-		DrawFormatString(0, 0, 0xffffff, "curse：%.0f", pl->GetCurse());
-		DrawFormatString(0, 30, 0xffffff, "curseLL：%.0f", pl->GetCurseLowerLimit());
-	}
 }

@@ -98,6 +98,7 @@ private:
 	bool islookleft;//¶‚ğŒü‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool isRush;//‘–‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool isBlink;
+	bool isAttack;
 	PlayerName playerType;
 	bool IsCorpse;
 	float curse; //ô‚¢

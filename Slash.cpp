@@ -1,6 +1,7 @@
 #include "Slash.h"
 #include "Stage.h"
 #include"Player.h"
+#include "EffectManager.h"
 
 
 /// <summary>
@@ -13,7 +14,7 @@ namespace
 {
 	//斬撃の構造体定数				速度　サイズ　寿命　 位置
 	//プレイヤー
-	const SlashType BASE_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //基本プレイヤー
+	const SlashType BASE_S = { 50.0f,  40.0f, 0.4f, 20.0f }; //基本プレイヤー
 	const SlashType MAGE_S = { 300.0f,  20.0f, 0.1f, 40.0f }; //メイジ
 	const SlashType KNIGHT_S = { 200.0f,  40.0f, 0.1f, 40.0f }; //騎士
 	//敵
@@ -51,6 +52,8 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 	CheckDirection();
 	//速度を計算
 	CalculateVelocity();
+
+	//new Effect(position);
 }
 
 Slash::~Slash()
