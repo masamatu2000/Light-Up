@@ -10,6 +10,8 @@ DataHolder::DataHolder()
 	stageNum = 1;
 	playerNum = 1;
 	isTutorialSkip = false;
+	finishStageNum = 0;
+	totalDestroyedEnemyNum = 0;
 }
 
 DataHolder::~DataHolder()

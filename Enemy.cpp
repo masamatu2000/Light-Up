@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Gimmick.h"
 #include"Corpse.h"
+#include"DataHolder.h"
 /// <summary>
 /// ìGÇä«óùÇ∑ÇÈ
 /// M.Shoji
@@ -19,9 +20,12 @@ namespace {
 	const EnemyStatus DEBUFFER  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
 	const EnemyStatus LANCER    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
 	const EnemyStatus BERSERKER = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	DataHolder* dh = nullptr;
+
 }
 Enemy::Enemy()
 {
+	dh= FindGameObject<DataHolder>();
 }
 Enemy::~Enemy()
 {
@@ -32,7 +36,9 @@ void Enemy::Update()
 	if (Hp <= 0)
 	{
 		new Corpse(position, GimmickType::CORPSE, "Enemy", (int)enemyNumber);
+		dh->EnemyDestroyed();
 		DestroyMe();
+
 	}
 
 	timer += gDeltaTime;

@@ -6,7 +6,7 @@
 #include "UserInterface.h"
 #include "Animation.h"
 #include "SoundManager.h"
-
+#include"DataHolder.h"
 /// <summary>
 /// ƒvƒŒƒC’†‚Ì‰æ–Ê‚Ì‘JˆÚ‚ð‚·‚é
 /// </summary>
@@ -59,6 +59,9 @@ void PlayScene::Update()
 	if (Input::IsKeyDown(KEY_INPUT_N) && ObjectManager::PoseNow())
 	{
 		//SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
+		DataHolder* dh = FindGameObject<DataHolder>();
+		Stage* s = FindGameObject<Stage>();
+		dh->SetFinishStageNum((s->GetStageNum()));
 		SceneManager::ChangeScene(SCENE_NAME::RESULT_SCENE);
 	}
 	
@@ -95,6 +98,7 @@ void PlayScene::UpdateStart()
 void PlayScene::UpdatePlay()
 {
 	ObjectProcess::HitObject();
+	gGameTimer.Update();
 }
 
 void PlayScene::UpdateClear()

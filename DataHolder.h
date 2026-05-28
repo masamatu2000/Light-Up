@@ -11,9 +11,14 @@ class DataHolder : public GameObject
 public:
 	DataHolder();
 	~DataHolder();
-
+	void SetFinishStageNum(int num) { finishStageNum = num; }
+	int GetFinishStageNum() { return finishStageNum; }
+	void EnemyDestroyed() { totalDestroyedEnemyNum++; }
+	int GetTotalDestroyedEnemyNum() { return totalDestroyedEnemyNum; }
 	int stageNum;
 	int playerNum;
+	int finishStageNum;
+	int totalDestroyedEnemyNum;
 	//チュートリアルをスキップするか
 	bool isTutorialSkip;
 };

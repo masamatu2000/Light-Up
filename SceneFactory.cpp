@@ -14,6 +14,7 @@
 #include "ResultScene.h"
 #include"GameOver.h"
 #include"ClearScene.h"
+#include"Stage.h"
 SceneBase* SceneFactory::Create(SCENE_NAME sceneName)
 {
 	switch (sceneName)

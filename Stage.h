@@ -38,6 +38,7 @@ public:
 	bool IsBossComplete();
 	int GetCurrentNum() { return currentNum; };
 	int GetNextNum() { return nextNum; };
+	int GetStageNum() { return currentStage; };
 	//アニメーションの開始位置を返す関数
 	Vector2D GetAnimationPos();
 	//レーザーの終点を計算する関数
@@ -71,6 +72,7 @@ private:
 	void NextStage();
 	//チュートリアルスキップ
 	void SkipTutorial();
+	
 private:
 	std::vector<std::string> mapName; //マップの名前保存用
 	std::vector<std::vector<std::vector<int>>> allMap; //全マップ保存用

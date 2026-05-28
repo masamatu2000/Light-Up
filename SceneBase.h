@@ -7,7 +7,7 @@
 
 #include<list>
 #include"GameObject.h"
-
+#include"globals.h"
 
 class SceneBase
 {
