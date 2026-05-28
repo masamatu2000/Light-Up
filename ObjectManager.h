@@ -22,7 +22,8 @@ namespace ObjectManager
 	/// <returns></returns>
 	bool PoseNow();
 
-	/// <summary>
+	void SetPose(bool swch);
+
 	/// GameObject‚ğ’Ç‰Á‚µ‚Ü‚·
 	/// ‚±‚ê‚ğŒÄ‚Ô‚ÆAGameObject‚ÌUpdate‚ÆDraw‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚É‚È‚è‚Ü‚·
 	/// </summary>
