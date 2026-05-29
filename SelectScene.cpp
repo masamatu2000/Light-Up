@@ -59,6 +59,7 @@ void SelectScene::Draw()
 void SelectScene::UpdateStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
+	dh;
 	if (Input::IsKeyDown(KEY_INPUT_A) || Input::IsPadDown(Pad::LEFT))
 	{
 		dh->stageNum -= 1;

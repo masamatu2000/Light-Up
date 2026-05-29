@@ -21,4 +21,5 @@ public:
 	int totalDestroyedEnemyNum;
 	//チュートリアルをスキップするか
 	bool isTutorialSkip;
+	int fontSize;
 };

@@ -24,7 +24,7 @@ void ResultScene::Update()
 void ResultScene::Draw()
 {
 	int size = GetFontSize();
-	SetFontSize(50);
+	SetFontSize(16);
 	int CenterX= (WIN_WIDTH / SCREEN_ZOOM)/2;
 	int CenterY  = (WIN_HEIGHT / SCREEN_ZOOM)/2;
 	DataHolder* dh = FindGameObject<DataHolder>();

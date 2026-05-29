@@ -11,7 +11,8 @@
 
 BootScene::BootScene()
 {
-	new DataHolder();
+	DataHolder* dt = new DataHolder();
+	dt->fontSize = GetFontSize();
 }
 
 BootScene::~BootScene()

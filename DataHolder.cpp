@@ -12,6 +12,7 @@ DataHolder::DataHolder()
 	isTutorialSkip = false;
 	finishStageNum = 0;
 	totalDestroyedEnemyNum = 0;
+	fontSize = 10;
 }
 
 DataHolder::~DataHolder()
