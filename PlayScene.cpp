@@ -56,7 +56,7 @@ void PlayScene::Update()
 		UpdateResult();
 		break;
 	}
-	if (Input::IsKeyDown(KEY_INPUT_N) && ObjectManager::PoseNow())
+	if ((Input::IsKeyDown(KEY_INPUT_N) && ObjectManager::PoseNow()) || (Input::IsPadDown(Pad::OPTION) && ObjectManager::PoseNow()))
 	{
 		//SceneManager::ChangeScene(SCENE_NAME::TITLE_SCENE);
 		DataHolder* dh = FindGameObject<DataHolder>();
