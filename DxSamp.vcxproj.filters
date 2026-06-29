@@ -159,6 +159,24 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Gundam.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Creeper.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="poison.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Debuffer.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Lancer.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Berserker.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -286,6 +304,24 @@
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Gundam.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Creeper.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="poison.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Debuffer.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Lancer.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Berserker.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

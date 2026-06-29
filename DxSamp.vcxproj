@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AttackObject.cpp" />
+    <ClCompile Include="Berserker.cpp" />
     <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="BootScene.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -159,22 +160,27 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Corpse.cpp" />
+    <ClCompile Include="Creeper.cpp" />
     <ClCompile Include="CsvReader.cpp" />
     <ClCompile Include="DataHolder.cpp" />
+    <ClCompile Include="Debuffer.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fairy.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Gimmick.cpp" />
+    <ClCompile Include="Gundam.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Kuriboh.cpp" />
+    <ClCompile Include="Lancer.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerType.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="poison.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Santana.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
@@ -192,14 +198,17 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AttackObject.h" />
+    <ClInclude Include="Berserker.h" />
     <ClInclude Include="Bomber.h" />
     <ClInclude Include="BootScene.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="Corpse.h" />
+    <ClInclude Include="Creeper.h" />
     <ClInclude Include="CsvReader.h" />
     <ClInclude Include="DataHolder.h" />
+    <ClInclude Include="Debuffer.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fairy.h" />
@@ -207,9 +216,11 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="Gundam.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Kuriboh.h" />
+    <ClInclude Include="Lancer.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="Math2D.h" />
     <ClInclude Include="Object.h" />
@@ -218,6 +229,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerType.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="poison.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Santana.h" />
     <ClInclude Include="SceneBase.h" />
