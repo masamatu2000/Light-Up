@@ -13,6 +13,8 @@
 #include "SoundManager.h"
 #include "EffectManager.h"
 
+#include <Windows.h>
+
 /// <summary>
 /// M.Shoji
 /// </summary>
@@ -244,6 +246,7 @@ void Player::PlayUpdate()
 		}
 	}
 
+	//Žô‚¢‚Ì‘‰ÁãŒÀ
 	if (curseLowerLimit > curseMax)
 	{
 		curseLowerLimit = curseMax;
@@ -254,6 +257,7 @@ void Player::PlayUpdate()
 		isMaxCurse = true;
 	}
 
+	//ƒfƒoƒtŠÖŒW
 	if (isDebuff) {
 		if (!isAlreadyDebuff) {
 			Velocity = { Velocity.x * PLAYER_SPEED_DEBUFF,Velocity.y * PLAYER_SPEED_DEBUFF };
@@ -401,7 +405,7 @@ void Player::Attack()
 {
 	if (((pushM = Input::IsKeepKeyDown(KEY_INPUT_M)) || (pushM = Input::IsKeepPadDown(Pad::X))) && mainAttackRecast <= 0)
 	{
-		coroutin.Request([this] {MainAttack(); },0.2f);
+		coroutin.Start([this] {MainAttack(); },0.2f);
 		animeState = ATTACK;
 		patX = 0;
 		Velocity = Vector2D(0,0);
@@ -409,7 +413,7 @@ void Player::Attack()
 	}
 	if (((pushB = Input::IsKeepKeyDown(KEY_INPUT_B)) || (pushB =  Input::IsKeepPadDown(Pad::B))) && subAttackRecast <= 0)
 	{
-		coroutin.Request([this] {SubAttack(); }, 0.2f);
+		coroutin.Start([this] {SubAttack(); }, 0.2f);
 		animeState = ATTACK;
 		patX = 0;
 		Velocity = Vector2D(0, 0);
@@ -721,25 +725,19 @@ void Player::MainAttack()
 	switch (playerType)
 	{
 	case(Name1):
-		if (pushM == 1)
-		{
-			new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
-			mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
-			//animeState = JUMP_UP;
-			FindGameObject<Sound>()->EffectSoundPlay("slash");
-		}
-
+		new Slash(Apos, SlashNumber::BASE, islookleft, ObjectTag::PLAYER);
+		mainAttackRecast = PLAYER_01_MAIN_ATTACK_RECAST_TIME;
+		FindGameObject<Sound>()->EffectSoundPlay("slash");
 		break;
 	case(Name2):
 		new Slash(Apos, SlashNumber::MAGE, islookleft, ObjectTag::PLAYER);
 		mainAttackRecast = PLAYER_02_MAIN_ATTACK_RECAST_TIME;
+		FindGameObject<Sound>()->EffectSoundPlay("slash");
 		break;
 	case(Name3):
-		if (pushM == 1)
-		{
-			new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
-			mainAttackRecast = PLAYER_03_MAIN_ATTACK_RECAST_TIME;
-		}
+		new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
+		mainAttackRecast = PLAYER_03_MAIN_ATTACK_RECAST_TIME;
+		FindGameObject<Sound>()->EffectSoundPlay("slash");
 		break;
 	default:
 		break;
@@ -755,11 +753,8 @@ void Player::SubAttack()
 	case (Name1):
 		if(curse < (curseMax - cursUpIsPlayer01SubAtttack))
 		{
-			if (pushB == 1)
-			{
-				new Bullet(Apos, BulletNumber::BASE, islookleft, ObjectTag::PLAYER);
-				UpCurse(cursUpIsPlayer01SubAtttack);
-			}
+			new Bullet(Apos, BulletNumber::BASE, islookleft, ObjectTag::PLAYER);
+			UpCurse(cursUpIsPlayer01SubAtttack);
 			subAttackRecast = PLAYER_01_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
@@ -774,12 +769,9 @@ void Player::SubAttack()
 	case(Name3):
 		if (curse < (curseMax - cursUpIsPlayer03SubAtttack))
 		{
-			if (pushB == 1)
-			{
-				new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
-				new Bullet(Apos, BulletNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
-				UpCurse(cursUpIsPlayer03SubAtttack);
-			}
+			new Slash(Apos, SlashNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
+			new Bullet(Apos, BulletNumber::KNIGHT, islookleft, ObjectTag::PLAYER);
+			UpCurse(cursUpIsPlayer03SubAtttack);
 			subAttackRecast = PLAYER_03_SUB_ATTACK_RECAST_TIME;
 		}
 		break;
