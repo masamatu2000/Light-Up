@@ -1,15 +1,15 @@
-#include "Enemy.h"
+ï»¿#include "Enemy.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Gimmick.h"
 #include"Corpse.h"
 #include"DataHolder.h"
 /// <summary>
-/// “G‚ğŠÇ—‚·‚é
-/// M.Shoji
+/// æ•µã‚’ç®¡ç†ã™ã‚‹
+/// H.suginuma
 /// </summary>
 namespace {
-	//“G‚ÌƒXƒe[ƒ^ƒX\‘¢‘Ì		@ HP@X‘¬“x@@CT@@@@@@@Rad@@@@@UŒ‚‹——£@@@ ƒgƒŒ[ƒX‹——£            ƒOƒ‰ƒtƒBƒbƒNƒtƒ@ƒCƒ‹–¼
+	//æ•µã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æ§‹é€ ä½“		ã€€ HPã€€Xé€Ÿåº¦ã€€ã€€CTã€€ã€€ã€€ã€€ã€€ã€€ã€€Radã€€ã€€ã€€ã€€ã€€æ”»æ’ƒè·é›¢ã€€ã€€ã€€ ãƒˆãƒ¬ãƒ¼ã‚¹è·é›¢            ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ•ã‚¡ã‚¤ãƒ«å
 	const EnemyStatus KURIBOH   = { 10, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
 	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_yousei"};
 	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,""};
@@ -53,7 +53,7 @@ void Enemy::Draw()
 	if (isDebug)
 	{
 		DrawBoxAA(positionx, positiony, positionx + CHARACTER_IMAGE_SCALE, positiony + CHARACTER_IMAGE_SCALE, GetColor(0, 0, 255), FALSE);
-		DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//•Ï”‚ğo—Í‚·‚é
+		DrawFormatString(0, 180, GetColor(255, 255, 255),"X:%f Y:%f HP:%d",position.x,position.y,Hp,TRUE);//å¤‰æ•°ã‚’å‡ºåŠ›ã™ã‚‹
 	}
 }
 
@@ -74,7 +74,7 @@ void Enemy::SetStatus()
 
 EnemyStatus Enemy::GetEnemyStatus(EnemyNumber eNum)
 {
-	//HP@X‘¬“x@CT@UŒ‚‹——£@ƒgƒŒ[ƒX‹——£iƒgƒŒ[ƒX‚µ‚È‚¢“G‚Í0j
+	//HPã€€Xé€Ÿåº¦ã€€CTã€€æ”»æ’ƒè·é›¢ã€€ãƒˆãƒ¬ãƒ¼ã‚¹è·é›¢ï¼ˆãƒˆãƒ¬ãƒ¼ã‚¹ã—ãªã„æ•µã¯0ï¼‰
 	switch (eNum)
 	{
 	case EnemyNumber::KURIBOH:
