@@ -165,9 +165,6 @@
     <ClCompile Include="Creeper.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="poison.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Debuffer.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Berserker.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Poison.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -311,7 +311,7 @@
     <ClInclude Include="Creeper.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="poison.h">
+    <ClInclude Include="Poison.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Debuffer.h">

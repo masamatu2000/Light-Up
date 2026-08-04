@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "Character.h"
 /// <summary>
-/// UŒ‚‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+/// æ”»æ’ƒã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 /// <author>H.suginunma</author>
 
@@ -24,7 +24,9 @@ enum class BulletNumber
 	KNIGHT,
 	FAIRY,
 	TURRET,
-	BOMBER
+	BOMBER,
+	DOKUTARO,
+	DEBUFFER
 };
 enum class SlashNumber
 {
@@ -32,7 +34,9 @@ enum class SlashNumber
 	MAGE,
 	KNIGHT,
 	KURIBOH,
-	BOMBER
+	BOMBER,
+	GUNDAM,
+	CREEPER
 };
 enum class LaserNumber
 {
@@ -52,20 +56,20 @@ protected:
 	AttackType attackType;
 	bool islookleft;
 	ObjectTag objtag;
-	//•ûŒüƒxƒNƒgƒ‹ ‰Šú’l‰E•ûŒü‚Éİ’è
+	//æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ« åˆæœŸå€¤å³æ–¹å‘ã«è¨­å®š
 	Vector2D dir = { 1.0f,0.0f };
 protected:
-	//Œü‚«‚ğŒvZ
+	//å‘ãã‚’è¨ˆç®—
 	void CheckDirection();
-	//‘¬“xŒvZ—p‚ÌŠÖ”
+	//é€Ÿåº¦è¨ˆç®—ç”¨ã®é–¢æ•°
 	virtual void CalculateVelocity() {}
-	//•ûŒü‚É‚æ‚è”­ËˆÊ’u‚Ì’²®
+	//æ–¹å‘ã«ã‚ˆã‚Šç™ºå°„ä½ç½®ã®èª¿æ•´
 	virtual void SetOffsetPosition() {}
-	//ƒ‰ƒCƒt‚ÌŒvZA¯•Ê
+	//ãƒ©ã‚¤ãƒ•ã®è¨ˆç®—ã€è­˜åˆ¥
 	virtual bool CheckNoLife()
 	{
 		return false;
 	}
-	//ƒOƒ‰ƒtƒBƒbƒNƒtƒ@ƒCƒ‹‚Ì“Ç‚İæ‚è
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å–ã‚Š
 	virtual void SetImage() {}
 };

@@ -1,19 +1,132 @@
-#include "poison.h"
+﻿#include "Poison.h"
+#include"Player.h"
+#include"Stage.h"
+#include"Gimmick.h"
+#include"Bullet.h"
+#include"Slash.h"
 
-poison::poison(const Vector2D& pos)
+//ボマー用の定数
+namespace PoisonData
+{
+	//最高到達地点
+	const float MAX_HEIGHT = IMAGE_SCALE * 2;
+	//最高到達点までの時間
+	const float MAX_TIME = 1.0f;
+}
+
+Poison::Poison(const Vector2D& pos)
+{
+	position = pos;
+	timer = 0.0f;
+	invincibilityTimeCounter = 0;
+	enemyNumber = EnemyNumber::DOKUTARO;
+	enemyStatus = GetEnemyStatus(enemyNumber);
+	Image* image = FindGameObject<Image>();
+	hImage = image->ReturnImage(enemyStatus.imageName);
+	SetStatus();
+}
+
+Poison::~Poison()
 {}
 
-poison::~poison()
-{}
+void Poison::Update()
+{
+	Enemy::Update();
 
-void poison::Update()
-{}
+	Move();
+	Attack();
+}
 
-void poison::Draw()
-{}
+void Poison::Draw()
+{
+	Object::Draw();
+	Enemy::Draw();
+	float positionx = position.x - Stage::scrollX;
+	float positiony = position.y - Stage::GetScrollY();
+	DrawRectGraph((int)positionx, (int)positiony, CHARACTER_IMAGE_SCALE * 0, CHARACTER_IMAGE_SCALE * 0, CHARACTER_IMAGE_SCALE, CHARACTER_IMAGE_SCALE, hImage, TRUE);
+}
 
-void poison::Move()
-{}
+void Poison::Move()
+{
+	//一定距離以内ならスルー
+	Player* pl = FindGameObject<Player>();
+	Vector2D pPos = pl->GetPosition();
+	//プレイヤーとの距離（ベクトル）
+	Vector2D dis = Math2D::Sub(pPos, position);
+	//プレイヤーとの距離（距離）
+	float distance = Math2D::Length(dis);
+	if (distance < enemyStatus.attackDistance)
+	{
+		return;
+	}
+	float dt = Time::GetDeltaTime();
+	//座標の更新
+	position.x += Velocity.x * dt;
+	position.y += Velocity.y * dt;
 
-void poison::Attack()
-{}
+	//壁の判定
+	//右に進んでいるとき
+	if (Velocity.x > 0)
+	{
+		float d = CheckHitWall("RIGHT");
+		if (d > 0)
+		{
+			//左右反転
+			Velocity.x *= -1;
+			position.x -= d;
+		}
+	}
+	//左に進んでいるとき
+	else if (Velocity.x < 0)
+	{
+		float d = CheckHitWall("LEFT");
+		if (d > 0)
+		{
+			Velocity.x *= -1;
+			position.x += d;
+		}
+	}
+
+	//重力の適応
+	Velocity.y += GRAVITY * dt;
+	position.y += Velocity.y * dt;
+
+	float d = CheckHitWall("DOWN");
+	if (d > 0)
+	{
+		position.y -= (d - 1);
+		Velocity.y = 0;
+	}
+}
+
+void Poison::Attack()
+{
+	Player* pl = FindGameObject<Player>();
+	Vector2D pPos = pl->GetPosition();
+	//プレイヤーとの距離（ベクトル）
+	Vector2D dis = Math2D::Sub(pPos, position);
+	//プレイヤーとの距離（距離）
+	float distance = Math2D::Length(dis);
+	//攻撃が可能かどうか
+	static bool isAttack = false;
+	//自身の中心の位置
+	Vector2D Apos = Math2D::Add(position, Vector2D(CHARACTER_IMAGE_SCALE / 2, CHARACTER_IMAGE_SCALE / 2));
+
+	//距離が一定以下かつ、クールタイムが終わっているなら攻撃可能に
+	//この間は移動しない
+	if (distance < enemyStatus.attackDistance)
+	{
+		if (timer > enemyStatus.coolTime)
+		{
+			isAttack = true;
+			SetTimer(0);
+		}
+	}
+	if (isAttack)
+	{
+		//放物線を描くバレットを生成
+		new Bullet(Apos, dis, BulletNumber::DOKUTARO, ObjectTag::ENEMY);
+
+		isAttack = false;
+	}
+}

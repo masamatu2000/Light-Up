@@ -1,11 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "Enemy.h"
-class poison :
+
+class Poison :
     public Enemy
 {
 public:
-	poison(const Vector2D& pos);
-	~poison();
+	Poison(const Vector2D& pos);
+	~Poison();
 private:
 	void Update() override;
 	void Draw() override;

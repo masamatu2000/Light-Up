@@ -180,7 +180,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerType.cpp" />
     <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="poison.cpp" />
+    <ClCompile Include="Poison.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Santana.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
@@ -229,7 +229,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerType.h" />
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="poison.h" />
+    <ClInclude Include="Poison.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Santana.h" />
     <ClInclude Include="SceneBase.h" />

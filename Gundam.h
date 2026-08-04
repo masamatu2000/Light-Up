@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 #include"Enemy.h"
 
 /// <summary>
-/// クリボーを管理するクラス
+/// ガンダムを管理するクラス
 /// </summary>
 /// <author>H.suginunma</author>
 
