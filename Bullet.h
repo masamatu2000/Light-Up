@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include"AttackObject.h"
 #include<vector>
 
 /// <summary>
-/// ƒoƒŒƒbƒg‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+/// ãƒãƒ¬ãƒƒãƒˆã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 /// <author>H.suginunma</author>
 
@@ -18,9 +18,9 @@ struct BulletType {
 class Bullet :public AttackObject {
 public:
 	Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, ObjectTag tag);
-	//Šp“xw’è—pƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//è§’åº¦æŒ‡å®šç”¨ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Bullet(const Vector2D& pos, BulletNumber bulletNum, Vector2D direction, ObjectTag tag);
-	//•ú•¨ü—pƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//æ”¾ç‰©ç·šç”¨ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Bullet(const Vector2D& pos, Vector2D distance, BulletNumber bulletNum, ObjectTag tag);
 	~Bullet();
 	void Update()override;
@@ -33,7 +33,7 @@ private:
 	BulletNumber bulletNumber;
 	BulletType bulletType;
 
-	//·•ªƒxƒNƒgƒ‹
+	//å·®åˆ†ãƒ™ã‚¯ãƒˆãƒ«
 	Vector2D dis;
 	float gravity;
 	int animeX;
@@ -41,25 +41,27 @@ private:
 	bool animationSwitch;
 	bool isHitWall;
 	bool isDed;
-	//ƒAƒjƒ[ƒVƒ‡ƒ“—pƒJƒEƒ“ƒ^[
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 	int counter;
 private:
-	//‘¬“xŒvZ—p‚ÌŠÖ”
+	//é€Ÿåº¦è¨ˆç®—ç”¨ã®é–¢æ•°
 	void CalculateVelocity() override;
-	//d—ÍŒvZ—p‚ÌŠÖ”
+	//é‡åŠ›è¨ˆç®—ç”¨ã®é–¢æ•°
 	void CalculateGravity();
-	//•ûŒü‚É‚æ‚è”­ËˆÊ’u‚Ì’²®
+	//æ–¹å‘ã«ã‚ˆã‚Šç™ºå°„ä½ç½®ã®èª¿æ•´
 	void SetOffsetPosition() override;
-	//ƒ‰ƒCƒt‚ÌŒvZA¯•Ê
+	//ãƒ©ã‚¤ãƒ•ã®è¨ˆç®—ã€è­˜åˆ¥
 	bool CheckNoLife() override;
-	//ƒOƒ‰ƒtƒBƒbƒNƒtƒ@ƒCƒ‹‚Ì“Ç‚İæ‚è
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å–ã‚Š
 	void SetImage() override;
-	//•Ç‚Æ‚ÌÚG
+	//å£ã¨ã®æ¥è§¦
 	void HitWall();
-	//”š’e–‚—p‚ÌUpdatei“Áê‚È“®ì‚ğ‚·‚é‚½‚ßj
+	//çˆ†å¼¾é­”ç”¨ã®Updateï¼ˆç‰¹æ®Šãªå‹•ä½œã‚’ã™ã‚‹ãŸã‚ï¼‰
 	void UpdateBomber();
-	//–¶U
+	//æ¯’å¤ªéƒç”¨ã®Updateï¼ˆç‰¹æ®Šãªå‹•ä½œã‚’ã™ã‚‹ãŸã‚ï¼‰
+	void UpdateDokutaro();
+	//éœ§æ•£
 	void Mist();
-	//”šU
+	//çˆ†æ•£
 	void Explosion();
 };

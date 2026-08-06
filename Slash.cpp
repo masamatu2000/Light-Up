@@ -1,25 +1,27 @@
-#include "Slash.h"
+ï»¿#include "Slash.h"
 #include "Stage.h"
 #include"Player.h"
 #include "EffectManager.h"
 
 
 /// <summary>
-/// ƒXƒ‰ƒbƒVƒ…‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+/// ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 /// <author>H.suginunma</author>
 
-//‘S‘Ì‚É‹¤’Ê‚·‚é’è”
+//å…¨ä½“ã«å…±é€šã™ã‚‹å®šæ•°
 namespace
 {
-	//aŒ‚‚Ì\‘¢‘Ì’è”				‘¬“x@ƒTƒCƒY@õ–½@ ˆÊ’u
-	//ƒvƒŒƒCƒ„[
-	const SlashType BASE_S = { 50.0f,  40.0f, 0.4f, 20.0f }; //Šî–{ƒvƒŒƒCƒ„[
-	const SlashType MAGE_S = { 300.0f,  20.0f, 0.1f, 40.0f }; //ƒƒCƒW
-	const SlashType KNIGHT_S = { 200.0f,  40.0f, 0.1f, 40.0f }; //‹Rm
-	//“G
-	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //ƒNƒŠƒ{[
-	const SlashType BOMBER_S = { 0.0f,  30.0f, 0.1f,  0.0f }; //”š’e–‚
+	//æ–¬æ’ƒã®æ§‹é€ ä½“å®šæ•°				é€Ÿåº¦ã€€ã‚µã‚¤ã‚ºã€€å¯¿å‘½ã€€ ä½ç½®
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	const SlashType BASE_S = { 50.0f,  40.0f, 0.4f, 20.0f }; //åŸºæœ¬ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	const SlashType MAGE_S = { 300.0f,  20.0f, 0.1f, 40.0f }; //ãƒ¡ã‚¤ã‚¸
+	const SlashType KNIGHT_S = { 200.0f,  40.0f, 0.1f, 40.0f }; //é¨å£«
+	//æ•µ
+	const SlashType KURIBOH_S = { 200.0f,  40.0f, 0.1f, 20.0f }; //ã‚¯ãƒªãƒœãƒ¼
+	const SlashType BOMBER_S = { 0.0f,  30.0f, 0.1f,  0.0f }; //çˆ†å¼¾é­”
+	const SlashType GUNDAM_S = { 0.0f,  30.0f, 0.1f,  30.0f }; //ã‚¬ãƒ³ãƒ€ãƒ 
+	const SlashType CREEPER_S = { 0.0f,  60.0f, 0.1f,  0.0f }; //ã‚¯ãƒªãƒ¼ãƒ‘ãƒ¼
 }
 
 Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag tag)
@@ -45,12 +47,18 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 	case SlashNumber::BOMBER:
 		slashType = BOMBER_S;
 		break;
+	case SlashNumber::GUNDAM:
+		slashType = GUNDAM_S;
+		break;
+	case SlashNumber::CREEPER:
+		slashType = CREEPER_S;
+		break;
 	}
-	//ˆÊ’u‚ğ’²®
+	//ä½ç½®ã‚’èª¿æ•´
 	SetOffsetPosition();
-	//Œü‚«‚Ìİ’è
+	//å‘ãã®è¨­å®š
 	CheckDirection();
-	//‘¬“x‚ğŒvZ
+	//é€Ÿåº¦ã‚’è¨ˆç®—
 	CalculateVelocity();
 
 	//new Effect(position);
@@ -62,12 +70,12 @@ Slash::~Slash()
 
 void Slash::Update()
 {
-	//ƒ‰ƒCƒt‚ª‚È‚¢‚È‚çˆ—‚ğ‚µ‚È‚¢
+	//ãƒ©ã‚¤ãƒ•ãŒãªã„ãªã‚‰å‡¦ç†ã‚’ã—ãªã„
 	if (CheckNoLife())
 	{
 		return;
 	}
-	//ƒ|ƒWƒVƒ‡ƒ“‚ÌXV
+	//ãƒã‚¸ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
@@ -75,7 +83,7 @@ void Slash::Update()
 
 void Slash::Draw()
 {
-	float posX = position.x - Stage::scrollX;//‚±‚ê‚ÅƒXƒNƒ[ƒ‹‚Å‚à•\¦‚³‚ê‚é‚Í‚¸
+	float posX = position.x - Stage::scrollX;//ã“ã‚Œã§ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã§ã‚‚è¡¨ç¤ºã•ã‚Œã‚‹ã¯ãš
 	float posY = position.y - Stage::GetScrollY();
 	if (isDebug)
 	{
@@ -92,13 +100,13 @@ void Slash::CalculateVelocity()
 
 void Slash::SetOffsetPosition()
 {
-	//’e‚ğƒIƒtƒZƒbƒg•ªˆÚ“®‚³‚¹‚é
-	//¶Œü‚¢‚Ä‚é‚È‚ç
+	//å¼¾ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆåˆ†ç§»å‹•ã•ã›ã‚‹
+	//å·¦å‘ã„ã¦ã‚‹ãªã‚‰
 	if (islookleft)
 	{
 		position.x -= slashType.offsetX;
 	}
-	//‰EŒü‚¢‚Ä‚é‚È‚ç
+	//å³å‘ã„ã¦ã‚‹ãªã‚‰
 	else if (!islookleft)
 	{
 		position.x += slashType.offsetX;
@@ -112,7 +120,7 @@ bool Slash::CheckNoLife()
 	if (slashType.life > 0)
 	{
 		slashType.life -= dt;
-		//ƒ‰ƒCƒt‚ª‚È‚¢‚È‚ç’e‚ğÁ‚µ‚Ätrue‚ğ•Ô‚·
+		//ãƒ©ã‚¤ãƒ•ãŒãªã„ãªã‚‰å¼¾ã‚’æ¶ˆã—ã¦trueã‚’è¿”ã™
 		if (slashType.life <= 0)
 		{
 			DestroyMe();

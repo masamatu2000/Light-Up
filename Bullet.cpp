@@ -1,33 +1,44 @@
-#include "Bullet.h"
+ï»¿#include "Bullet.h"
 #include "Stage.h"
 #include"Player.h"
 #include "Slash.h"
 
 /// <summary>
-/// ƒoƒŒƒbƒg‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+/// ãƒãƒ¬ãƒƒãƒˆã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 /// <author>H.suginunma</author>
 
-//‘S‘Ì‚É‹¤’Ê‚·‚é’è”
+//å…¨ä½“ã«å…±é€šã™ã‚‹å®šæ•°
 namespace
 {
-	//’e‚Ì\‘¢‘Ì’è”			@@‘¬“x@ƒTƒCƒY@õ–½@ ˆÊ’u  ƒOƒ‰ƒtƒBƒbƒNƒtƒ@ƒCƒ‹–¼
-	//ƒvƒŒƒCƒ„[
-	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f , "fairyBullet"}; //Šî–{ƒvƒŒƒCƒ„[
-	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f , "fairyBullet" }; //ƒƒCƒW
-	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f , "fairyBullet" }; //‹Rm
-	//“G
-	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f , "fairyBullet" }; //—d¸
-	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //ƒ^ƒŒƒbƒg
-	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //”š’e–‚
+	//å¼¾ã®æ§‹é€ ä½“å®šæ•°			ã€€ã€€é€Ÿåº¦ã€€ã‚µã‚¤ã‚ºã€€å¯¿å‘½ã€€ ä½ç½®  ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ•ã‚¡ã‚¤ãƒ«å
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	const BulletType BASE_B = { 300.0f,  20.0f, 3.0f, 10.0f , "fairyBullet"}; //åŸºæœ¬ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	const BulletType MAGE_B = { 500.0f,   10.0f, 3.0f, 10.0f , "fairyBullet" }; //ãƒ¡ã‚¤ã‚¸
+	const BulletType KNIGHT_B = { 100.0f,  20.0f, 3.0f, 20.0f , "fairyBullet" }; //é¨å£«
+	//æ•µ
+	const BulletType FAIRY_B = { 100.0f,  20.0f, 3.0f, 10.0f , "fairyBullet" }; //å¦–ç²¾
+	const BulletType TURRET_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //ã‚¿ãƒ¬ãƒƒãƒˆ
+	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //çˆ†å¼¾é­”
+	const BulletType DOKUTARO_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //æ¯’å¤ªéƒ
+	const BulletType DEBUFFER_B = { 100.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //ãƒ‡ãƒãƒƒãƒ•ã‚¡ãƒ¼
 }
 
-//”š’e–‚—p’è”
+//çˆ†å¼¾é­”ç”¨å®šæ•°
 namespace Bomber
 {
-	//Å‚“’B’n“_
+	//æœ€é«˜åˆ°é”åœ°ç‚¹
 	const float MAX_HEIGHT = IMAGE_SCALE * 2;
-	//Å‚“’B“_‚Ü‚Å‚ÌŠÔ	
+	//æœ€é«˜åˆ°é”ç‚¹ã¾ã§ã®æ™‚é–“	
+	const float MAX_TIME = 1.0f;
+}
+
+//æ¯’å¤ªéƒç”¨å®šæ•°
+namespace Dokutaro
+{
+	//æœ€é«˜åˆ°é”åœ°ç‚¹
+	const float MAX_HEIGHT = IMAGE_SCALE * 2;
+	//æœ€é«˜åˆ°é”ç‚¹ã¾ã§ã®æ™‚é–“	
 	const float MAX_TIME = 1.0f;
 }
 
@@ -61,21 +72,27 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	case BulletNumber::BOMBER:
 		bulletType = BOMBER_B;
 		break;
+	case BulletNumber::DOKUTARO:
+		bulletType = DOKUTARO_B;
+		break;
+	case BulletNumber::DEBUFFER:
+		bulletType = DEBUFFER_B;
+		break;
 	}
-	//ˆÊ’u‚ğ’²®
+	//ä½ç½®ã‚’èª¿æ•´
 	SetOffsetPosition();
-	//Œü‚«‚Ìİ’è
+	//å‘ãã®è¨­å®š
 	CheckDirection();
-	//‘¬“x‚ğŒvZ
+	//é€Ÿåº¦ã‚’è¨ˆç®—
 	CalculateVelocity();
-	//ƒOƒ‰ƒtƒBƒbƒNƒtƒ@ƒCƒ‹‚Ì“Ç‚İæ‚è
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å–ã‚Š
 	SetImage();
 }
 
 Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, Vector2D direction, ObjectTag tag)
 	:Bullet(pos, bulletNum, false, tag)
 {
-	//Œü‚«A‘¬“x‚Ìã‘‚«
+	//å‘ãã€é€Ÿåº¦ã®ä¸Šæ›¸ã
 	dir = direction;
 	CalculateVelocity();
 }
@@ -101,6 +118,11 @@ void Bullet::Update()
 		UpdateBomber();
 		return;
 	}
+	else if (bulletNumber == BulletNumber::DOKUTARO)
+	{
+		UpdateDokutaro();
+		return;
+	}
 	
 	HitWall();
 	if (isHitWall)
@@ -110,12 +132,12 @@ void Bullet::Update()
 		//DestroyMe();
 	}
 
-	//ƒ|ƒWƒVƒ‡ƒ“‚ÌXV
+	//ãƒã‚¸ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
 	
-	//ƒ‰ƒCƒt‚ª‚È‚¢
+	//ãƒ©ã‚¤ãƒ•ãŒãªã„
 	CheckNoLife();
 	if (isDed)
 	{
@@ -123,22 +145,38 @@ void Bullet::Update()
 		return;
 	}
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“—p‚Ìˆ—
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã®å‡¦ç†
 	animeX = gGameTimer.LoopAnimCounter(6);
 }
 
 void Bullet::UpdateBomber()
 {
-	//ƒ|ƒWƒVƒ‡ƒ“‚ÌXV
+	//ãƒã‚¸ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	float dt = Time::GetDeltaTime();
 	position.x += Velocity.x * dt;
 	position.y += Velocity.y * dt;
 	Velocity.y += gravity * dt;
 
-	//‰½‚©‚É‚ ‚Á‚½‚½‚ç”š”­iaŒ‚‚Å‘ã—pj
+	HitWall();
+	//ä½•ã‹ã«ã‚ã£ãŸãŸã‚‰çˆ†ç™ºï¼ˆæ–¬æ’ƒã§ä»£ç”¨ï¼‰
 	if (isHitWall)
 	{
 		new Slash(position, SlashNumber::BOMBER, false, ObjectTag::ENEMY);
+		DestroyMe();
+	}
+}
+
+void Bullet::UpdateDokutaro()
+{
+	//ãƒã‚¸ã‚·ãƒ§ãƒ³ã®æ›´æ–°
+	float dt = Time::GetDeltaTime();
+	position.x += Velocity.x * dt;
+	position.y += Velocity.y * dt;
+	Velocity.y += gravity * dt;
+
+	HitWall();
+	if (isHitWall)
+	{
 		DestroyMe();
 	}
 }
@@ -204,23 +242,23 @@ void Bullet::CalculateGravity()
 {
 	float H = Bomber::MAX_HEIGHT;
 	float T = Bomber::MAX_TIME;
-	//d—Í
+	//é‡åŠ›
 	gravity = (2.0f * H) / (T * T);
-	//‰‘¬iY²j
+	//åˆé€Ÿï¼ˆYè»¸ï¼‰
 	Velocity.y = -(gravity * T);
-	//X²‚Ì‘¬“x
+	//Xè»¸ã®é€Ÿåº¦
 	Velocity.x = dis.x / (T * 2.0f);
 }
 
 void Bullet::SetOffsetPosition()
 {
-	//’e‚ğƒIƒtƒZƒbƒg•ªˆÚ“®‚³‚¹‚é
-	//¶Œü‚¢‚Ä‚é‚È‚ç
+	//å¼¾ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆåˆ†ç§»å‹•ã•ã›ã‚‹
+	//å·¦å‘ã„ã¦ã‚‹ãªã‚‰
 	if (islookleft)
 	{
 		position.x -= bulletType.offsetX;
 	}
-	//‰EŒü‚¢‚Ä‚é‚È‚ç
+	//å³å‘ã„ã¦ã‚‹ãªã‚‰
 	else if (!islookleft)
 	{
 		position.x += bulletType.offsetX;
@@ -234,7 +272,7 @@ bool Bullet::CheckNoLife()
 	if (bulletType.life > 0)
 	{
 		bulletType.life -= dt;
-		//ƒ‰ƒCƒt‚ª‚È‚¢‚È‚ç’e‚ğÁ‚µ‚Ätrue‚ğ•Ô‚·
+		//ãƒ©ã‚¤ãƒ•ãŒãªã„ãªã‚‰å¼¾ã‚’æ¶ˆã—ã¦trueã‚’è¿”ã™
 		if (bulletType.life <= 0)
 		{
 			//DestroyMe();
@@ -257,7 +295,7 @@ void Bullet::SetImage()
 void Bullet::HitWall()
 {
 	Stage* s = FindGameObject<Stage>();
-	//‰E•Ç‚Ì”»’è
+	//å³å£ã®åˆ¤å®š
 	int d1 = s->HitWallRight((int)(position.x + bulletType.rad - 1), (int)(position.y + bulletType.rad - 1));
 	int d2 = s->HitWallRight((int)(position.x + bulletType.rad - 1), (int)(position.y - bulletType.rad + 1));
 	int d = max(d1, d2);
@@ -266,7 +304,7 @@ void Bullet::HitWall()
 		isHitWall = true;
 		Hp = 0;
 	}
-	//¶•Ç‚Ì”»’è
+	//å·¦å£ã®åˆ¤å®š
 	d1 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y + bulletType.rad - 1));
 	d2 = s->HitWallLeft((int)(position.x - bulletType.rad + 1), (int)(position.y - bulletType.rad + 1));
 	d = max(d1, d2);
@@ -275,7 +313,7 @@ void Bullet::HitWall()
 		isHitWall = true;
 		Hp = 0;
 	}
-	//°‚Æ‚Ì”»’è
+	//åºŠã¨ã®åˆ¤å®š
 	/*d1 = s->HitFloor((int)(position.x + 0), (int)(position.y + IMAGE_SCALE));
 	d2 = s->HitFloor((int)(position.x + IMAGE_SCALE - 1), (int)(position.y + IMAGE_SCALE));
 	d = max(d1, d2);
@@ -283,7 +321,7 @@ void Bullet::HitWall()
 	{
 		return true;
 	}*/
-	//“Vˆä‚Æ‚Ì”»’è
+	//å¤©äº•ã¨ã®åˆ¤å®š
 	/*d1 = s->HitCeiling((int)(position.x + 0), (int)(position.y - 1));
 	d2 = s->HitCeiling((int)(position.x + IMAGE_SCALE - 1), (int)(position.y - 1));
 	d = max(d1, d2);

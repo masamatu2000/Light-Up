@@ -1,17 +1,23 @@
-/// <summary>
-/// ƒXƒe[ƒW‚ÉŠÖ‚·‚éƒNƒ‰ƒX
+ï»¿/// <summary>
+/// ã‚¹ãƒ†ãƒ¼ã‚¸ã«é–¢ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 /// <author>H.suginunma</author>
 #include "Stage.h"
 #include"CsvReader.h"
 #include "Player.h"
-//“G—p‚ÌƒNƒ‰ƒXƒCƒ“ƒNƒ‹[ƒh
+//æ•µç”¨ã®ã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Enemy.h"
 #include"Kuriboh.h"
 #include"Fairy.h"
 #include"Turret.h"
 #include"Bomber.h"
-//ƒ{ƒX—p‚ÌƒNƒ‰ƒXƒCƒ“ƒNƒ‹[ƒh
+#include"Gundam.h"
+#include"Creeper.h"
+#include"Poison.h"
+#include"Debuffer.h"
+#include"Lancer.h"
+#include"Berserker.h"
+//ãƒœã‚¹ç”¨ã®ã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include"Boss.h"
 #include<assert.h>
 #include"DataHolder.h"
@@ -20,9 +26,9 @@
 #include "SoundManager.h"
 
 namespace {
-	//ƒ`ƒ…[ƒgƒŠƒAƒ‹A— ƒXƒeŠÜ‚ß‚½‚UƒXƒe[ƒW
+	//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã€è£ã‚¹ãƒ†å«ã‚ãŸï¼–ã‚¹ãƒ†ãƒ¼ã‚¸
 	const int STAGE_MAX = 6;
-	//‚»‚ê‚¼‚ê‚ÌCSV”Ô†
+	//ãã‚Œãã‚Œã®CSVç•ªå·
 	const int PLAYER_CSV_NUM = 2;
 	const int NEXTPORTAL_CSV_NUM = 3;
 	const int PREVIOUSPORTAL_CSV_NUM = 4;
@@ -32,6 +38,8 @@ namespace {
 	const int TURRET_CSV_NUM = 12;
 	const int BOMBER_CSV_NUM = 13;
 	const int BOSS01_CSV_NUM = 21;
+
+	const int TEST_CSV = 100;
 }
 
 int Stage::scrollX = 0;
@@ -46,7 +54,7 @@ Stage::Stage()
 	//hImage= LoadGraph("data/Image/stage/stageGraph/TileImage.png");
 	//assert(hImage > 0);
 
-	//ƒXƒe[ƒW”wŒi‚Ì•`‰æ‚Ìˆ×‚Ì‰æ‘œ“Ç‚İ‚İ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸èƒŒæ™¯ã®æç”»ã®ç‚ºã®ç”»åƒèª­ã¿è¾¼ã¿
 	BgImage.clear();
 	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
 	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_library.png"));
@@ -55,15 +63,15 @@ Stage::Stage()
 	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
 	BgImage.push_back(LoadGraph("data/Image/stage/BG/BG_slum.png"));
 
-	//ƒ}ƒbƒv‚Ì–¼‘O‚Ì“Ç‚İ‚İ
+	//ãƒãƒƒãƒ—ã®åå‰ã®èª­ã¿è¾¼ã¿
 	CsvReader* nameCsv = new CsvReader("data/Image/stage/stageCSV/stageName.csv");
-	int nLines = nameCsv->GetLines();//s”‚ğæ“¾
-	mapName.resize(nLines);//map‚Ìs”‚ğİ’è
-	for (int i = 0; i < nLines; i++) {//1s‚¸‚Â“Ç‚Ş
-		//‰üs‚ğÁ‚·‚½‚ßˆê•Û‘¶
+	int nLines = nameCsv->GetLines();//è¡Œæ•°ã‚’å–å¾—
+	mapName.resize(nLines);//mapã®è¡Œæ•°ã‚’è¨­å®š
+	for (int i = 0; i < nLines; i++) {//1è¡Œãšã¤èª­ã‚€
+		//æ”¹è¡Œã‚’æ¶ˆã™ãŸã‚ä¸€æ™‚ä¿å­˜
 		std::string name = nameCsv->GetString(i, 0);
 
-		//‰üs‚ª‚ ‚éê‡
+		//æ”¹è¡ŒãŒã‚ã‚‹å ´åˆ
 		if (!name.empty() && name.back() == '\r' || !name.empty() && name.back() == '\n')
 		{
 			name.pop_back();
@@ -73,52 +81,52 @@ Stage::Stage()
 	}
 	delete nameCsv;
 
-	//‘Sƒ}ƒbƒv‚Ì“Ç‚İ‚İ
+	//å…¨ãƒãƒƒãƒ—ã®èª­ã¿è¾¼ã¿
 	for (int i = 0; i < mapName.size(); i++) {
-		//ƒ}ƒbƒv‚ÌQÆ
+		//ãƒãƒƒãƒ—ã®å‚ç…§
 		std::string path = "data/Image/stage/stageCSV/" + mapName[i] + ".csv";
 		//std::string path = "data/Image/stage/stageCSV/stage0-1.csv";
 
 		CsvReader* stageCsv = new CsvReader(path.c_str());
 
-		//ƒ}ƒbƒvî•ñ•Û—p”z—ñ
+		//ãƒãƒƒãƒ—æƒ…å ±ä¿æŒç”¨é…åˆ—
 		std::vector<std::vector<int>> oneMap;
-		int sLines = stageCsv->GetLines();//s”‚ğæ“¾
+		int sLines = stageCsv->GetLines();//è¡Œæ•°ã‚’å–å¾—
 
 		if (sLines == 0) {
-			// ‚±‚±‚Å~‚Ü‚éê‡‚ÍAƒtƒ@ƒCƒ‹–¼ipathj‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·
+			// ã“ã“ã§æ­¢ã¾ã‚‹å ´åˆã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆpathï¼‰ãŒé–“é•ã£ã¦ã„ã¾ã™
 			assert(false && "Map file not found or empty!");
 		}
 
-		oneMap.resize(sLines);//map‚Ìs”‚ğİ’è
-		for (int y = 0; y < sLines; y++) {//1s‚¸‚Â“Ç‚Ş
-			int colos = stageCsv->GetColumns(y);//‚»‚Ìs‚ÌŒ…”‚ğæ“¾
-			oneMap[y].resize(colos);//map‚Ì‚»‚Ìs‚ÌŒ…”‚ğİ’è
+		oneMap.resize(sLines);//mapã®è¡Œæ•°ã‚’è¨­å®š
+		for (int y = 0; y < sLines; y++) {//1è¡Œãšã¤èª­ã‚€
+			int colos = stageCsv->GetColumns(y);//ãã®è¡Œã®æ¡æ•°ã‚’å–å¾—
+			oneMap[y].resize(colos);//mapã®ãã®è¡Œã®æ¡æ•°ã‚’è¨­å®š
 			for (int x = 0; x < colos; x++) {
-				oneMap[y][x] = stageCsv->GetInt(y, x);//map‚É’l‚ğİ’è
+				oneMap[y][x] = stageCsv->GetInt(y, x);//mapã«å€¤ã‚’è¨­å®š
 			}
 		}
 		allMap.push_back(oneMap);
 		delete stageCsv;
 	}
 	
-	//ƒ}ƒbƒv‚ğ‰Šú‰»
+	//ãƒãƒƒãƒ—ã‚’åˆæœŸåŒ–
 	currentNum = 0;
 	nextNum = currentNum;
 	if (!allMap.empty()) {
 		map = allMap[currentNum];
 	}
-	//ƒXƒNƒ[ƒ‹AãŒÀ’l‚Ìİ’è
+	//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã€ä¸Šé™å€¤ã®è¨­å®š
 	SetScroll();
-	//«ƒvƒŒƒCƒ„[‚ğw’è‚ÌÀ•W‚ÉoŒ»‚³‚¹‚é
+	//â†“ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æŒ‡å®šã®åº§æ¨™ã«å‡ºç¾ã•ã›ã‚‹
 	SetPlayer();
-	//“G‚ğ¶¬
+	//æ•µã‚’ç”Ÿæˆ
 	SetEnemy_Boss();
 
-	//ƒ}ƒbƒv‚ğƒ`ƒ…[ƒgƒŠƒAƒ‹‚É
+	//ãƒãƒƒãƒ—ã‚’ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã«
 	currentStage = 0;
 
-	//ƒ{ƒX‚ğ“|‚µ‚Ä‚È‚¢‚±‚Æ‚É
+	//ãƒœã‚¹ã‚’å€’ã—ã¦ãªã„ã“ã¨ã«
 	isBossDefeated.clear();
 	isBossDefeated.resize(STAGE_MAX, false);
 
@@ -142,16 +150,16 @@ void Stage::Update()
 		map = allMap[nextNum];
 		currentNum = nextNum;
 		isBossSection = false;
-		//ƒXƒNƒ[ƒ‹AãŒÀ’l‚ğİ’è
+		//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã€ä¸Šé™å€¤ã‚’è¨­å®š
 		SetScroll();
-		//“G‚Æƒ{ƒX‚ğ¶¬
+		//æ•µã¨ãƒœã‚¹ã‚’ç”Ÿæˆ
 		SetEnemy_Boss();
-		//ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğV‚µ‚¢ƒ}ƒbƒv‚Ì‰ŠúˆÊ’u‚ÉˆÚ“®
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’æ–°ã—ã„ãƒãƒƒãƒ—ã®åˆæœŸä½ç½®ã«ç§»å‹•
 		SetPlayerPosition();
 	}
 
-	//ƒfƒoƒbƒO—p
-	//ƒXƒe[ƒW‚ği‚ß‚é
+	//ãƒ‡ãƒãƒƒã‚°ç”¨
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€²ã‚ã‚‹
 	if (Input::IsKeyDown(KEY_INPUT_O))
 	{
 		NextSection();
@@ -160,7 +168,7 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	//ƒXƒe[ƒW‚Ì”wŒi‚Ì•`‰æ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã®èƒŒæ™¯ã®æç”»
 	if (currentNum <= 3)
 	{
 		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[0], true);
@@ -186,7 +194,7 @@ void Stage::Draw()
 		DrawGraph((int)(0 - Stage::scrollX), (int)(0 - Stage::GetScrollY()), BgImage[5], true);
 	}
 
-	//BGM‚ÌÄ¶
+	//BGMã®å†ç”Ÿ
 	if (currentNum <= 2)
 	{
 		FindGameObject<Sound>()->BgmPlay("starSleep");
@@ -217,7 +225,7 @@ void Stage::Draw()
 			}
 		}
 
-		//Œ»İ‚Ìƒ}ƒbƒvŠm”F—p
+		//ç¾åœ¨ã®ãƒãƒƒãƒ—ç¢ºèªç”¨
 		DrawFormatString(0, 100, 0xffff00, "%s", mapName[currentNum].c_str());
 		DrawFormatString(0, 120, 0x0000ff, "%d %d %d %d %d %d",
 			(int)isBossDefeated[0],
@@ -288,14 +296,14 @@ bool Stage::CanChangeStage(Vector2D pos, std::string direction)
 {
 	if (direction == "next")
 	{
-		//next‚És‚¯‚é‚©’²‚×‚é
-		//CSVã‚Ìnextƒ|[ƒ^ƒ‹‚ğ•\‚·3‚ÅŒŸõ
+		//nextã«è¡Œã‘ã‚‹ã‹èª¿ã¹ã‚‹
+		//CSVä¸Šã®nextãƒãƒ¼ã‚¿ãƒ«ã‚’è¡¨ã™3ã§æ¤œç´¢
 		return CanInteract(pos, NEXTPORTAL_CSV_NUM);
 	}
 	else if (direction == "previous")
 	{
-		//previous‚És‚¯‚é‚©’²‚×‚é
-		//CSVã‚Ìpreviousƒ|[ƒ^ƒ‹‚ğ•\‚·4‚ÅŒŸõ
+		//previousã«è¡Œã‘ã‚‹ã‹èª¿ã¹ã‚‹
+		//CSVä¸Šã®previousãƒãƒ¼ã‚¿ãƒ«ã‚’è¡¨ã™4ã§æ¤œç´¢
 		return CanInteract(pos, PREVIOUSPORTAL_CSV_NUM);
 	}
 	return false;
@@ -306,20 +314,20 @@ bool Stage::CanInteract(Vector2D pos, int findNum)
 	Vector2D portalPos;
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			//ƒ|[ƒ^ƒ‹‚ÌÀ•W‚ğŠl“¾
+			//ãƒãƒ¼ã‚¿ãƒ«ã®åº§æ¨™ã‚’ç²å¾—
 			if (map[y][x] == findNum) {
-				//À•W‚ğƒ}ƒX‚Ì’†S‚É•ÏX
+				//åº§æ¨™ã‚’ãƒã‚¹ã®ä¸­å¿ƒã«å¤‰æ›´
 				portalPos.x = (float)(x * IMAGE_SCALE + IMAGE_SCALE / 2);
 				portalPos.y = (float)(y * IMAGE_SCALE + IMAGE_SCALE / 2);
 				break;
 			}
 		}	
 	}
-	//ƒvƒŒƒCƒ„[‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğæ“¾A’†S‚Éİ’è
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã€ä¸­å¿ƒã«è¨­å®š
 	Vector2D pPos = { pos.x + CHARACTER_IMAGE_SCALE / 2 ,pos.y + CHARACTER_IMAGE_SCALE / 2 };
-	//‚Q‚Â‚ÌƒxƒNƒgƒ‹‚Ì‹——£
+	//ï¼’ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®è·é›¢
 	float dist = Math2D::Length(Math2D::Sub(pPos, portalPos));
-	//‚Ç‚Ì‚­‚ç‚¢—£‚ê‚Ä‚½‚çƒCƒ“ƒ^ƒ‰ƒNƒg‚³‚¹‚é‚©
+	//ã©ã®ãã‚‰ã„é›¢ã‚Œã¦ãŸã‚‰ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒˆã•ã›ã‚‹ã‹
 	float interactLength = CHARACTER_IMAGE_SCALE;
 	if (dist <= interactLength)
 	{
@@ -342,12 +350,12 @@ void Stage::SetStage(std::string sName)
 
 void Stage::NextSection()
 {
-	//ƒTƒEƒ“ƒh‚ÌÄ¶‚ğ~‚ß‚éŠÖ”
+	//ã‚µã‚¦ãƒ³ãƒ‰ã®å†ç”Ÿã‚’æ­¢ã‚ã‚‹é–¢æ•°
 	FindGameObject<Sound>()->SoundStop();
 
 	direction = Direction::NEXT;
 	isStartSection = false;
-	//ƒ{ƒX‚ª‚¢‚È‚¯‚ê‚ÎŸ‚ÌƒZƒNƒVƒ‡ƒ“‚É
+	//ãƒœã‚¹ãŒã„ãªã‘ã‚Œã°æ¬¡ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«
 	if (!isBossSection)
 	{
 		if (currentNum + 1 <= mapName.size() - 1)
@@ -355,12 +363,12 @@ void Stage::NextSection()
 			SetStage(mapName[currentNum + 1]);
 		}
 	}
-	//‘Sƒ{ƒX“|‚µ‚Ä‚½‚çÅIƒXƒe[ƒW‚É
+	//å…¨ãƒœã‚¹å€’ã—ã¦ãŸã‚‰æœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¸ã«
 	else if (IsBossComplete())
 	{
 		FinalStage();
 	}
-	//¡‚ÌƒXƒe[ƒW‚Ìƒ{ƒX‚ğ“|‚µ‚½‚ç
+	//ä»Šã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒœã‚¹ã‚’å€’ã—ãŸã‚‰
 	else if (isBossDefeated[currentStage])
 	{
 		NextStage();
@@ -380,12 +388,12 @@ void Stage::FinalStage()
 void Stage::NextStage()
 {
 	DataHolder* dh = FindGameObject<DataHolder>();
-	//ƒXƒe[ƒW‚ªÅIƒXƒe[ƒW‚È‚çƒ^ƒCƒgƒ‹‚É
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ãŒæœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¸ãªã‚‰ã‚¿ã‚¤ãƒˆãƒ«ã«
 	if (currentStage == 5)
 	{
 		SceneManager::ChangeScene(SCENE_NAME::CLEAR_SCENE);
 	}
-	//‚»‚êˆÈŠO‚Ìƒ{ƒX‚È‚çŸ‚ÌƒXƒe[ƒW‚É
+	//ãã‚Œä»¥å¤–ã®ãƒœã‚¹ãªã‚‰æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã«
 	else if (currentStage != 5)
 	{
 		isStartSection = true;
@@ -393,7 +401,7 @@ void Stage::NextStage()
 		SetStage(name);
 		currentStage = dh->stageNum;
 		dh->stageNum += 1;
-		//’ÊíƒXƒe[ƒW‚ÌÅŒãˆÈã‚É‚È‚Á‚½‚ç1‚É–ß‚·
+		//é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸ã®æœ€å¾Œä»¥ä¸Šã«ãªã£ãŸã‚‰1ã«æˆ»ã™
 		if (dh->stageNum > STAGE_MAX - 2)
 		{
 			dh->stageNum = 1;
@@ -422,8 +430,8 @@ void Stage::DefeatedBoss()
 
 bool Stage::IsBossComplete()
 {
-	//‚P‘Ì‚Å‚àc‚Á‚Ä‚½‚çfalse‚ğ•Ô‚·
-	//ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ÆÅIƒXƒe[ƒW‚Íœ‚­
+	//ï¼‘ä½“ã§ã‚‚æ®‹ã£ã¦ãŸã‚‰falseã‚’è¿”ã™
+	//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã¨æœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¸ã¯é™¤ã
 	for (int i = 1; i < STAGE_MAX -1; i++)
 	{
 		if (!isBossDefeated[i])
@@ -438,7 +446,7 @@ Vector2D Stage::GetAnimationPos()
 {
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			//“ü‚èŒû‚ÌêŠ‚ğƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠJnˆÊ’u‚É
+			//å…¥ã‚Šå£ã®å ´æ‰€ã‚’ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é–‹å§‹ä½ç½®ã«
 			if (map[y][x] == PREVIOUSPORTAL_CSV_NUM) {
 				return Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE));
 				break;
@@ -450,24 +458,24 @@ Vector2D Stage::GetAnimationPos()
 
 Vector2D Stage::CalculateLaserEnd(Vector2D start, Vector2D dir, int length)
 {
-	//•Ô‚·’l‚ğ•Û‘¶‚·‚é•Ï”
+	//è¿”ã™å€¤ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
 	Vector2D current = start;
-	//’·‚³•ª1px–ˆ‚ÉŒŸõ
+	//é•·ã•åˆ†1pxæ¯ã«æ¤œç´¢
 	for (int i = 0; i < length; i++)
 	{
 		current = Math2D::Add(current, dir);
-		//•Ç‚Æ‚Ì”»’è
+		//å£ã¨ã®åˆ¤å®š
 		int mapX = (int)current.x / IMAGE_SCALE;
 		int mapY = (int)current.y / IMAGE_SCALE;
 		if (IsInWall((int)current.x, (int)current.y))
 		{
-			//•Ç‚É­‚µ‚ß‚è‚Ü‚¹‚é
+			//å£ã«å°‘ã—ã‚ã‚Šè¾¼ã¾ã›ã‚‹
 			current = Math2D::Add(current, Math2D::Mul(dir, 10));
 			return current;
 		}
 	}
 
-	//•Ç‚É“–‚½‚ç‚È‚©‚Á‚½‚ç’·‚³•ª•Ô‚·
+	//å£ã«å½“ãŸã‚‰ãªã‹ã£ãŸã‚‰é•·ã•åˆ†è¿”ã™
 	return current;
 
 	return Vector2D();
@@ -495,7 +503,7 @@ void Stage::SetPlayer()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == PLAYER_CSV_NUM) {
-				//ƒvƒŒƒCƒ„[‚Ì¶¬‚ÌÛAƒTƒCƒY‚Ìˆá‚¢‚É‚æ‚è°‚É–„‚Ü‚é‚Ì‚Åˆêƒ}ƒXã‚ÉoŒ»‚³‚¹‚é
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç”Ÿæˆã®éš›ã€ã‚µã‚¤ã‚ºã®é•ã„ã«ã‚ˆã‚ŠåºŠã«åŸ‹ã¾ã‚‹ã®ã§ä¸€ãƒã‚¹ä¸Šã«å‡ºç¾ã•ã›ã‚‹
 				new Player(x * IMAGE_SCALE, (y - 1) * IMAGE_SCALE);
 				break;
 			}
@@ -522,10 +530,10 @@ void Stage::SetPlayerPosition()
 
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			//ŠK’i‚Æ“¯‚¶êŠ‚É
+			//éšæ®µã¨åŒã˜å ´æ‰€ã«
 			if (map[y][x] == findNum) {
 				Player* p = FindGameObject<Player>();
-				//ƒvƒŒƒCƒ„[‚Ì¶¬‚ÌÛAƒTƒCƒY‚Ìˆá‚¢‚É‚æ‚è°‚É–„‚Ü‚é‚Ì‚Åˆêƒ}ƒXã‚É‘—‚é
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç”Ÿæˆã®éš›ã€ã‚µã‚¤ã‚ºã®é•ã„ã«ã‚ˆã‚ŠåºŠã«åŸ‹ã¾ã‚‹ã®ã§ä¸€ãƒã‚¹ä¸Šã«é€ã‚‹
 				p->SetVel(Vector2D(0,0));
 				p->SetPosition({ (float)x * IMAGE_SCALE, ((float)y - 1) * IMAGE_SCALE });
 				break;
@@ -540,7 +548,7 @@ void Stage::SetEnemy_Boss()
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
 			if (map[y][x] == KURIBOH_CSV_NUM) {
-				//ƒvƒŒƒCƒ„[‚Ì¶¬‚ÌÛAƒTƒCƒY‚Ìˆá‚¢‚É‚æ‚è°‚É–„‚Ü‚é‚Ì‚Åˆêƒ}ƒXã‚ÉoŒ»‚³‚¹‚é
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç”Ÿæˆã®éš›ã€ã‚µã‚¤ã‚ºã®é•ã„ã«ã‚ˆã‚ŠåºŠã«åŸ‹ã¾ã‚‹ã®ã§ä¸€ãƒã‚¹ä¸Šã«å‡ºç¾ã•ã›ã‚‹
 				new Kuriboh(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
@@ -556,11 +564,16 @@ void Stage::SetEnemy_Boss()
 				new Bomber(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
+			if (map[y][x] == TEST_CSV)
+			{
+				new Debuffer(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
+				break;
+			}
 			if (map[y][x] == BOSS01_CSV_NUM)
 			{
 				new Santana(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				//new Boss(Vector2D((float)(x * IMAGE_SCALE), (float)(y * IMAGE_SCALE)), BossNumber::BOSS01);
-				//ƒ{ƒX‚ª‚¢‚é‚©‚Ç‚¤‚©‚ğtrue‚É
+				//ãƒœã‚¹ãŒã„ã‚‹ã‹ã©ã†ã‹ã‚’trueã«
 				isBossSection = true;
 				break;
 			}

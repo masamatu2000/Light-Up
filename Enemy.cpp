@@ -13,11 +13,11 @@ namespace {
 	const EnemyStatus KURIBOH   = { 10, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
 	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_yousei"};
 	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,""};
-	const EnemyStatus GUNDAM    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus GUNDAM    = { 1,  20.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 6,  IMAGE_SCALE * 10 ,""};
 	const EnemyStatus BOMBER    = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE *  5,                 0 ,""};
-	const EnemyStatus CREEPER   = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
-	const EnemyStatus DOKUTARO  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
-	const EnemyStatus DEBUFFER  = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
+	const EnemyStatus CREEPER   = { 1,  100.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 5 ,""};
+	const EnemyStatus DOKUTARO  = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 5,                 0 ,"" };
+	const EnemyStatus DEBUFFER  = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"" };
 	const EnemyStatus LANCER    = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
 	const EnemyStatus BERSERKER = { 1,  1.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,                1,                 0 ,""};
 	DataHolder* dh = nullptr;

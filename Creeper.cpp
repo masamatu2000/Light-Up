@@ -14,7 +14,7 @@ Creeper::Creeper(const Vector2D& pos)
 	position = pos;
 	timer = 0.0f;
 	invincibilityTimeCounter = 0;
-	enemyNumber = EnemyNumber::KURIBOH;
+	enemyNumber = EnemyNumber::CREEPER;
 	enemyStatus = GetEnemyStatus(enemyNumber);
 	Image* image = FindGameObject<Image>();
 	hImage = image->ReturnImage(enemyStatus.imageName);
