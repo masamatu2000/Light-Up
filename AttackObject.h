@@ -26,7 +26,8 @@ enum class BulletNumber
 	TURRET,
 	BOMBER,
 	DOKUTARO,
-	DEBUFFER
+	DEBUFFER,
+	BERSERKER
 };
 enum class SlashNumber
 {
@@ -36,7 +37,8 @@ enum class SlashNumber
 	KURIBOH,
 	BOMBER,
 	GUNDAM,
-	CREEPER
+	CREEPER,
+	LANCER
 };
 enum class LaserNumber
 {

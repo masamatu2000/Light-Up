@@ -22,6 +22,7 @@ namespace
 	const BulletType BOMBER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //爆弾魔
 	const BulletType DOKUTARO_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //毒太郎
 	const BulletType DEBUFFER_B = { 100.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //デバッファー
+	const BulletType BERSERKER_B = { 300.0f,  20.0f, 7.0f, 10.0f , "fairyBullet" }; //バーサーカー
 }
 
 //爆弾魔用定数
@@ -35,6 +36,15 @@ namespace Bomber
 
 //毒太郎用定数
 namespace Dokutaro
+{
+	//最高到達地点
+	const float MAX_HEIGHT = IMAGE_SCALE * 2;
+	//最高到達点までの時間	
+	const float MAX_TIME = 1.0f;
+}
+
+//バーサーカー用定数
+namespace Berserker
 {
 	//最高到達地点
 	const float MAX_HEIGHT = IMAGE_SCALE * 2;
@@ -78,6 +88,9 @@ Bullet::Bullet(const Vector2D& pos, BulletNumber bulletNum, bool lookleft, Objec
 	case BulletNumber::DEBUFFER:
 		bulletType = DEBUFFER_B;
 		break;
+	case BulletNumber::BERSERKER:
+		bulletType = BERSERKER_B;
+		break;
 	}
 	//位置を調整
 	SetOffsetPosition();
@@ -113,7 +126,8 @@ void Bullet::Update()
 	counter++;
 
 
-	if (bulletNumber == BulletNumber::BOMBER)
+	if (bulletNumber == BulletNumber::BOMBER ||
+		bulletNumber == BulletNumber::BERSERKER)
 	{
 		UpdateBomber();
 		return;

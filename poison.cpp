@@ -5,7 +5,7 @@
 #include"Bullet.h"
 #include"Slash.h"
 
-//ボマー用の定数
+//毒太郎用の定数
 namespace PoisonData
 {
 	//最高到達地点

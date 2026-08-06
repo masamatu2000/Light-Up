@@ -22,6 +22,7 @@ namespace
 	const SlashType BOMBER_S = { 0.0f,  30.0f, 0.1f,  0.0f }; //爆弾魔
 	const SlashType GUNDAM_S = { 0.0f,  30.0f, 0.1f,  30.0f }; //ガンダム
 	const SlashType CREEPER_S = { 0.0f,  60.0f, 0.1f,  0.0f }; //クリーパー
+	const SlashType LANCER_S = { 0.0f,  30.0f, 0.1f,  0.0f }; //ランサー
 }
 
 Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag tag)
@@ -52,6 +53,9 @@ Slash::Slash(const Vector2D& pos, SlashNumber slashNum, bool lookleft, ObjectTag
 		break;
 	case SlashNumber::CREEPER:
 		slashType = CREEPER_S;
+		break;
+	case SlashNumber::LANCER:
+		slashType = LANCER_S;
 		break;
 	}
 	//位置を調整

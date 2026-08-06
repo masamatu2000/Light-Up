@@ -566,7 +566,7 @@ void Stage::SetEnemy_Boss()
 			}
 			if (map[y][x] == TEST_CSV)
 			{
-				new Debuffer(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
+				new Lancer(Vector2D((float)(x * IMAGE_SCALE), (float)((y - 1) * IMAGE_SCALE)));
 				break;
 			}
 			if (map[y][x] == BOSS01_CSV_NUM)
