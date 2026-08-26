@@ -12,14 +12,14 @@ namespace {
 	//敵のステータス構造体		　 HP　X速度　　CT　　　　　　　Rad　　　　　攻撃距離　　　 トレース距離            グラフィックファイル名
 	const EnemyStatus KURIBOH   = { 10, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 4,   IMAGE_SCALE * 10 ,"LiteUp_kuribou"};
 	const EnemyStatus FAIRY     = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_yousei"};
-	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,""};
-	const EnemyStatus GUNDAM    = { 1,  20.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 6,  IMAGE_SCALE * 10 ,""};
-	const EnemyStatus BOMBER    = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE *  5,                 0 ,""};
+	const EnemyStatus TURRET    = { 3,  0.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_taretto"};
+	const EnemyStatus GUNDAM    = { 1,  20.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 6,  IMAGE_SCALE * 10 ,"LiteUp_gandamu"};
+	const EnemyStatus BOMBER    = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE *  5,                 0 ,"LiteUp_bomm"};
 	const EnemyStatus CREEPER   = { 1,  100.0f, 1.0f, CHARACTER_IMAGE_SCALE / 2,CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 5 ,""};
-	const EnemyStatus DOKUTARO  = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 5,                 0 ,"" };
-	const EnemyStatus DEBUFFER  = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"" };
+	const EnemyStatus DOKUTARO  = { 1, 30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 5,                 0 ,"LiteUp_dokutarou" };
+	const EnemyStatus DEBUFFER  = { 2, 15.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2, IMAGE_SCALE * 10,                 0 ,"LiteUp_debafer" };
 	const EnemyStatus LANCER    = { 1,  30.0f, 3.0f, CHARACTER_IMAGE_SCALE / 2,CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 12  ,""};
-	const EnemyStatus BERSERKER = { 1,  20.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 6,  IMAGE_SCALE * 10 ,"" };
+	const EnemyStatus BERSERKER = { 1,  20.0f, 2.0f, CHARACTER_IMAGE_SCALE / 2,IMAGE_SCALE * 6,  IMAGE_SCALE * 10 ,"LiteUp_barsarkar" };
 	DataHolder* dh = nullptr;
 
 }
